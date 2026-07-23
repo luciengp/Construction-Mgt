@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CMS — Construction Management System
 
-## Getting Started
+Multi-tenant SaaS for owners of construction projects to control **quality and payments**.
 
-First, run the development server:
+> **The contractor does not request payment — the contractor requests an inspection.**
+> Passing the inspection is what unlocks the payment milestone. Every payment milestone is a
+> **Quality Gate**: it opens only when every inspection under it has passed, both parties have
+> signed it, and there is no open non-conformance.
+
+## Stack
+
+- **Next.js 14** (App Router) + TypeScript + Tailwind CSS, shipped as an installable PWA
+- **Supabase** — Postgres + Row-Level Security, Auth, Storage (photos)
+- **Vitest** (domain-rule unit tests) + **Playwright** (e2e)
+- Hosting target: Vercel + Supabase managed
+
+### Stack notes / deviations
+
+- **Service worker is hand-rolled** (`public/sw.js`) rather than via `next-pwa`, which is
+  effectively unmaintained for the App Router. The worker does app-shell caching only; the
+  offline submission queue (IndexedDB) is a separate layer added in build milestone 7.
+- **pnpm** is the package manager. If `corepack enable` needs sudo on your machine, install
+  it per-user instead: `npm install -g pnpm@9 --prefix="$HOME/.local"` and add
+  `~/.local/bin` to your `PATH`.
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local   # then fill in your Supabase project values
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables (`.env.local`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Where to find it |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase dashboard → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Same page — use the `sb_publishable_...` key |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The dev Supabase project is `cms` (ref `mtfuqqaqfpnqwgspmzsb`, region `ap-southeast-1`).
 
-## Learn More
+## Tests
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm test        # Vitest unit tests (domain rules + seed integrity)
+pnpm e2e         # Playwright (starts the dev server itself)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The seed file `supabase/seed/cms_domain_seed.json` is the contractual source of truth:
+23 trade families, 21 milestones (Quality Gates), 78 inspections, 422 checklist items.
+Contract values excluding the `RET` retention row sum to **7,456,732 THB** — asserted in
+`tests/unit/seed-integrity.test.ts`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Migrations & seeding
 
-## Deploy on Vercel
+Arrive in build milestone 2 (`supabase/migrations/` + an idempotent per-project seed script).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Domain rules
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`DOMAIN.md` is the source of truth for the inspection → gate → payment rules. They live as
+pure, framework-free logic in `src/domain/` (build milestone 3) and are the product — the UI
+is a thin shell over them.
+
+## Legal
+
+Sign-up is gated by the Platform Access, Confidentiality, IP and Non-Circumvention Agreement
+(`legal/Platform_NDA_IP_NonCircumvention_Agreement.md`), accepted via double-checkbox
+clickwrap and recorded per version in `agreement_acceptances`.
+
+> **Note:** the agreement is a professional draft template pending review by qualified
+> counsel. The non-competition and non-circumvention clauses' enforceability depends on the
+> governing-law jurisdiction (Thailand assumed).
+
+## Repo layout
+
+```
+src/app/            Next.js App Router screens
+src/components/     Shared UI
+src/domain/         Pure domain rules (milestone 3) — no framework imports allowed
+src/lib/supabase/   Browser/server/middleware Supabase clients
+supabase/seed/      cms_domain_seed.json (source of truth)
+legal/              Platform agreement (versioned into legal_documents at seed time)
+tests/unit/         Vitest
+tests/e2e/          Playwright
+```

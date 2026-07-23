@@ -1,0 +1,2024 @@
+{
+  "families": [
+    {
+      "code": "C01",
+      "name": "Site Establishment & Survey"
+    },
+    {
+      "code": "C02",
+      "name": "Excavation & Compaction"
+    },
+    {
+      "code": "C03",
+      "name": "Reinforcement & Formwork"
+    },
+    {
+      "code": "C04",
+      "name": "Formwork Striking & Structure"
+    },
+    {
+      "code": "C05",
+      "name": "Concrete Pour & Testing"
+    },
+    {
+      "code": "C06",
+      "name": "Waterproofing & Tanking"
+    },
+    {
+      "code": "C07",
+      "name": "Retaining Wall"
+    },
+    {
+      "code": "C08",
+      "name": "Swimming Pool"
+    },
+    {
+      "code": "C09",
+      "name": "Roof"
+    },
+    {
+      "code": "C10",
+      "name": "Structural Steel"
+    },
+    {
+      "code": "C11",
+      "name": "Brickwork & Blockwork"
+    },
+    {
+      "code": "C12",
+      "name": "Plaster & Render"
+    },
+    {
+      "code": "C13",
+      "name": "Ceilings"
+    },
+    {
+      "code": "C14",
+      "name": "Painting"
+    },
+    {
+      "code": "C15",
+      "name": "Floor & Wall Tiling"
+    },
+    {
+      "code": "C16",
+      "name": "Doors & Windows"
+    },
+    {
+      "code": "C17",
+      "name": "Electrical"
+    },
+    {
+      "code": "C18",
+      "name": "Plumbing & Drainage"
+    },
+    {
+      "code": "C19",
+      "name": "Air Conditioning"
+    },
+    {
+      "code": "C20",
+      "name": "Solar PV & Smart Home"
+    },
+    {
+      "code": "C21",
+      "name": "Joinery & Staircase Finishes"
+    },
+    {
+      "code": "C22",
+      "name": "Cleaning, Snagging & Handover"
+    },
+    {
+      "code": "C23",
+      "name": "Materials & Deliveries"
+    }
+  ],
+  "milestones": [
+    {
+      "code": "PC",
+      "desc": "Pre-Construction & Mobilisation Readiness",
+      "value": 0,
+      "payer": "Both",
+      "start": "",
+      "end": "20 Jul 2026"
+    },
+    {
+      "code": "M1.1",
+      "desc": "Site Mobilisation & Earthworks",
+      "value": 296900,
+      "payer": "Land",
+      "start": "20 Jul 2026",
+      "end": "04 Aug 2026"
+    },
+    {
+      "code": "M1.2",
+      "desc": "Footing & Retaining Wall",
+      "value": 842600,
+      "payer": "Land",
+      "start": "05 Aug 2026",
+      "end": "03 Sep 2026"
+    },
+    {
+      "code": "M1.3",
+      "desc": "Lower Ground & Swimming Pool Structure",
+      "value": 620466,
+      "payer": "Land",
+      "start": "04 Sep 2026",
+      "end": "01 Oct 2026"
+    },
+    {
+      "code": "M1.4",
+      "desc": "1st Floor Structure + Staircase",
+      "value": 788168,
+      "payer": "Building",
+      "start": "02 Oct 2026",
+      "end": "04 Nov 2026"
+    },
+    {
+      "code": "M1.5",
+      "desc": "2nd Floor Structure",
+      "value": 425166,
+      "payer": "Building",
+      "start": "05 Nov 2026",
+      "end": "03 Dec 2026"
+    },
+    {
+      "code": "M1.6",
+      "desc": "Roof & Steel Structure",
+      "value": 235932,
+      "payer": "Building",
+      "start": "04 Dec 2026",
+      "end": "27 Dec 2026"
+    },
+    {
+      "code": "M2.1",
+      "desc": "Roofing & Brickwork",
+      "value": 736845,
+      "payer": "Building",
+      "start": "28 Dec 2026",
+      "end": "31 Jan 2027"
+    },
+    {
+      "code": "M2.2",
+      "desc": "Plastering (Internal & External)",
+      "value": 357528,
+      "payer": "Building",
+      "start": "07 Feb 2027",
+      "end": "03 Mar 2027"
+    },
+    {
+      "code": "M2.3",
+      "desc": "Ceilings, Painting & Staircase Finishes",
+      "value": 218315,
+      "payer": "Building",
+      "start": "04 Mar 2027",
+      "end": "28 Mar 2027"
+    },
+    {
+      "code": "M2.4",
+      "desc": "Floor Tiles (Internal & External)",
+      "value": 244144,
+      "payer": "Building",
+      "start": "29 Mar 2027",
+      "end": "17 Apr 2027"
+    },
+    {
+      "code": "M2.5",
+      "desc": "Door & Window Installation (labour)",
+      "value": 182186,
+      "payer": "Building",
+      "start": "18 Apr 2027",
+      "end": "02 May 2027"
+    },
+    {
+      "code": "M3.1",
+      "desc": "Electrical & Water Roughing-in",
+      "value": 888302,
+      "payer": "Building",
+      "start": "23 Jan 2027",
+      "end": "06 Feb 2027"
+    },
+    {
+      "code": "M3.2",
+      "desc": "Plumbing System & Pool MEP",
+      "value": 281255,
+      "payer": "Building",
+      "start": "07 Feb 2027",
+      "end": "26 Feb 2027"
+    },
+    {
+      "code": "M3.3",
+      "desc": "Electrical Equipment & Sanitaryware",
+      "value": 614337,
+      "payer": "Building",
+      "start": "12 Apr 2027",
+      "end": "26 Apr 2027"
+    },
+    {
+      "code": "M3.4",
+      "desc": "Air Conditioning",
+      "value": 532550,
+      "payer": "Building",
+      "start": "27 Apr 2027",
+      "end": "11 May 2027"
+    },
+    {
+      "code": "M4",
+      "desc": "Smart Home & Solar PV (labour TBD)",
+      "value": 0,
+      "payer": "Building",
+      "start": "28 Apr 2027",
+      "end": "17 May 2027"
+    },
+    {
+      "code": "M5.1",
+      "desc": "Pool Finishes & Built-in Furniture",
+      "value": 192038,
+      "payer": "Building",
+      "start": "03 May 2027",
+      "end": "22 May 2027"
+    },
+    {
+      "code": "M5.2",
+      "desc": "Finishing, Snagging & Testing",
+      "value": 0,
+      "payer": "Building",
+      "start": "12 May 2027",
+      "end": "26 May 2027"
+    },
+    {
+      "code": "M5.3",
+      "desc": "Cleaning, Handover & Final Documentation",
+      "value": 0,
+      "payer": "Building",
+      "start": "27 May 2027",
+      "end": "05 Jun 2027"
+    },
+    {
+      "code": "RET",
+      "desc": "Retention Release & Warranty",
+      "value": 745673,
+      "payer": "Both",
+      "start": "",
+      "end": "05 Jul 2027"
+    }
+  ],
+  "inspections": [
+    {
+      "no": 1,
+      "code": "ITP-001",
+      "milestone": "PC",
+      "name": "Pre-start document pack",
+      "family": "C01",
+      "familyName": "Site Establishment & Survey",
+      "drawing": "All Annex I",
+      "boq": "—",
+      "type": "RECORDS",
+      "hidden": false,
+      "tests": "—",
+      "minPhotos": 4,
+      "responsible": "CM",
+      "checklist": [
+        "Signed contract, priced BOQ, programme and stamped For-Construction drawing set all on file",
+        "Building Permit issued in the Building Customer's name (Cl.1.2); utility NOCs obtained",
+        "Construction All Risks and Public Liability insurance valid for the full contract period (Cl.9.1)",
+        "Key personnel named with CVs: project manager, site engineer, safety officer (Cl.10.1d)",
+        "HSE plan issued and compliant with Thai health and safety law (Cl.10.1e)",
+        "Subcontractor list submitted; no unapproved subcontractor engaged (Cl.4.4)"
+      ]
+    },
+    {
+      "no": 2,
+      "code": "ITP-002",
+      "milestone": "PC",
+      "name": "Boundary, benchmark & pre-existing condition survey",
+      "family": "C01",
+      "familyName": "Site Establishment & Survey",
+      "drawing": "Site Plan",
+      "boq": "1.1 Earth Works",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Topographic survey",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "Boundary pegs agree with Title Deed 28276 / Land No. 35 and the surveyor's plan",
+        "Permanent benchmark established, referenced and physically protected",
+        "Access lane photographed in its pre-existing condition before any plant enters",
+        "Neighbouring property and boundary walls photographed for the record",
+        "Setback distances comply with the Building Permit"
+      ]
+    },
+    {
+      "no": 3,
+      "code": "ITP-003",
+      "milestone": "PC",
+      "name": "Site establishment & temporary services",
+      "family": "C01",
+      "familyName": "Site Establishment & Survey",
+      "drawing": "Site Plan",
+      "boq": "1.1 Prelim",
+      "type": "SURVEILLANCE",
+      "hidden": false,
+      "tests": "Earth continuity",
+      "minPhotos": 6,
+      "responsible": "CTR",
+      "checklist": [
+        "Site fenced, gated and lockable; safety signage displayed",
+        "Site office, welfare and sanitation provided",
+        "Material store covered, dry and off the ground",
+        "Temporary power installed with RCD protection and correct earthing",
+        "Temporary water adequate for concrete curing"
+      ]
+    },
+    {
+      "no": 4,
+      "code": "ITP-004",
+      "milestone": "M1.1",
+      "name": "Setting out check against approved site plan",
+      "family": "C01",
+      "familyName": "Site Establishment & Survey",
+      "drawing": "Site Plan / GA",
+      "boq": "1.1 Earth Works",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Level & offset check",
+      "minPhotos": 8,
+      "responsible": "CM",
+      "checklist": [
+        "Building position and orientation agree with the approved site plan within ±25 mm",
+        "Finished floor level set and referenced to the permanent benchmark",
+        "Setback distances comply with the Building Permit",
+        "Diagonals checked; the setting-out is square",
+        "Profiles and pegs secure and clearly marked"
+      ]
+    },
+    {
+      "no": 5,
+      "code": "ITP-005",
+      "milestone": "M1.1",
+      "name": "Excavation to formation — bearing stratum",
+      "family": "C02",
+      "familyName": "Excavation & Compaction",
+      "drawing": "STR Foundation",
+      "boq": "1.1 Earth Works",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Visual stratum ID; DCP if specified",
+      "minPhotos": 10,
+      "responsible": "ENG",
+      "checklist": [
+        "Only vegetation within the approved footprint removed; retained trees protected",
+        "Topsoil stripped and stockpiled separately, inside the boundary",
+        "Excavation depth and levels agree with the structural drawing",
+        "Formation firm and undisturbed — no soft spots, roots or organic material",
+        "Excavation dewatered; no standing water at formation",
+        "Sides battered or supported; no risk of collapse",
+        "Structural Engineer has confirmed the bearing stratum IN WRITING"
+      ]
+    },
+    {
+      "no": 6,
+      "code": "ITP-006",
+      "milestone": "M1.1",
+      "name": "Engineered fill placement & compaction test",
+      "family": "C02",
+      "familyName": "Excavation & Compaction",
+      "drawing": "STR Foundation",
+      "boq": "1.1 Earth Works",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Field density test per layer",
+      "minPhotos": 8,
+      "responsible": "3P",
+      "checklist": [
+        "Fill material approved and free of organic or oversized matter",
+        "Placed in layers not exceeding 200 mm",
+        "Compaction test carried out per layer by an accredited laboratory",
+        "Result achieves the specified percentage of maximum dry density",
+        "Test certificate on file for every layer — not a verbal assurance"
+      ]
+    },
+    {
+      "no": 7,
+      "code": "ITP-007",
+      "milestone": "M1.1",
+      "name": "Earthworks completion, drainage & erosion control",
+      "family": "C02",
+      "familyName": "Excavation & Compaction",
+      "drawing": "Site Plan",
+      "boq": "1.1 Earth Works",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Level survey",
+      "minPhotos": 10,
+      "responsible": "CM",
+      "checklist": [
+        "Formation levels across the whole footprint surveyed and within tolerance",
+        "Surface water diverted away from all excavations",
+        "Silt and erosion control in place ahead of the monsoon",
+        "Survey record signed by both parties",
+        "Site safe and stable for the next phase"
+      ]
+    },
+    {
+      "no": 8,
+      "code": "ITP-008",
+      "milestone": "M1.2",
+      "name": "Footing setting out, excavation & blinding",
+      "family": "C02",
+      "familyName": "Excavation & Compaction",
+      "drawing": "STR Foundation",
+      "boq": "1.2 Sub-base",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Dimension & level check",
+      "minPhotos": 10,
+      "responsible": "ENG",
+      "checklist": [
+        "Footing positions, sizes and founding levels agree with the structural drawing",
+        "Excavation clean, trimmed and dewatered",
+        "Blinding placed to the specified thickness and level",
+        "Working surface firm and clean — no mud contamination of the reinforcement zone"
+      ]
+    },
+    {
+      "no": 9,
+      "code": "ITP-009",
+      "milestone": "M1.2",
+      "name": "Footing rebar & formwork — PRE-POUR HOLD, then pour & cube test",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR Foundation",
+      "boq": "1.5 Rebar / 1.3 Concrete",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; cube sampling; delivery ticket",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Bar size, number, spacing and lap lengths match the bending schedule",
+        "PART A — Cover maintained on every face by proper spacers (not stones or broken block)",
+        "PART A — Steel clean, securely tied; cage does not move underfoot",
+        "PART A — Starter bars for the next lift correctly positioned and of adequate length",
+        "PART A — Formwork rigid, grout-tight, aligned and braced; release agent not on the steel",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Delivery ticket grade correct; slump tested and within tolerance",
+        "PART B — Minimum one cube set taken, labelled and correctly cured",
+        "PART B — Fully compacted by poker; no segregation; curing started immediately",
+        "PART B — 28-day cube result at or above the specified grade (close this item when received)"
+      ]
+    },
+    {
+      "no": 10,
+      "code": "ITP-010",
+      "milestone": "M1.2",
+      "name": "Retaining wall rebar & formwork — PRE-POUR HOLD, then pour & cube test",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR Retaining Wall",
+      "boq": "1.5 Rebar / 1.3 Concrete",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; cubes; verticality",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Vertical and horizontal steel, starter bars and cover match the design",
+        "PART A — Waterstops continuous and correctly positioned at construction joints",
+        "PART A — Formwork plumb, tied and propped for the design pour pressure",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Placed in controlled lifts; no cold joints; fully compacted at the wall base",
+        "PART B — Slump tested; cube set taken; cured wet for the specified period",
+        "PART B — 28-day cube result at or above grade (close this item when received)"
+      ]
+    },
+    {
+      "no": 11,
+      "code": "ITP-011",
+      "milestone": "M1.2",
+      "name": "Retaining wall drainage, weepholes & tanking — CRITICAL HIDDEN",
+      "family": "C07",
+      "familyName": "Retaining Wall",
+      "drawing": "STR Retaining Wall",
+      "boq": "1.2 / waterproofing",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Water flow test through weepholes",
+      "minPhotos": 18,
+      "responsible": "CM",
+      "checklist": [
+        "Tanking membrane continuous on the retained face — no punctures, blisters or pinholes",
+        "Membrane lapped and dressed at every termination; protection board fitted",
+        "Free-draining granular drainage layer, full height",
+        "Geotextile filter wrapping the drainage layer to prevent silting",
+        "Perforated land drain at the base, laid to fall, with a positive outlet",
+        "Weepholes clear and functioning under a water test",
+        "EVERY METRE photographed with a tape in shot before anything is placed against it"
+      ]
+    },
+    {
+      "no": 12,
+      "code": "ITP-012",
+      "milestone": "M1.2",
+      "name": "Backfill to retaining wall & compaction",
+      "family": "C07",
+      "familyName": "Retaining Wall",
+      "drawing": "STR Retaining Wall",
+      "boq": "1.1 Earth Works",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Layer compaction test",
+      "minPhotos": 10,
+      "responsible": "CM",
+      "checklist": [
+        "Concrete has reached the specified strength before any backfill",
+        "Free-draining granular backfill used",
+        "Placed in controlled layers and compacted",
+        "No damage to the membrane, protection board or drain during placing",
+        "Wall verticality re-checked after backfill"
+      ]
+    },
+    {
+      "no": 13,
+      "code": "ITP-013",
+      "milestone": "M1.2",
+      "name": "Below-slab services 1st fix — drainage, sanitary & electrical conduit",
+      "family": "C18",
+      "familyName": "Plumbing & Drainage",
+      "drawing": "SAN / ELE Layout",
+      "boq": "3.1 / 3.2",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Water/air test; falls survey",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Pipe sizes, routes and invert levels agree with the sanitary layout",
+        "Falls correct to every run and proven by survey — not by eye",
+        "Water or air tightness test passed and certified",
+        "Rodding access provided at every change of direction",
+        "Electrical conduit routes, depths and draw boxes agree with the electrical layout",
+        "Draw wires installed and continuous",
+        "Every run photographed and dimensioned from a fixed reference before covering"
+      ]
+    },
+    {
+      "no": 14,
+      "code": "ITP-014",
+      "milestone": "M1.2",
+      "name": "Anti-termite treatment, DPM & sand blinding pre-slab",
+      "family": "C06",
+      "familyName": "Waterproofing & Tanking",
+      "drawing": "STR Slab",
+      "boq": "1.2 Sub-base",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Treatment certificate",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "Termite treatment applied and certificate on file",
+        "Damp-proof membrane continuous, lapped 300 mm minimum",
+        "Sealed at every penetration and turned up at all edges",
+        "No tears, punctures or unsealed laps",
+        "Sand blinding protects the membrane from the reinforcement above"
+      ]
+    },
+    {
+      "no": 15,
+      "code": "ITP-015",
+      "milestone": "M1.3",
+      "name": "Lower ground columns & walls — rebar, formwork, pour & cube test",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR Lower Ground",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; cubes; plumb",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Steel matches the schedule; cover maintained; starter bars set for the floor above",
+        "PART A — Formwork and propping designed for the load, on a firm base, plumb and braced",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Correct grade, slump tested, cube set taken",
+        "PART B — Fully compacted; no honeycombing at bases after striking",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 16,
+      "code": "ITP-016",
+      "milestone": "M1.3",
+      "name": "Ground slab rebar, cover & cast-in items — PRE-POUR HOLD, then pour",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR Slab",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Cover & spacing; slump; cubes",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Mesh or bar correct, laps adequate, spacers in place, no displacement",
+        "PART A — All conduits, sleeves, drainage penetrations and holding-down bolts fixed",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Correct grade; slump tested; cube set taken",
+        "PART B — Surface level and flatness within tolerance; curing started immediately",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 17,
+      "code": "ITP-017",
+      "milestone": "M1.3",
+      "name": "Pool excavation & setting out against pool detail",
+      "family": "C08",
+      "familyName": "Swimming Pool",
+      "drawing": "Pool Detail",
+      "boq": "1.3.5 Pool",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Dimension & level check",
+      "minPhotos": 10,
+      "responsible": "CM",
+      "checklist": [
+        "Pool position, dimensions and depths agree with the pool drawing",
+        "Floor profile and step positions correct",
+        "Excavation stable and dewatered",
+        "Clearance to the retaining wall and its drainage confirmed"
+      ]
+    },
+    {
+      "no": 18,
+      "code": "ITP-018",
+      "milestone": "M1.3",
+      "name": "Pool shell rebar, waterstops & sleeves — PRE-POUR HOLD, then pour",
+      "family": "C08",
+      "familyName": "Swimming Pool",
+      "drawing": "Pool Detail",
+      "boq": "1.5.10-11 Pool",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; continuous pour control",
+      "minPhotos": 18,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Reinforcement continuous through the floor-to-wall junction",
+        "PART A — Waterstops continuous and correctly jointed",
+        "PART A — Inlet, return, skimmer, main drain and light sleeves cast in the correct positions",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Placed continuously to avoid cold joints",
+        "PART B — Fully compacted, especially at wall bases and around sleeves",
+        "PART B — Cured wet for the specified period"
+      ]
+    },
+    {
+      "no": 19,
+      "code": "ITP-019",
+      "milestone": "M1.3",
+      "name": "Pool structural water-tightness test — 48 hour",
+      "family": "C08",
+      "familyName": "Swimming Pool",
+      "drawing": "Pool Detail",
+      "boq": "1.3.5 Pool",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "48h water drop test",
+      "minPhotos": 8,
+      "responsible": "CM",
+      "checklist": [
+        "Pool filled and starting level marked and photographed with the time visible",
+        "Level after 48 hours photographed with the time visible",
+        "Drop within the allowable limit after evaporation correction",
+        "No visible seepage anywhere on the external face",
+        "Test record signed by both parties — GATE G1.3 cannot pass without this"
+      ]
+    },
+    {
+      "no": 20,
+      "code": "ITP-020",
+      "milestone": "M1.4",
+      "name": "1st floor columns — rebar, formwork, pour & cube test",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR 1F",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; cubes; plumb",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Main bars, links, lap positions and cover correct; columns plumb",
+        "PART A — Starter bars for the floor above correctly projected",
+        "PART A — Formwork rigid, plumb, grout-tight and braced",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Correct grade; slump tested; cube set taken; no segregation",
+        "PART B — No honeycombing at column bases after striking",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 21,
+      "code": "ITP-021",
+      "milestone": "M1.4",
+      "name": "1st floor beam & slab — formwork, rebar, cast-in MEP, pour & cube",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR 1F",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Level survey; slump; cubes",
+      "minPhotos": 22,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Soffit level and camber as designed; props on firm bearing, correct spacing, braced",
+        "PART A — Top and bottom steel correct and in the right position; chairs maintaining cover",
+        "PART A — Openings trimmed; all cast-in conduits, sleeves and penetrations fixed",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Continuous pour; correct grade; slump tested; cube set taken",
+        "PART B — Finished to level and flatness tolerance; cured wet",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 22,
+      "code": "ITP-022",
+      "milestone": "M1.4",
+      "name": "Staircase — rebar, formwork, pour & dimensional verification",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR Staircase",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Riser/going measurement of every step",
+      "minPhotos": 14,
+      "responsible": "ENG",
+      "checklist": [
+        "Rise and going equal throughout the flight and matching the architectural drawing",
+        "Reinforcement and landing connections correct",
+        "WRITTEN RELEASE ISSUED before concrete is ordered",
+        "Every riser measured after striking and within 5 mm of every other riser",
+        "Headroom compliant; no trip hazard from uneven risers"
+      ]
+    },
+    {
+      "no": 23,
+      "code": "ITP-023",
+      "milestone": "M1.4",
+      "name": "Formwork striking & concrete surface defect inspection",
+      "family": "C04",
+      "familyName": "Formwork Striking & Structure",
+      "drawing": "STR 1F",
+      "boq": "1.4 Formwork",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Strength/maturity confirmation",
+      "minPhotos": 12,
+      "responsible": "ENG",
+      "checklist": [
+        "Formwork struck only after the required strength or period was achieved",
+        "Backpropping retained where required",
+        "Surface free of honeycombing, exposed steel or significant defects",
+        "Any defect raised as an NCR with an Engineer-approved repair method before the gate passes"
+      ]
+    },
+    {
+      "no": 24,
+      "code": "ITP-024",
+      "milestone": "M1.5",
+      "name": "2nd floor columns — rebar, formwork, pour & cube test",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR 2F",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Slump; cubes; plumb",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Main bars, links, laps and cover correct; columns plumb",
+        "PART A — Starter bars for the roof level correctly projected",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Correct grade; slump tested; cube set taken; fully compacted",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 25,
+      "code": "ITP-025",
+      "milestone": "M1.5",
+      "name": "2nd floor beam & slab — formwork, rebar, cast-in MEP, pour & cube",
+      "family": "C03",
+      "familyName": "Reinforcement & Formwork",
+      "drawing": "STR 2F",
+      "boq": "1.5 / 1.3",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Level survey; slump; cubes",
+      "minPhotos": 22,
+      "responsible": "ENG",
+      "checklist": [
+        "PART A — Soffit levels within tolerance; backpropping from the floor below retained",
+        "PART A — Top and bottom steel correct; cover maintained; openings trimmed",
+        "PART A — All cast-in MEP items fixed before pour",
+        "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
+        "PART B — Correct grade; slump tested; cube set taken; finished and cured",
+        "PART B — 28-day cube result at or above grade"
+      ]
+    },
+    {
+      "no": 26,
+      "code": "ITP-026",
+      "milestone": "M1.5",
+      "name": "Frame completion survey — verticality, level & dimension",
+      "family": "C04",
+      "familyName": "Formwork Striking & Structure",
+      "drawing": "STR 2F",
+      "boq": "1.3-1.5",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Full frame survey",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Overall building verticality surveyed and within tolerance",
+        "Floor levels surveyed at every level",
+        "Room dimensions checked against the architectural plans",
+        "Deviations recorded and accepted IN WRITING before architectural works begin",
+        "This is the last chance to correct geometry cheaply"
+      ]
+    },
+    {
+      "no": 27,
+      "code": "ITP-027",
+      "milestone": "M1.6",
+      "name": "Roof RC works & falls survey — rebar, pour and geometry",
+      "family": "C05",
+      "familyName": "Concrete Pour & Testing",
+      "drawing": "STR Roof",
+      "boq": "1.3-1.5",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Cover check; slump; cubes; falls survey",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "Roof slab and beam steel, falls and upstands as designed",
+        "WRITTEN RELEASE ISSUED before concrete is ordered",
+        "Correct grade concrete, compacted and cured",
+        "Falls achieved to every outlet — no ponding areas under a water test",
+        "Geometry correct for the roof covering"
+      ]
+    },
+    {
+      "no": 28,
+      "code": "ITP-028",
+      "milestone": "M1.6",
+      "name": "Structural steel — certificates, fabrication & welding",
+      "family": "C10",
+      "familyName": "Structural Steel",
+      "drawing": "STR Steel",
+      "boq": "1.6 Steel",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Certificate review; visual weld; NDT if specified",
+      "minPhotos": 15,
+      "responsible": "ENG",
+      "checklist": [
+        "Mill certificates provided for every section",
+        "Grade and section size match the structural drawing — no substitution (Cl.4.2)",
+        "Welds continuous and correctly sized; no undercut, porosity or excessive spatter",
+        "Welder qualification evidenced",
+        "Fabrication dimensions within tolerance"
+      ]
+    },
+    {
+      "no": 29,
+      "code": "ITP-029",
+      "milestone": "M1.6",
+      "name": "Steel erection, bolt torque & corrosion protection",
+      "family": "C10",
+      "familyName": "Structural Steel",
+      "drawing": "STR Steel",
+      "boq": "1.6 Steel",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Torque check; level survey; DFT gauge",
+      "minPhotos": 18,
+      "responsible": "ENG",
+      "checklist": [
+        "Members erected to line, level and plumb",
+        "Baseplates fully bedded and grouted",
+        "All bolts present, correct grade and torqued",
+        "Temporary bracing retained until permanent stability is achieved",
+        "Primer and finish coats at the specified dry film thickness, verified by gauge",
+        "Site welds and damaged coating made good — critical in an island environment"
+      ]
+    },
+    {
+      "no": 30,
+      "code": "ITP-030",
+      "milestone": "M2.1",
+      "name": "Roof underlay, membrane & flashings — HIDDEN",
+      "family": "C09",
+      "familyName": "Roof",
+      "drawing": "ARC Roof",
+      "boq": "2.9 Roof Finishes",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Lap & fixing check",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Structure released before any covering is laid",
+        "Underlay or membrane continuous, correctly lapped and mechanically fixed",
+        "Dressed into gutters and up all abutments to the required height",
+        "Flashings, valleys, ridge and hip details complete",
+        "Penetration collar fitted to every pipe, vent and fixing",
+        "EVERY roof plane photographed before covering"
+      ]
+    },
+    {
+      "no": 31,
+      "code": "ITP-031",
+      "milestone": "M2.1",
+      "name": "Roof covering installation & water tightness test",
+      "family": "C09",
+      "familyName": "Roof",
+      "drawing": "ARC Roof",
+      "boq": "2.9 Roof Finishes",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Hose/spray test min. 30 min per plane",
+      "minPhotos": 18,
+      "responsible": "CM",
+      "checklist": [
+        "Covering matches the approved product and finishing schedule",
+        "Correctly lapped, aligned and mechanically fixed against wind uplift",
+        "Ridge, hip and verge details complete",
+        "Water test on EVERY roof plane, valley and penetration for at least 30 minutes",
+        "No leakage, damp patch or drip observed internally — record signed"
+      ]
+    },
+    {
+      "no": 32,
+      "code": "ITP-032",
+      "milestone": "M2.1",
+      "name": "Gutters, downpipes & connection to underground drainage",
+      "family": "C09",
+      "familyName": "Roof",
+      "drawing": "ARC Roof / SAN",
+      "boq": "2.9 / 3.2",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Water flow test",
+      "minPhotos": 10,
+      "responsible": "CM",
+      "checklist": [
+        "Gutters to correct falls, securely fixed, no ponding",
+        "Downpipes connected to the underground system — all piping underground (Cl.11.3)",
+        "Flow test passed with no leaks at any joint",
+        "Outlets and gullies clear"
+      ]
+    },
+    {
+      "no": 33,
+      "code": "ITP-033",
+      "milestone": "M2.1",
+      "name": "Wall setting out — room dimension verification",
+      "family": "C11",
+      "familyName": "Brickwork & Blockwork",
+      "drawing": "ARC Floor Plans",
+      "boq": "2.1 / 2.4 Walls",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Room-by-room dimension survey",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Masonry material matches the approved sample; units sound and stored dry",
+        "EVERY room set out and its internal dimensions checked against the plan BEFORE building",
+        "Diagonals checked for square in every room",
+        "Door and window opening positions marked",
+        "This is the cheapest error to fix now and the most expensive later"
+      ]
+    },
+    {
+      "no": 34,
+      "code": "ITP-034",
+      "milestone": "M2.1",
+      "name": "Brickwork — coursing, verticality, ties, lintels & bond",
+      "family": "C11",
+      "familyName": "Brickwork & Blockwork",
+      "drawing": "ARC Plans",
+      "boq": "2.1 / 2.4 Walls",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Plumb, level & gauge check",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Walls plumb and level within tolerance",
+        "Coursing consistent; joints full and of even thickness",
+        "Wall ties and starter bars at the specified centres",
+        "Lintels correctly sized with adequate bearing over every opening",
+        "Movement joints where designed",
+        "Chases cut not hacked; no horizontal chasing in loadbearing walls"
+      ]
+    },
+    {
+      "no": 35,
+      "code": "ITP-035",
+      "milestone": "M2.1",
+      "name": "Structural openings — dimensional check vs D&W schedule",
+      "family": "C11",
+      "familyName": "Brickwork & Blockwork",
+      "drawing": "ARC D&W Schedule",
+      "boq": "2.7 D&W",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Measurement of every opening",
+      "minPhotos": 25,
+      "responsible": "CM",
+      "checklist": [
+        "EVERY structural opening measured and recorded",
+        "Each measurement compared against the door and window schedule",
+        "Deviations resolved in writing BEFORE the owner-supplied units are ordered",
+        "Measurements photographed with a tape in shot",
+        "Schedule signed off as buildable"
+      ]
+    },
+    {
+      "no": 36,
+      "code": "ITP-036",
+      "milestone": "M2.2",
+      "name": "Substrate prep, mesh & service chase reinstatement",
+      "family": "C12",
+      "familyName": "Plaster & Render",
+      "drawing": "ARC Plans",
+      "boq": "2.1 / 2.4",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Adhesion & mesh coverage check",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "ALL MEP first fix inspected, tested and released before covering",
+        "Substrate clean, dampened and keyed",
+        "Reinforcing mesh over every chase and at every junction of dissimilar materials",
+        "Angle beads installed at all arrises"
+      ]
+    },
+    {
+      "no": 37,
+      "code": "ITP-037",
+      "milestone": "M2.2",
+      "name": "Plaster & render — internal and external",
+      "family": "C12",
+      "familyName": "Plaster & Render",
+      "drawing": "ARC Plans / Elevations",
+      "boq": "2.1 / 2.4",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "2 m straightedge; plumb; squareness",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Applied in the specified number of coats and thickness",
+        "Deviation under a 2 m straightedge within tolerance",
+        "Walls plumb; internal and external angles true and square",
+        "No hollowness when tapped",
+        "Drip grooves formed under all external projections; sills laid to fall",
+        "No shrinkage or map cracking after curing"
+      ]
+    },
+    {
+      "no": 38,
+      "code": "ITP-038",
+      "milestone": "M2.2",
+      "name": "Wet area waterproofing application — CRITICAL HIDDEN",
+      "family": "C06",
+      "familyName": "Waterproofing & Tanking",
+      "drawing": "ARC Wet Areas",
+      "boq": "2.4 / waterproofing",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Wet film thickness; coverage",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Substrate clean, sound and dry; fillets formed at all internal angles",
+        "Specified number of coats at the specified thickness",
+        "Reinforcing tape at every junction, corner and penetration",
+        "Membrane turned up walls to the required height — verify this, it is the commonest cut corner",
+        "All penetrations sealed with proprietary collars",
+        "EVERY bathroom photographed in full before tiling"
+      ]
+    },
+    {
+      "no": 39,
+      "code": "ITP-039",
+      "milestone": "M2.2",
+      "name": "Wet area flood test — 24 hour, every area individually",
+      "family": "C06",
+      "familyName": "Waterproofing & Tanking",
+      "drawing": "ARC Wet Areas",
+      "boq": "waterproofing",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "24h flood test per wet area",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "Each wet area flooded individually — no sampling, no exceptions",
+        "Start level and time photographed",
+        "Level after 24 hours photographed with the time visible",
+        "No drop in level and no dampness on the underside or in adjacent rooms",
+        "Signed record for EVERY wet area — GATE G2.2 cannot pass without this"
+      ]
+    },
+    {
+      "no": 40,
+      "code": "ITP-040",
+      "milestone": "M2.3",
+      "name": "Ceiling framing, hangers, levels & void services — HIDDEN",
+      "family": "C13",
+      "familyName": "Ceilings",
+      "drawing": "ARC RCP",
+      "boq": "2.3 / 2.6 Ceiling",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Level survey; hanger spacing",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "ALL services above the ceiling installed, tested and RELEASED before boarding",
+        "Framing and hangers at specified centres, fixed to structure not to services",
+        "Ceiling level consistent across and between rooms",
+        "Access route left to every valve, damper and junction box",
+        "The FULL ceiling void photographed before boarding"
+      ]
+    },
+    {
+      "no": 41,
+      "code": "ITP-041",
+      "milestone": "M2.3",
+      "name": "Ceiling boarding, access panels & fixture cut-outs",
+      "family": "C13",
+      "familyName": "Ceilings",
+      "drawing": "ARC RCP",
+      "boq": "2.3 / 2.6 Ceiling",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Level & alignment check",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Boards fixed at correct centres, joints staggered and taped",
+        "Access panel at every valve, damper and junction box",
+        "Light and grille cut-outs set out to the reflected ceiling plan",
+        "Perimeter shadow gaps or trims consistent",
+        "No visible fastener heads after finishing"
+      ]
+    },
+    {
+      "no": 42,
+      "code": "ITP-042",
+      "milestone": "M2.3",
+      "name": "Paint — sample panel approval & application quality",
+      "family": "C14",
+      "familyName": "Painting",
+      "drawing": "Finishing Schedule",
+      "boq": "2.4 / 2.6",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Coat count; raking light inspection",
+      "minPhotos": 20,
+      "responsible": "OWN",
+      "checklist": [
+        "Brand, type and colour match the approved finishing schedule; sealed tins only",
+        "Sample panel of each colour approved and SIGNED by the Owner before full application",
+        "Surfaces filled, sanded, dusted and sealed",
+        "Specified number of coats applied",
+        "Even opacity under raking light — no roller marks, runs, sags or misses",
+        "Clean cut-in lines; adjacent surfaces unmarked; touch-up paint left labelled by room"
+      ]
+    },
+    {
+      "no": 43,
+      "code": "ITP-043",
+      "milestone": "M2.3",
+      "name": "Staircase finishes — treads, risers, nosings & balustrade",
+      "family": "C21",
+      "familyName": "Joinery & Staircase Finishes",
+      "drawing": "ARC Staircase",
+      "boq": "2.10 Staircase",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Dimension; balustrade load test",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Finished rise and going equal throughout the flight",
+        "Nosings secure and slip-resistant",
+        "Balustrade at the required height with compliant gaps",
+        "Balustrade rigid under a horizontal load test",
+        "Finish matches the approved schedule"
+      ]
+    },
+    {
+      "no": 44,
+      "code": "ITP-044",
+      "milestone": "M2.4",
+      "name": "Owner-supplied floor material — verification, shade & batch",
+      "family": "C23",
+      "familyName": "Materials & Deliveries",
+      "drawing": "Finishing Schedule",
+      "boq": "2.2 / 2.5 Floor",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Batch/shade & quantity check",
+      "minPhotos": 12,
+      "responsible": "OWN",
+      "checklist": [
+        "Delivered tile matches the approved sample",
+        "ALL boxes from the same batch and shade code — check before laying, not after",
+        "Quantity sufficient including wastage, plus 2% attic stock retained",
+        "Breakages recorded and photographed on delivery BEFORE acceptance",
+        "Stored flat, dry and protected"
+      ]
+    },
+    {
+      "no": 45,
+      "code": "ITP-045",
+      "milestone": "M2.4",
+      "name": "Screed levels, falls to drains & substrate soundness — HIDDEN",
+      "family": "C15",
+      "familyName": "Floor & Wall Tiling",
+      "drawing": "ARC Floor Plans",
+      "boq": "2.2 / 2.5 Floor",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Level survey; fall gradient; hollowness",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Screed sound with no hollowness when tapped",
+        "Falls to every floor drain proven by water test — no ponding",
+        "Levels correct so finished floor levels align across thresholds",
+        "Movement joints carried through from the substrate"
+      ]
+    },
+    {
+      "no": 46,
+      "code": "ITP-046",
+      "milestone": "M2.4",
+      "name": "Tile setting-out, dry lay, installation & grouting",
+      "family": "C15",
+      "familyName": "Floor & Wall Tiling",
+      "drawing": "ARC Floor Plans",
+      "boq": "2.2 / 2.5 Floor",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Tap test; lippage gauge; adhesive lift test",
+      "minPhotos": 22,
+      "responsible": "CM",
+      "checklist": [
+        "Setting out and dry lay approved by the Owner before fixing",
+        "No sliver cuts at prominent edges; joints align across rooms and thresholds",
+        "Solid bed adhesive at specified coverage — verified by lifting a test tile",
+        "No hollow-sounding tiles; lippage within tolerance",
+        "Grout full, uniform in colour and cleaned off",
+        "Movement joints at perimeters and specified centres; silicone neat and continuous"
+      ]
+    },
+    {
+      "no": 47,
+      "code": "ITP-047",
+      "milestone": "M2.5",
+      "name": "Owner-supplied door & window units — delivery inspection",
+      "family": "C23",
+      "familyName": "Materials & Deliveries",
+      "drawing": "ARC D&W Schedule",
+      "boq": "2.7 D&W",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Dimension, glazing spec & damage check",
+      "minPhotos": 20,
+      "responsible": "OWN",
+      "checklist": [
+        "Every unit checked against the schedule: size, type, glazing spec, finish, hardware",
+        "Damage recorded and photographed on arrival BEFORE acceptance",
+        "Quantities complete; ironmongery and fixings present",
+        "Stored upright, protected and off the ground"
+      ]
+    },
+    {
+      "no": 48,
+      "code": "ITP-048",
+      "milestone": "M2.5",
+      "name": "Opening preparation, DPC & frame fixing — HIDDEN",
+      "family": "C16",
+      "familyName": "Doors & Windows",
+      "drawing": "ARC D&W Details",
+      "boq": "2.7 D&W",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Fixing spacing & plumb check",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Damp-proof course and cavity closers installed",
+        "Frames fixed with specified anchors at correct centres into SOUND SUBSTRATE — not into plaster",
+        "Frames plumb and level with consistent gaps all round",
+        "Fixings photographed before sealing"
+      ]
+    },
+    {
+      "no": 49,
+      "code": "ITP-049",
+      "milestone": "M2.5",
+      "name": "D&W installation, operation & water spray test",
+      "family": "C16",
+      "familyName": "Doors & Windows",
+      "drawing": "ARC D&W Schedule",
+      "boq": "2.7 D&W",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Operation test each unit; water spray test",
+      "minPhotos": 22,
+      "responsible": "CM",
+      "checklist": [
+        "Every door and window opens, closes, locks and stays put smoothly without forcing",
+        "Ironmongery complete, aligned and correctly handed",
+        "Perimeter sealed internally and externally with backer rod and sealant",
+        "Sustained water spray on EVERY external opening produces no ingress",
+        "Protective film removed at the right time; glass unscratched"
+      ]
+    },
+    {
+      "no": 50,
+      "code": "ITP-050",
+      "milestone": "M3.1",
+      "name": "Conduit, back-boxes & cable roughing-in — HIDDEN",
+      "family": "C17",
+      "familyName": "Electrical",
+      "drawing": "ELE Layout",
+      "boq": "3.1 Electrical",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Continuity test; circuit ID check",
+      "minPhotos": 25,
+      "responsible": "CM",
+      "checklist": [
+        "Materials TIS certified and matching the specification — no substitution (Cl.4.2)",
+        "Conduit run only in permitted zones; not crossing or notching structural steel",
+        "Back boxes at correct height, level and flush to the finished plaster line",
+        "Correct cable size for every circuit; no joints in concealed runs",
+        "Cables undamaged, not over-bent, identified at both ends against the circuit schedule",
+        "All routes photographed and dimensioned for the as-built record"
+      ]
+    },
+    {
+      "no": 51,
+      "code": "ITP-051",
+      "milestone": "M3.1",
+      "name": "Earthing & bonding installation and resistance test — HIDDEN",
+      "family": "C17",
+      "familyName": "Electrical",
+      "drawing": "ELE Earthing",
+      "boq": "3.1 Electrical",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Earth electrode resistance test",
+      "minPhotos": 12,
+      "responsible": "3P",
+      "checklist": [
+        "Earth electrode installed with an accessible inspection pit",
+        "Measured earth resistance within the specified limit — certificate on file",
+        "Main bonding to incoming water pipework",
+        "Supplementary bonding to the pool, its reinforcement and all metalwork",
+        "Life-safety critical — do not release on assurance alone"
+      ]
+    },
+    {
+      "no": 52,
+      "code": "ITP-052",
+      "milestone": "M3.1",
+      "name": "Water supply pipe roughing-in & pressure test — HIDDEN",
+      "family": "C18",
+      "familyName": "Plumbing & Drainage",
+      "drawing": "SAN Layout",
+      "boq": "3.2 Sanitary",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Pressure test, min. 2 hours",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Pipe material, size and routes as drawn; correctly supported and sleeved through structure",
+        "Isolation valve to every fixture, accessible",
+        "Hot and cold routed to avoid heat transfer; hot pipework insulated",
+        "System holds test pressure for at least 2 hours with no measurable drop",
+        "Gauge photographed at start AND end with the time visible",
+        "Routes photographed and dimensioned before covering"
+      ]
+    },
+    {
+      "no": 53,
+      "code": "ITP-053",
+      "milestone": "M3.1",
+      "name": "Pre-plaster combined services release — MASTER HOLD POINT",
+      "family": "C17",
+      "familyName": "Electrical",
+      "drawing": "ELE + SAN + AC Layouts",
+      "boq": "3.1 / 3.2 / 3.4",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "All above tests confirmed complete",
+      "minPhotos": 30,
+      "responsible": "CM",
+      "checklist": [
+        "Every electrical first-fix item inspected, tested and photographed",
+        "Every water and drainage item inspected, tested and photographed",
+        "Every AC pipework item inspected, tested and photographed",
+        "All test certificates on file",
+        "SINGLE COMBINED WRITTEN RELEASE issued — no wall, ceiling or slab is closed without it",
+        "Covering without this release is an automatic NCR at the Contractor's cost"
+      ]
+    },
+    {
+      "no": 54,
+      "code": "ITP-054",
+      "milestone": "M3.2",
+      "name": "Soil, waste & vent installation and tightness test — HIDDEN",
+      "family": "C18",
+      "familyName": "Plumbing & Drainage",
+      "drawing": "SAN Layout",
+      "boq": "3.2 Sanitary",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Air or water test; fall gradient survey",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Correct pipe sizes and gradients to every fixture, proven by survey",
+        "Vents installed to prevent trap siphonage",
+        "Rodding access at every change of direction",
+        "Adequately supported and sleeved through structure",
+        "Air or water test passed and certified for every section before covering"
+      ]
+    },
+    {
+      "no": 55,
+      "code": "ITP-055",
+      "milestone": "M3.2",
+      "name": "Hot water system & pipework insulation",
+      "family": "C18",
+      "familyName": "Plumbing & Drainage",
+      "drawing": "SAN Layout",
+      "boq": "3.2 Sanitary",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Temperature & flow test",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "Heater installed with a relief valve and safe discharge",
+        "Hot pipework insulated throughout",
+        "Delivery temperature satisfactory at every outlet",
+        "Flow rate adequate at every outlet"
+      ]
+    },
+    {
+      "no": 56,
+      "code": "ITP-056",
+      "milestone": "M3.2",
+      "name": "Pool plant, pipework pressure test & circulation",
+      "family": "C08",
+      "familyName": "Swimming Pool",
+      "drawing": "Pool Detail",
+      "boq": "3.3 Pool System",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Pressure test 2h; flow rate & turnover",
+      "minPhotos": 18,
+      "responsible": "CM",
+      "checklist": [
+        "Equipment matches the specification and the pool volume",
+        "Plant room drained, ventilated and RCD protected; pipework labelled with flow direction",
+        "All suction and return lines hold test pressure with no drop BEFORE backfilling",
+        "Gauge photographed at start and end",
+        "Turnover period achieved; balanced flow through all inlets",
+        "Skimmer and main drain operating; no air entrainment or pump cavitation"
+      ]
+    },
+    {
+      "no": 57,
+      "code": "ITP-057",
+      "milestone": "M3.3",
+      "name": "Distribution boards & electrical fit-out",
+      "family": "C17",
+      "familyName": "Electrical",
+      "drawing": "ELE Schematic / RCP",
+      "boq": "3.1 Electrical",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Breaker rating vs circuit check",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "DB accessible; every breaker of correct type and rating for its circuit and cable",
+        "RCD or RCBO protection on all required circuits",
+        "Clear, permanent, accurate circuit schedule fixed inside the board door",
+        "Every socket, switch and luminaire at correct height, level and aligned with adjacent items",
+        "Light positions match the reflected ceiling plan",
+        "Faceplates undamaged and clean"
+      ]
+    },
+    {
+      "no": 58,
+      "code": "ITP-058",
+      "milestone": "M3.3",
+      "name": "Electrical test suite & safety certificate",
+      "family": "C17",
+      "familyName": "Electrical",
+      "drawing": "ELE Schematic",
+      "boq": "3.1 Electrical",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Insulation; polarity; earth loop; RCD trip time",
+      "minPhotos": 15,
+      "responsible": "3P",
+      "checklist": [
+        "Insulation resistance tested on every circuit and within limits",
+        "Polarity correct on every circuit",
+        "Earth loop impedance within limits",
+        "RCD trip times within limits",
+        "Signed electrical safety certificate from a licensed electrician (Cl.10.2d)",
+        "A failed result blocks GATE G3.3 outright"
+      ]
+    },
+    {
+      "no": 59,
+      "code": "ITP-059",
+      "milestone": "M3.3",
+      "name": "Sanitaryware installation & water quality test",
+      "family": "C18",
+      "familyName": "Plumbing & Drainage",
+      "drawing": "SAN Layout",
+      "boq": "2.12 Sanitaryware",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Leak & operation test; potable water analysis",
+      "minPhotos": 22,
+      "responsible": "CM",
+      "checklist": [
+        "Owner-supplied fixtures checked against the schedule for model, finish and completeness",
+        "Damage recorded on arrival before acceptance",
+        "Every fixture level, securely fixed and correctly sealed to wall and floor",
+        "No leaks under running water; traps correctly installed",
+        "Smooth operation of all taps and flush mechanisms",
+        "System flushed and disinfected; laboratory water quality certificate on file"
+      ]
+    },
+    {
+      "no": 60,
+      "code": "ITP-060",
+      "milestone": "M3.4",
+      "name": "AC equipment approval, mounting & concealed pipework — HIDDEN",
+      "family": "C19",
+      "familyName": "Air Conditioning",
+      "drawing": "MEP AC Layout",
+      "boq": "3.4 AC System",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Model verification; insulation continuity",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Models, capacities and efficiency ratings match the specification and room loads",
+        "Pipe sizes and run lengths within the manufacturer's limits",
+        "Continuous vapour-sealed insulation — no gaps at joints, bends or supports",
+        "Units level and securely mounted on anti-vibration mounts",
+        "Outdoor units on stable bases with clearance for airflow and service access",
+        "Outdoor unit position considered for noise to bedrooms and neighbours",
+        "Concealed routes photographed and dimensioned before covering"
+      ]
+    },
+    {
+      "no": 61,
+      "code": "ITP-061",
+      "milestone": "M3.4",
+      "name": "Refrigerant pressure & vacuum test",
+      "family": "C19",
+      "familyName": "Air Conditioning",
+      "drawing": "MEP AC Layout",
+      "boq": "3.4 AC System",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Nitrogen pressure; vacuum to specified micron",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "Nitrogen pressure test held with no drop",
+        "Evacuated to the specified vacuum and held",
+        "Gauge photographed at start and end of each hold, with the time visible",
+        "Charge weight recorded per system"
+      ]
+    },
+    {
+      "no": 62,
+      "code": "ITP-062",
+      "milestone": "M3.4",
+      "name": "Condensate drainage falls & flow test — EVERY unit",
+      "family": "C19",
+      "familyName": "Air Conditioning",
+      "drawing": "MEP AC Layout",
+      "boq": "3.4 AC System",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Water pour flow test on every unit",
+      "minPhotos": 14,
+      "responsible": "CM",
+      "checklist": [
+        "Continuous fall to a legal discharge point on every run",
+        "Trap fitted where required",
+        "Water poured into EVERY drain pan discharges fully with no backup or leak",
+        "No unit skipped — this is the commonest cause of ceiling damage in a finished villa"
+      ]
+    },
+    {
+      "no": 63,
+      "code": "ITP-063",
+      "milestone": "M3.4",
+      "name": "AC commissioning — airflow, temperature split, noise & controls",
+      "family": "C19",
+      "familyName": "Air Conditioning",
+      "drawing": "MEP AC Layout",
+      "boq": "3.4 AC System",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Airflow; temperature split; sound level",
+      "minPhotos": 15,
+      "responsible": "CM",
+      "checklist": [
+        "Each system achieves the design temperature split",
+        "Airflow and noise within limits",
+        "Controls, timers and modes function correctly",
+        "Commissioning sheet signed per unit (Cl.10.2c)",
+        "Warranty registered in the Building Customer's name"
+      ]
+    },
+    {
+      "no": 64,
+      "code": "ITP-064",
+      "milestone": "M4",
+      "name": "Solar PV — structural fixing & roof penetration sealing — HIDDEN",
+      "family": "C20",
+      "familyName": "Solar PV & Smart Home",
+      "drawing": "Solar Layout",
+      "boq": "M4 (TBD)",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Fixing pull-out; penetration seal check",
+      "minPhotos": 18,
+      "responsible": "CM",
+      "checklist": [
+        "Mounting rails fixed into structural members, not into battens alone",
+        "Fixings rated for the design wind load",
+        "EVERY roof penetration sealed with a proprietary flashing",
+        "Photographed before panels are placed — roof leaks from PV fixings are the primary risk",
+        "Roof water test repeated after fixing"
+      ]
+    },
+    {
+      "no": 65,
+      "code": "ITP-065",
+      "milestone": "M4",
+      "name": "Solar PV — wiring, isolation, earthing & commissioning",
+      "family": "C20",
+      "familyName": "Solar PV & Smart Home",
+      "drawing": "Solar Layout",
+      "boq": "M4 (TBD)",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Insulation; polarity; 3-day generation",
+      "minPhotos": 15,
+      "responsible": "3P",
+      "checklist": [
+        "String wiring correct polarity in UV-rated cable",
+        "DC isolator accessible and labelled; emergency shutdown labelling in Thai and English",
+        "Array earthed and bonded; insulation resistance and earth continuity tested",
+        "Measured output matches expected yield for the conditions over 3 days",
+        "Inverter configured; monitoring connected and accessible to the Owner"
+      ]
+    },
+    {
+      "no": 66,
+      "code": "ITP-066",
+      "milestone": "M4",
+      "name": "Smart home — cabling, hubs, commissioning & Owner training",
+      "family": "C20",
+      "familyName": "Solar PV & Smart Home",
+      "drawing": "Smart Home Layout",
+      "boq": "M4 (TBD)",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Cable certification; function test",
+      "minPhotos": 15,
+      "responsible": "OWN",
+      "checklist": [
+        "Structured cabling installed, terminated and certified; routes documented before concealment",
+        "Hub locations ventilated and accessible with adequate power and network",
+        "Every device pairs and responds reliably",
+        "Scenes programmed as agreed with the Owner",
+        "Owner accounts created and admin credentials handed over",
+        "Owner training session completed and signed"
+      ]
+    },
+    {
+      "no": 67,
+      "code": "ITP-067",
+      "milestone": "M5.1",
+      "name": "Pool waterproofing prior to tiling — CRITICAL HIDDEN",
+      "family": "C06",
+      "familyName": "Waterproofing & Tanking",
+      "drawing": "Pool Detail",
+      "boq": "2.11 Pool Finishes",
+      "type": "HOLD",
+      "hidden": true,
+      "tests": "Coverage & thickness; repeat water test",
+      "minPhotos": 18,
+      "responsible": "CM",
+      "checklist": [
+        "Membrane applied at the specified thickness over the full shell",
+        "Reinforcement at all corners and penetrations",
+        "Water test REPEATED after membrane and before tiling",
+        "No punctures, blisters or unbonded areas",
+        "Entire shell photographed before tiling"
+      ]
+    },
+    {
+      "no": 68,
+      "code": "ITP-068",
+      "milestone": "M5.1",
+      "name": "Pool tiling, coping levels & 7-day fill test",
+      "family": "C08",
+      "familyName": "Swimming Pool",
+      "drawing": "Pool Detail",
+      "boq": "2.11 / 3.3",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Coping level survey; 7-day operation",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Coping SURVEYED level around the full perimeter — do not eyeball it",
+        "Tiles solidly bedded, no hollows, joints consistent, grout waterproof",
+        "Pool filled, chemistry balanced and stable",
+        "All equipment runs 7 days continuously without fault",
+        "No measurable water loss beyond evaporation",
+        "Lighting and safety features operational"
+      ]
+    },
+    {
+      "no": 69,
+      "code": "ITP-069",
+      "milestone": "M5.1",
+      "name": "Built-in furniture — material, dimensions, alignment & operation",
+      "family": "C21",
+      "familyName": "Joinery & Staircase Finishes",
+      "drawing": "ARC Joinery",
+      "boq": "2.8 Built-in",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Dimension, level & operation check",
+      "minPhotos": 20,
+      "responsible": "CM",
+      "checklist": [
+        "Materials match the approved finishing schedule; moisture-resistant substrate in wet areas",
+        "Units level, plumb, securely fixed to structure and scribed to walls",
+        "Doors and drawers aligned with consistent gaps, soft close where specified",
+        "All cut edges sealed against humidity",
+        "Internal fittings, shelves and services complete and working"
+      ]
+    },
+    {
+      "no": 70,
+      "code": "ITP-070",
+      "milestone": "M5.2",
+      "name": "Room-by-room snagging inspection",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All ARC",
+      "boq": "Prelim",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Systematic snag survey",
+      "minPhotos": 60,
+      "responsible": "CM",
+      "checklist": [
+        "Every room inspected systematically against the drawings and finishing schedule",
+        "Every external elevation and plant area inspected",
+        "Every defect logged with a photograph, location and required action",
+        "Each snag categorised honestly: A blocks payment, B rework, C cosmetic",
+        "Snag list issued to the Contractor with target dates"
+      ]
+    },
+    {
+      "no": 71,
+      "code": "ITP-071",
+      "milestone": "M5.2",
+      "name": "Integrated systems commissioning & external works",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All MEP / Site Plan",
+      "boq": "Prelim",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Simultaneous load test; surface water flow test",
+      "minPhotos": 25,
+      "responsible": "CM",
+      "checklist": [
+        "All systems operated simultaneously under load — electrical, water, drainage, AC, pool, solar, smart home",
+        "No breaker trips, no pressure loss, no interference",
+        "All commissioning reports collated (Cl.10.2c)",
+        "Site graded to drain away from the building; surface water disposal effective under hose test",
+        "Driveway, paths, boundary and gates complete and operational",
+        "All cables and piping underground (Cl.11.3)"
+      ]
+    },
+    {
+      "no": 72,
+      "code": "ITP-072",
+      "milestone": "M5.2",
+      "name": "Snag close-out re-inspection",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "Prelim",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Item-by-item verification",
+      "minPhotos": 40,
+      "responsible": "CM",
+      "checklist": [
+        "Every snag verified closed with an AFTER photograph",
+        "Nothing closed on the Contractor's word alone",
+        "Any item not closed is formally carried forward with a written agreed date",
+        "ZERO open Category A snags — GATE G5.2 requires this"
+      ]
+    },
+    {
+      "no": 73,
+      "code": "ITP-073",
+      "milestone": "M5.3",
+      "name": "Builders clean & final clean",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "Prelim",
+      "type": "WITNESS",
+      "hidden": false,
+      "tests": "Visual inspection",
+      "minPhotos": 25,
+      "responsible": "CM",
+      "checklist": [
+        "All construction debris, protective film, paint spots, adhesive and dust removed",
+        "Glazing, sanitaryware and floors cleaned",
+        "Roof, gutters and drainage clear",
+        "Site free of surplus material and temporary works"
+      ]
+    },
+    {
+      "no": 74,
+      "code": "ITP-074",
+      "milestone": "M5.3",
+      "name": "Handover document pack, utilities & keys",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "Prelim",
+      "type": "RECORDS",
+      "hidden": false,
+      "tests": "Completeness audit",
+      "minPhotos": 12,
+      "responsible": "CM",
+      "checklist": [
+        "As-built drawings received: architectural, structural, MEP, landscape and site, showing hidden service routes",
+        "O&M manuals and manufacturer warranties for every product, transferred to the Building Customer (Cl.7.4, 11.1)",
+        "Certificate pack complete: completion, occupancy, electrical, pressure test, HVAC, water quality, fire (Cl.10.2)",
+        "Final BOQ and final account received",
+        "Tabien Baan obtained; water and electricity registered in the Building Customer's name (Cl.11.2)",
+        "Keys, remotes, fobs and codes listed on a signed inventory and each one tested; construction cylinders changed"
+      ]
+    },
+    {
+      "no": 75,
+      "code": "ITP-075",
+      "milestone": "M5.3",
+      "name": "Practical Completion inspection & Completion Certificate",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "Prelim",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Final joint walkthrough",
+      "minPhotos": 40,
+      "responsible": "OWN",
+      "checklist": [
+        "All milestone gates passed",
+        "All Category A snags closed and verified",
+        "All systems commissioned and witnessed",
+        "Full document pack physically in the Owner's hands",
+        "Outstanding items carried forward with agreed dates",
+        "COMPLETION CERTIFICATE SIGNED — this starts the 30-day retention clock and both warranty periods"
+      ]
+    },
+    {
+      "no": 76,
+      "code": "ITP-076",
+      "milestone": "RET",
+      "name": "Retention release inspection — 30 days after Completion",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "Prelim",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Re-inspection of all closed items",
+      "minPhotos": 25,
+      "responsible": "OWN",
+      "checklist": [
+        "No new defect has emerged in the 30-day period",
+        "Every previously closed item remains closed",
+        "Any new defect notified in writing under Cl.7.3 before release",
+        "Only then is the 10% retention (745,673 THB) released per Cl.3.2"
+      ]
+    },
+    {
+      "no": 77,
+      "code": "ITP-077",
+      "milestone": "RET",
+      "name": "Warranty inspection — 6 month and 11 month",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "—",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Systematic defect survey",
+      "minPhotos": 30,
+      "responsible": "CM",
+      "checklist": [
+        "Structural: cracking, settlement, retaining wall movement, pool shell",
+        "Watertightness: roof, wet areas, pool water loss, external walls",
+        "MEP: electrical, plumbing, hot water, drainage, AC operation and condensate",
+        "Finishes: joinery movement, tiling, paint, door and window operation",
+        "External: drainage, paving, gates, corrosion of external metalwork",
+        "Carry out the 11-month inspection BEFORE the 12-month fittings warranty expires (Cl.7.2)"
+      ]
+    },
+    {
+      "no": 78,
+      "code": "ITP-078",
+      "milestone": "RET",
+      "name": "Structural warranty inspection — 23 month",
+      "family": "C22",
+      "familyName": "Cleaning, Snagging & Handover",
+      "drawing": "All",
+      "boq": "—",
+      "type": "HOLD",
+      "hidden": false,
+      "tests": "Structural condition survey",
+      "minPhotos": 30,
+      "responsible": "ENG",
+      "checklist": [
+        "Carried out at 23 months, before the 2-year structural warranty expires (Cl.7.1)",
+        "Foundations and retaining wall — movement, cracking, drainage function",
+        "Frame — cracking, deflection, corrosion staining",
+        "Roof structure and steelwork — corrosion, fixings, coating condition",
+        "Pool shell — water loss, cracking, tile debonding",
+        "Defects notified in writing; Contractor must rectify within 30 days (Cl.7.3)"
+      ]
+    }
+  ],
+  "_meta": {
+    "inspections": 78,
+    "holdPoints": 63,
+    "hiddenWorks": 32,
+    "checkItems": 422,
+    "contractValueTHB": 7456732,
+    "source": "Final Contract_AN_Price A&B.docx, Annexure II.1 + III"
+  }
+}
