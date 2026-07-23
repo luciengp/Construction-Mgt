@@ -1,12 +1,19 @@
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
+import { getDashboard } from "@/lib/data/dashboard";
 import { signOut } from "../actions";
+import { Dashboard } from "./Dashboard";
 
 export const dynamic = "force-dynamic";
 
-// Placeholder project home. The full dashboard (KPI cards, gates, filters)
-// arrives in build milestone 5.
+const ROLE_LABEL: Record<string, string> = {
+  owner: "Owner",
+  cm: "Construction Manager",
+  contractor: "Contractor",
+  viewer: "Viewer",
+};
+
 export default async function ProjectHome({
   params,
 }: {
@@ -21,26 +28,34 @@ export default async function ProjectHome({
   const membership = await getMembershipForProject(params.projectId);
   if (!membership) notFound();
 
+  const data = await getDashboard(params.projectId);
+  if (!data) notFound();
+
   return (
-    <main className="min-h-screen bg-slate-100 px-4 py-8">
-      <div className="mx-auto max-w-md">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-navy">
-              {membership.projectName}
-            </h1>
-            <p className="text-sm text-slate-500">Signed in as {membership.role}</p>
+    <main className="min-h-screen bg-slate-100 pb-10">
+      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
+        <div className="mx-auto flex max-w-lg items-center justify-between">
+          <div className="min-w-0">
+            <h1 className="truncate text-base font-semibold">{data.projectName}</h1>
+            <p className="text-xs text-white/60">
+              {ROLE_LABEL[membership.role] ?? membership.role}
+              {membership.displayName ? ` · ${membership.displayName}` : ""}
+            </p>
           </div>
-          <form action={signOut}>
-            <button className="text-sm font-medium text-slate-500 underline">
-              Sign out
-            </button>
-          </form>
+          <nav className="flex items-center gap-3 text-xs">
+            <form action={signOut}>
+              <button className="text-white/80 underline">Sign out</button>
+            </form>
+          </nav>
         </div>
-        <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-600 shadow-sm">
-          Dashboard coming in milestone 5 — quality gates, KPI cards and the
-          inspection list will render here.
-        </div>
+      </header>
+
+      <div className="mx-auto max-w-lg px-4 pt-4">
+        <Dashboard
+          projectId={params.projectId}
+          data={data}
+          role={membership.role}
+        />
       </div>
     </main>
   );
