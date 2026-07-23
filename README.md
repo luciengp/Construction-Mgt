@@ -73,6 +73,27 @@ It upserts on natural keys, replaces checklist items per inspection, generates t
 existing inspection records. The DB test suite (`tests/db/`) runs only when
 `SUPABASE_SERVICE_ROLE_KEY` is set; otherwise it skips so CI stays green.
 
+## Auth (milestone 4)
+
+- **Email + password / magic-link** for Owner, CM and Viewer (`/login`).
+- **6-digit PIN** for the contractor's site engineer: the PIN is HMAC-hashed with a
+  server-only pepper (`PIN_PEPPER`) and resolves, server-side, to a real membership and an
+  audited identity — no anonymous access. The keypad is at `/login` → "Site PIN".
+- **Sign-up legal gate (4bis)** at `/signup`: the current Platform Terms render in a
+  scrollable panel with two un-pre-ticked checkboxes (terms + affiliate declaration) and an
+  affiliates field. Account creation is blocked **server-side** (`validateLegalConsent`) until
+  both are ticked; the `agreement_acceptances` row (version, timestamp, IP, user-agent,
+  declared affiliates) is written with the user, and the account is rolled back if that write
+  fails. Returning users are re-prompted when the version changes (`needsReacceptance`).
+- Routes under `/projects` require a session (enforced in middleware); the **project picker**
+  lists the user's active memberships and auto-skips to the project when there's only one.
+
+**To enable the live flow** set `SUPABASE_SERVICE_ROLE_KEY` (and a stable `PIN_PEPPER`) in
+`.env.local`. Sign-up, PIN login, and admin member management use the service-role client
+server-side. Supabase hosted Auth can't share a single SQL transaction with account creation,
+so atomicity of the acceptance record is approximated by create-then-rollback; noted in
+`src/app/signup/actions.ts`.
+
 ## Domain rules
 
 `DOMAIN.md` is the source of truth for the inspection → gate → payment rules. They live as

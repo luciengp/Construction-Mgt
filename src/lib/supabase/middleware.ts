@@ -1,9 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Refreshes the Supabase auth session on every request so server
-// components always see a valid session. Route protection is added
-// in build milestone 4 (auth).
+// Public paths that never require a session.
+const PUBLIC_PREFIXES = ["/login", "/signup", "/auth", "/legal"];
+
+// Refreshes the Supabase auth session and guards protected routes.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -28,7 +29,20 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const path = request.nextUrl.pathname;
+  const isPublic =
+    path === "/" || PUBLIC_PREFIXES.some((p) => path.startsWith(p));
+
+  if (!user && !isPublic) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("next", path);
+    return NextResponse.redirect(url);
+  }
 
   return response;
 }
