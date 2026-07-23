@@ -34,6 +34,7 @@ mobile-first, big tap targets, one primary action per screen.
 ## Build order
 
 Spec milestones 1–9; after each: commit, keep everything runnable. Currently completed:
-milestones 1 (scaffold) and 2 (schema + RLS + storage + seed; cloud DB is seeded with the
-"Samui Villa" project under org "Everyone Ventures"). Next: milestone 3 (src/domain/ pure
-logic for all Section 4 rules with full unit tests, before any UI).
+milestones 1 (scaffold), 2 (schema + RLS + storage + seed; cloud DB seeded with the
+"Samui Villa" project under org "Everyone Ventures"), and 3 (src/domain/ pure Section 4
+logic with 56 passing unit tests). Next: milestone 4 (auth — email + 6-digit PIN,
+membership resolution, sign-up legal gate, project picker).
