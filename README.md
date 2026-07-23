@@ -94,6 +94,16 @@ server-side. Supabase hosted Auth can't share a single SQL transaction with acco
 so atomicity of the acceptance record is approximated by create-then-rollback; noted in
 `src/app/signup/actions.ts`.
 
+### Demo users
+
+`pnpm seed:users` creates three accounts on the Samui Villa project (idempotent):
+
+| Login | Credential | Role |
+| --- | --- | --- |
+| `owner@cms.test` | `Passw0rd!` | owner |
+| `cm@cms.test` | `Passw0rd!` | cm |
+| `engineer@cms.test` | Site PIN `428913` | contractor |
+
 ## Domain rules
 
 `DOMAIN.md` is the source of truth for the inspection → gate → payment rules. They live as

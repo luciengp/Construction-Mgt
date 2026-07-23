@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "seed:users": "tsx scripts/seed-users.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",
