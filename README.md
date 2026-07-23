@@ -37,6 +37,7 @@ pnpm dev
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase dashboard → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Same page — use the `sb_publishable_...` key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same page — secret key. Server/scripts only, never shipped to the client. Needed for `pnpm seed` and the DB test suite. |
 
 The dev Supabase project is `cms` (ref `mtfuqqaqfpnqwgspmzsb`, region `ap-southeast-1`).
 
@@ -54,7 +55,23 @@ Contract values excluding the `RET` retention row sum to **7,456,732 THB** — a
 
 ## Migrations & seeding
 
-Arrive in build milestone 2 (`supabase/migrations/` + an idempotent per-project seed script).
+Migrations live in `supabase/migrations/` (schema → RLS → storage → hardening) and are
+applied to the cloud project. RLS is keyed on **active memberships**: without one you can
+read and write nothing on a project (proven by `tests/db/rls-and-seed.test.ts`). The photo
+bucket is private with paths `<project_id>/<family>/<milestone>/…` so storage policies
+enforce tenancy from the path.
+
+Seeding is idempotent — run it as often as you like:
+
+```bash
+pnpm seed                                            # families + legal document
+pnpm seed -- --project "Samui Villa" --org "Everyone Ventures"   # + full ITP structure
+```
+
+It upserts on natural keys, replaces checklist items per inspection, generates the
+48 payment instalments (50/40/10 with remainder-safe rounding), and never touches
+existing inspection records. The DB test suite (`tests/db/`) runs only when
+`SUPABASE_SERVICE_ROLE_KEY` is set; otherwise it skips so CI stays green.
 
 ## Domain rules
 
