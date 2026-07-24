@@ -9,6 +9,7 @@ import {
   TONE_CLASSES,
   TONE_DOT,
 } from "@/lib/status";
+import { SyncManager } from "@/components/SyncManager";
 
 type Filter =
   | "all"
@@ -85,6 +86,7 @@ export function Dashboard({
 
   return (
     <div className="space-y-5">
+      <SyncManager />
       <section className="grid grid-cols-3 gap-2">
         <Kpi value={data.kpis.passed} label="Inspections passed" tone="text-status-pass" />
         <Kpi value={data.kpis.failedOrNcr} label="Failed / NCR open" tone="text-status-fail" />

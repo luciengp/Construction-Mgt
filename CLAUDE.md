@@ -42,5 +42,10 @@ actions calling the domain module: submit/countersign/self-edit/re-inspection/dr
 photo upload to Storage, auto-NCR/defect). Env keys (service role + PIN_PEPPER) are set
 and demo users seeded (owner@/cm@/engineer@cms.test), and 8 (payments view with
 domain-gated release + owner certify, registers: inspection log / NCRs / defects /
-photo gallery with signed URLs). Remaining: milestone 7 (offline IndexedDB queue +
-sync indicator) and milestone 9 (admin screens + Playwright happy-path e2e).
+photo gallery with signed URLs), 9 part 1 (admin: member/PIN management), and 7 (offline
+IndexedDB queue + sync indicator; submitCore.ts shared by the server action and
+/api/inspections/submit; SyncManager in Dashboard + InspectionForm). Remaining: milestone
+9's Playwright happy-path e2e.
+
+Dev-server caveat: Next 14.2.35 dev webpack can throw "reading 'call'" after heavy HMR
+churn — `rm -rf .next && pnpm dev` fixes it; production build/start is unaffected.

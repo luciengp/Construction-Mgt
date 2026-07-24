@@ -104,6 +104,23 @@ so atomicity of the acceptance record is approximated by create-then-rollback; n
 | `cm@cms.test` | `Passw0rd!` | cm |
 | `engineer@cms.test` | Site PIN `428913` | contractor |
 
+## Offline queue (milestone 7)
+
+The inspection form works with no signal. When the primary action is submitted offline, the
+sign-off is stored in **IndexedDB** (`src/lib/offline/queue.ts`) and the user sees a "Saved
+offline" confirmation instead of losing their work. A floating **sync indicator**
+(`SyncManager`) flushes the queue to `POST /api/inspections/submit` the moment connectivity
+returns; the server re-derives the active-record state through the domain module, so a queued
+submission applied later is interpreted correctly (it can become a countersign or
+re-inspection if the world moved on) rather than blindly replayed. Photos upload online; the
+sign-off itself is what the queue protects.
+
+> **Dev-server note:** Next.js **14.2.35's dev server** has a webpack bug that can throw
+> `Cannot read properties of undefined (reading 'call')` after many rapid HMR edits touching
+> the client graph. A clean restart fixes it: `rm -rf .next && pnpm dev`. It does **not**
+> affect `pnpm build` / `pnpm start` (production), which is where the offline flow was
+> verified end-to-end.
+
 ## Domain rules
 
 `DOMAIN.md` is the source of truth for the inspection → gate → payment rules. They live as

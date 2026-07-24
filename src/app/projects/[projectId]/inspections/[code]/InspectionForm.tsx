@@ -1,11 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { submitInspection, saveDraft, type SubmitResult } from "./actions";
 import { PhotoUploader } from "./PhotoUploader";
+import { enqueue } from "@/lib/offline/queue";
+import { SyncManager } from "@/components/SyncManager";
+import type { SubmitPayload } from "@/lib/inspection/types";
 import type { InspectionDetail } from "@/lib/data/inspection";
 import type { CheckState, Result } from "@/domain/types";
+
+function payloadFromForm(form: HTMLFormElement): SubmitPayload {
+  const fd = new FormData(form);
+  const checkStates: Record<string, CheckState> = {};
+  Array.from(fd.entries()).forEach(([k, v]) => {
+    if (k.startsWith("check_")) checkStates[k.slice(6)] = String(v) as CheckState;
+  });
+  return {
+    result: String(fd.get("result") ?? "") as Result,
+    checkStates,
+    notes: fd.get("notes")?.toString() ?? null,
+    area: fd.get("area")?.toString() ?? null,
+    releaseToCover: fd.get("releaseToCover") === "on",
+  };
+}
 
 const PRIMARY_LABEL: Record<string, string> = {
   submit: "Submit",
@@ -26,6 +45,8 @@ function PrimaryButton({ label }: { label: string }) {
   return (
     <button
       type="submit"
+      data-primary="1"
+      suppressHydrationWarning
       disabled={pending}
       className="w-full rounded-xl bg-navy py-4 text-base font-semibold text-white transition-colors hover:bg-navy-light disabled:opacity-40"
     >
@@ -58,12 +79,53 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
     { saved: false }
   );
 
+  const [queued, setQueued] = useState(false);
+
   const readOnly = detail.formMode === "read_only";
   const primaryLabel = PRIMARY_LABEL[detail.formMode];
   const belowMin = photoCount < detail.minPhotos;
 
+  // Offline intercept: when the primary submit fires with no connectivity,
+  // queue it in IndexedDB instead of losing it. Save-draft and photo buttons
+  // are untouched.
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const submitter = (e.nativeEvent as SubmitEvent).submitter as
+      | HTMLButtonElement
+      | null;
+    if (submitter?.dataset.primary !== "1") return; // draft / other
+    if (typeof navigator !== "undefined" && navigator.onLine) return; // online → server action
+    e.preventDefault();
+    const payload = payloadFromForm(e.currentTarget);
+    await enqueue({ projectId: detail.projectId, code: detail.code, payload });
+    window.dispatchEvent(new Event("cms:queued"));
+    setQueued(true);
+  }
+
+  if (queued) {
+    return (
+      <div className="rounded-xl bg-white p-6 text-center shadow-sm">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-status-warn/20 text-xl">
+          ⏳
+        </div>
+        <h2 className="mb-1 text-lg font-semibold text-navy">Saved offline</h2>
+        <p className="mb-5 text-sm text-slate-600">
+          No signal right now. This sign-off is queued on your device and will
+          submit automatically when you&apos;re back online — your work is not
+          lost.
+        </p>
+        <Link
+          href={`/projects/${detail.projectId}`}
+          className="inline-block rounded-xl bg-navy px-6 py-3 text-sm font-semibold text-white"
+        >
+          Back to dashboard
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} onSubmit={handleSubmit} className="space-y-5">
+      <SyncManager />
       {/* Banners */}
       {detail.awaitingMyCountersignature && (
         <Banner tone="warn">
