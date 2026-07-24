@@ -50,6 +50,11 @@ export default async function ProjectHome({
             <Link href={`/projects/${params.projectId}/payments`} className="text-white/80 underline">
               Payments
             </Link>
+            {membership.role === "owner" && (
+              <Link href={`/projects/${params.projectId}/admin`} className="text-white/80 underline">
+                Admin
+              </Link>
+            )}
             <form action={signOut}>
               <button className="text-white/80 underline">Sign out</button>
             </form>
