@@ -40,5 +40,7 @@ milestones 1 (scaffold), 2 (schema + RLS + storage + seed; cloud DB seeded with 
 picker, route protection), 5 (read-only dashboard), and 6 (inspection form + server
 actions calling the domain module: submit/countersign/self-edit/re-inspection/draft,
 photo upload to Storage, auto-NCR/defect). Env keys (service role + PIN_PEPPER) are set
-and demo users seeded (owner@/cm@/engineer@cms.test). Next: milestone 7 (offline
-IndexedDB queue + sync indicator).
+and demo users seeded (owner@/cm@/engineer@cms.test), and 8 (payments view with
+domain-gated release + owner certify, registers: inspection log / NCRs / defects /
+photo gallery with signed URLs). Remaining: milestone 7 (offline IndexedDB queue +
+sync indicator) and milestone 9 (admin screens + Playwright happy-path e2e).

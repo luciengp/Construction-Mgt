@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
@@ -43,6 +44,12 @@ export default async function ProjectHome({
             </p>
           </div>
           <nav className="flex items-center gap-3 text-xs">
+            <Link href={`/projects/${params.projectId}/registers`} className="text-white/80 underline">
+              Registers
+            </Link>
+            <Link href={`/projects/${params.projectId}/payments`} className="text-white/80 underline">
+              Payments
+            </Link>
             <form action={signOut}>
               <button className="text-white/80 underline">Sign out</button>
             </form>
