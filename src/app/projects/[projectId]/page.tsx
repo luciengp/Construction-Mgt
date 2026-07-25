@@ -34,8 +34,8 @@ export default async function ProjectHome({
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
-      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-lg items-center justify-between">
+      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between">
           <div className="min-w-0">
             <h1 className="truncate text-base font-semibold">{data.projectName}</h1>
             <p className="text-xs text-white/60">
@@ -62,7 +62,7 @@ export default async function ProjectHome({
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg px-4 pt-4">
+      <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
         <Dashboard
           projectId={params.projectId}
           data={data}

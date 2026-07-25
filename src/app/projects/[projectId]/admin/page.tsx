@@ -38,14 +38,14 @@ export default async function AdminPage({
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
-      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
+        <div className="mx-auto flex max-w-3xl items-center gap-3">
           <Link href={`/projects/${params.projectId}`} className="text-white/80">←</Link>
           <h1 className="text-sm font-semibold">Admin · Members</h1>
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg space-y-4 px-4 pt-4">
+      <div className="mx-auto max-w-3xl space-y-4 px-4 pt-4 sm:px-6">
         <AddMemberForm projectId={params.projectId} />
 
         <div className="divide-y divide-slate-100 overflow-hidden rounded-xl bg-white shadow-sm">

@@ -40,8 +40,8 @@ export default async function PaymentsPage({
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
-      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
+        <div className="mx-auto flex max-w-5xl items-center gap-3">
           <Link href={`/projects/${params.projectId}`} className="text-white/80">←</Link>
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-sm font-semibold">Payments</h1>
@@ -53,8 +53,8 @@ export default async function PaymentsPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg space-y-5 px-4 pt-4">
-        <section className="grid grid-cols-2 gap-2">
+      <div className="mx-auto max-w-5xl space-y-5 px-4 pt-4 sm:px-6">
+        <section className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
           <Tot label="On hold" value={data.totals.hold} tone="text-status-fail" />
           <Tot label="Ready to release" value={data.totals.releasable} tone="text-status-pass" />
           <Tot label="Certified" value={data.totals.certified} tone="text-navy" />
@@ -68,7 +68,7 @@ export default async function PaymentsPage({
           </p>
         )}
 
-        <section className="space-y-3">
+        <section className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
           {data.milestones.map((m) => (
             <div key={m.milestoneCode} className="overflow-hidden rounded-xl bg-white shadow-sm">
               <div className="border-b border-slate-100 p-3">

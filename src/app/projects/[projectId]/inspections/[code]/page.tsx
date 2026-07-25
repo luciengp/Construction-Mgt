@@ -32,7 +32,7 @@ export default async function InspectionPage({
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
       <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+        <div className="mx-auto flex max-w-2xl items-center gap-3">
           <Link href={`/projects/${params.projectId}`} className="text-white/80">
             ←
           </Link>
@@ -45,7 +45,7 @@ export default async function InspectionPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg px-4 pt-4">
+      <div className="mx-auto max-w-2xl px-4 pt-4 sm:px-6">
         <InspectionForm detail={detail} />
       </div>
     </main>

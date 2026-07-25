@@ -25,8 +25,8 @@ export default async function RegistersPage({
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
-      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+      <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
           <Link href={`/projects/${params.projectId}`} className="text-white/80">←</Link>
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-sm font-semibold">Registers</h1>
@@ -38,7 +38,7 @@ export default async function RegistersPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-lg px-4 pt-4">
+      <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
         <RegistersTabs data={data} />
       </div>
     </main>

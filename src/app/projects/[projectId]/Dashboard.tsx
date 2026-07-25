@@ -87,7 +87,7 @@ export function Dashboard({
   return (
     <div className="space-y-5">
       <SyncManager />
-      <section className="grid grid-cols-3 gap-2">
+      <section className="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3">
         <Kpi value={data.kpis.passed} label="Inspections passed" tone="text-status-pass" />
         <Kpi value={data.kpis.failedOrNcr} label="Failed / NCR open" tone="text-status-fail" />
         <Kpi value={data.kpis.awaitingSignoff} label="Awaiting sign-off" tone="text-[#8a6100]" />
@@ -100,8 +100,8 @@ export function Dashboard({
         <Kpi value={data.milestones.reduce((s,m)=>s+m.inspections.length,0)} label="Total inspections" tone="text-slate-700" />
       </section>
 
-      <section className="-mx-4 overflow-x-auto px-4">
-        <div className="flex gap-2 whitespace-nowrap">
+      <section className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="flex gap-2 whitespace-nowrap sm:flex-wrap">
           {FILTERS.map((f) => (
             <button
               key={f.key}
@@ -118,9 +118,9 @@ export function Dashboard({
         </div>
       </section>
 
-      <section className="space-y-3">
+      <section className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
         {filtered.length === 0 && (
-          <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
+          <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm lg:col-span-2">
             Nothing matches this filter.
           </p>
         )}

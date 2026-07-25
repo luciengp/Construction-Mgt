@@ -114,20 +114,26 @@ export function RegistersTabs({ data }: { data: RegistersData }) {
               No photos uploaded yet.
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-3">
               {data.photos.map((p) => (
                 <a
                   key={p.ref}
                   href={p.url ?? "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className="overflow-hidden rounded-xl bg-white shadow-sm"
+                  title={`${p.ref} — open full size`}
+                  className="group overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
                   {p.url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.url} alt={p.ref} className="h-32 w-full object-cover" />
+                    <img
+                      src={p.url}
+                      alt={p.ref}
+                      loading="lazy"
+                      className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
+                    />
                   ) : (
-                    <div className="flex h-32 items-center justify-center bg-slate-100 text-xs text-slate-400">
+                    <div className="flex aspect-square items-center justify-center bg-slate-100 text-xs text-slate-400">
                       unavailable
                     </div>
                   )}
