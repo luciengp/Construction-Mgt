@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-// Placeholder smoke test. The real happy-path e2e (PIN login → fill ITP →
-// countersign → gate advances) arrives in build milestone 9.
+// Smoke: the app shell renders and is installable. The full acceptance-criteria
+// flow lives in happy-path.spec.ts.
 test("app shell renders and is installable", async ({ page }) => {
   await page.goto("/");
   await expect(

@@ -95,6 +95,20 @@ an explicit `DO_NOT_COVER`; anything else in between is `PENDING`. Non-hidden wo
 - A `PASS_WITH_COMMENT` that **becomes COMPLETE** raises a Category-B defect with the note as
   its description.
 
+## Acceptance criteria → where they're proven
+
+| Criterion | Proof |
+| --- | --- |
+| Sign-up blocked until both boxes ticked; acceptance row written; re-prompt on version bump | `legal-and-pin.test.ts`; live sign-up wrote `agreement_acceptances` (version/IP/UA) |
+| Contractor PIN submit → AWAITING CM, does not count toward the gate | `happy-path.spec.ts`; `gates.test.ts` |
+| CM countersign → COMPLETE, gate advances by one | `happy-path.spec.ts` (asserts before/after gate count) |
+| Contractor PASS countersigned FAIL → FAIL + NCR, gate blocked | `signing.test.ts` (downgrade); live FAIL → NCR-001 → M1.2 BLOCKED |
+| Re-inspection supersedes; gate counts it once | `gates.test.ts` ("re-inspected pass counts once") |
+| Hidden work not RELEASED until COMPLETE + PASS + release ticked | `signing.test.ts`; live ITP-009 stayed PENDING until complete |
+| Offline submission queues and auto-syncs on reconnect | verified live: queued in IndexedDB → synced to DB |
+| No-membership user reads/writes nothing (RLS) | `rls-and-seed.test.ts` (live outsider user) |
+| All Section 4 rules unit-tested; one Playwright happy-path green | 73 unit + 2 e2e passing |
+
 ## 4.7 Drafts
 
 Save-draft stores answers + notes + area (not photos), keyed to the inspection. No result or

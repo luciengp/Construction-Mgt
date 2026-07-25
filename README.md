@@ -45,8 +45,14 @@ The dev Supabase project is `cms` (ref `mtfuqqaqfpnqwgspmzsb`, region `ap-southe
 
 ```bash
 pnpm test        # Vitest unit tests (domain rules + seed integrity)
-pnpm e2e         # Playwright (starts the dev server itself)
+pnpm e2e         # Playwright happy-path (builds + starts production, then drives the UI)
 ```
+
+`pnpm e2e` runs the acceptance-criteria happy-path against a **production build**: a
+contractor logs in by PIN, fills ITP-007, submits (AWAITING CM — the gate does not advance),
+then the CM logs in and countersigns (COMPLETE with two distinct signers — the gate advances
+by one). It needs `SUPABASE_SERVICE_ROLE_KEY` + `PIN_PEPPER` in the environment; without them
+the happy-path self-skips (the smoke test still runs).
 
 The seed file `supabase/seed/cms_domain_seed.json` is the contractual source of truth:
 23 trade families, 21 milestones (Quality Gates), 78 inspections, 422 checklist items.
