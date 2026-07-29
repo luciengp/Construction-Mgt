@@ -140,4 +140,33 @@ describe.skipIf(!enabled)("database seed + RLS (needs SUPABASE_SERVICE_ROLE_KEY)
     expect(legal.error).toBeNull();
     expect(legal.data).toHaveLength(1);
   });
+
+  // Regression: an Owner/CM can read the whole roster via RLS (for Admin), so
+  // "my memberships" MUST be filtered to user_id — otherwise the project picker
+  // shows every teammate as if it were the Owner's own membership.
+  it("the Owner's own-memberships query returns exactly their row, not the roster", async () => {
+    const owner = createClient(url!, anonKey!, { auth: { persistSession: false } });
+    const signIn = await owner.auth.signInWithPassword({
+      email: "owner@cms.test",
+      password: "Passw0rd!",
+    });
+    // Skip gracefully if the demo owner isn't seeded in this environment.
+    if (signIn.error) return;
+
+    // Unfiltered (what the bug did): RLS lets the Owner see the full roster.
+    const roster = await owner.from("memberships").select("id, role").eq("active", true);
+    expect(roster.error).toBeNull();
+    expect((roster.data ?? []).length).toBeGreaterThan(1);
+
+    // Scoped like getMyMemberships(): exactly the Owner's own approved row.
+    const mine = await owner
+      .from("memberships")
+      .select("id, role")
+      .eq("user_id", signIn.data.user!.id)
+      .eq("active", true)
+      .eq("approved", true);
+    expect(mine.error).toBeNull();
+    expect(mine.data).toHaveLength(1);
+    expect(mine.data![0].role).toBe("owner");
+  });
 });
