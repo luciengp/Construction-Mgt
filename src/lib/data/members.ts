@@ -59,10 +59,11 @@ export async function getUsersAwaitingAssignment(): Promise<PendingUser[]> {
   const users = usersData?.users ?? [];
   if (users.length === 0) return [];
 
+  // Anyone with ANY membership row (active, inactive, or pending-approval) is
+  // already accounted for — this list is only truly orphaned accounts.
   const { data: memberships } = await admin
     .from("memberships")
-    .select("user_id")
-    .eq("active", true);
+    .select("user_id");
   const assigned = new Set((memberships ?? []).map((m) => m.user_id));
 
   return users
@@ -74,4 +75,86 @@ export async function getUsersAwaitingAssignment(): Promise<PendingUser[]> {
       email: u.email!,
       createdAt: u.created_at ?? "",
     }));
+}
+
+export interface PendingRequest {
+  membershipId: string;
+  userId: string;
+  email: string | null;
+  role: Role;
+  createdAt: string;
+}
+
+// Self-service sign-ups that chose THIS project + a side but await Owner
+// approval (active but not yet approved). The Owner approves or rejects them.
+export async function getPendingRequests(
+  projectId: string
+): Promise<PendingRequest[]> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("memberships")
+    .select("id, user_id, role, created_at")
+    .eq("project_id", projectId)
+    .eq("approved", false)
+    .order("created_at", { ascending: false });
+  if (error || !data || data.length === 0) return [];
+
+  const { data: usersData } = await admin.auth.admin.listUsers({ perPage: 1000 });
+  const emailById = new Map(
+    (usersData?.users ?? []).map((u) => [u.id, u.email ?? null])
+  );
+
+  return data.map((m) => ({
+    membershipId: m.id,
+    userId: m.user_id,
+    email: emailById.get(m.user_id) ?? null,
+    role: m.role as Role,
+    createdAt: m.created_at,
+  }));
+}
+
+export interface ProjectSettings {
+  name: string;
+  contractor: string | null;
+  constructionManager: string | null;
+  signupOpen: boolean;
+}
+
+export async function getProjectSettings(
+  projectId: string
+): Promise<ProjectSettings | null> {
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from("projects")
+    .select("name, contractor, construction_manager, signup_open")
+    .eq("id", projectId)
+    .single();
+  if (!data) return null;
+  return {
+    name: data.name,
+    contractor: data.contractor,
+    constructionManager: data.construction_manager,
+    signupOpen: data.signup_open,
+  };
+}
+
+// Open projects (name + party names) for the pre-auth sign-up team picker.
+export interface OpenSignupProject {
+  id: string;
+  name: string;
+  contractor: string | null;
+  constructionManager: string | null;
+}
+
+export async function getOpenSignupProjects(): Promise<OpenSignupProject[]> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("projects_open_signup")
+    .select("id, name, contractor, construction_manager");
+  return (data ?? []).map((p) => ({
+    id: p.id,
+    name: p.name,
+    contractor: p.contractor,
+    constructionManager: p.construction_manager,
+  }));
 }

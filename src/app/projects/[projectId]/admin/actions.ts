@@ -31,6 +31,65 @@ async function requireOwner(projectId: string): Promise<OwnerGuard> {
   return { ok: true, userId: user.id };
 }
 
+// Approve a self-service sign-up request (pending membership) for this project.
+export async function approveRequest(
+  projectId: string,
+  membershipId: string,
+  role: Role
+): Promise<void> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return;
+  if (!ROLES.includes(role)) return;
+  const admin = createAdminClient();
+  await admin
+    .from("memberships")
+    .update({ approved: true, active: true, role })
+    .eq("id", membershipId)
+    .eq("project_id", projectId);
+  revalidatePath(`/projects/${projectId}/admin`);
+}
+
+// Reject (delete) a pending sign-up request.
+export async function rejectRequest(
+  projectId: string,
+  membershipId: string
+): Promise<void> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return;
+  const admin = createAdminClient();
+  await admin
+    .from("memberships")
+    .delete()
+    .eq("id", membershipId)
+    .eq("project_id", projectId)
+    .eq("approved", false);
+  revalidatePath(`/projects/${projectId}/admin`);
+}
+
+// Project settings the Owner controls: the two party names and whether the
+// project is open for self-service sign-ups.
+export async function saveProjectSettings(
+  projectId: string,
+  _prev: AdminState,
+  formData: FormData
+): Promise<AdminState> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return { error: guard.error, ok: null };
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("projects")
+    .update({
+      contractor: String(formData.get("contractor") ?? "").trim() || null,
+      construction_manager:
+        String(formData.get("constructionManager") ?? "").trim() || null,
+      signup_open: formData.get("signupOpen") === "on",
+    })
+    .eq("id", projectId);
+  if (error) return { error: error.message, ok: null };
+  revalidatePath(`/projects/${projectId}/admin`);
+  return { error: null, ok: "Settings saved." };
+}
+
 // One-click assignment of an already-signed-up user (from the "awaiting
 // assignment" pool) to this project with the chosen role.
 export async function assignPendingUser(

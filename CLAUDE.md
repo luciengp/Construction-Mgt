@@ -47,5 +47,11 @@ IndexedDB queue + sync indicator; submitCore.ts shared by the server action and
 /api/inspections/submit; SyncManager in Dashboard + InspectionForm), and 9 (admin +
 Playwright happy-path e2e). **All 9 build milestones complete.** 73 unit + 2 e2e tests pass.
 
+Post-MVP additions: responsive layout (fills laptop, mobile-first); self-service team
+sign-up — Owner sets Contractor/CM company names + "open for sign-ups" in Admin → Project
+settings; new users pick a team on sign-up (creates a PENDING membership, approved=false);
+RLS helpers require `active AND approved`, so pending grants zero access until the Owner
+approves in Admin → "Requests to join". Orphaned sign-ups (no team) show in Admin too.
+
 Dev-server caveat: Next 14.2.35 dev webpack can throw "reading 'call'" after heavy HMR
 churn — `rm -rf .next && pnpm dev` fixes it; production build/start is unaffected.

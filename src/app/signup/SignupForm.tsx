@@ -3,8 +3,9 @@
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
 import { signup, type SignupState } from "./actions";
+import type { OpenSignupProject } from "@/lib/data/members";
 
-const initial: SignupState = { error: null, success: false };
+const initial: SignupState = { error: null, success: false, requestedTeam: null };
 
 function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus();
@@ -22,9 +23,11 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
 export function SignupForm({
   agreementVersion,
   agreementBody,
+  openProjects,
 }: {
   agreementVersion: string;
   agreementBody: string;
+  openProjects: OpenSignupProject[];
 }) {
   const [state, formAction] = useFormState(signup, initial);
 
@@ -32,10 +35,19 @@ export function SignupForm({
     return (
       <div className="rounded-xl bg-white p-6 text-center shadow-sm">
         <h2 className="mb-2 text-lg font-semibold text-navy">Account created</h2>
-        <p className="mb-6 text-sm text-slate-600">
+        <p className="mb-4 text-sm text-slate-600">
           Your acceptance of the Platform Terms (v{agreementVersion}) has been
-          recorded. You can now sign in.
+          recorded.
         </p>
+        {state.requestedTeam ? (
+          <p className="mb-6 rounded-lg bg-gold/10 px-3 py-2.5 text-sm text-navy">
+            Your request to join <strong>{state.requestedTeam}</strong> has been
+            sent to the project Owner for approval. You&apos;ll get access once
+            they approve it.
+          </p>
+        ) : (
+          <p className="mb-6 text-sm text-slate-600">You can now sign in.</p>
+        )}
         <Link
           href="/login"
           className="inline-block rounded-xl bg-navy px-6 py-3 text-sm font-semibold text-white"
@@ -72,6 +84,33 @@ export function SignupForm({
             className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-3 text-base focus:border-navy focus:outline-none"
           />
         </label>
+
+        {openProjects.length > 0 && (
+          <label className="block text-sm font-medium text-slate-700">
+            Which team are you joining?
+            <select
+              name="team"
+              defaultValue=""
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-3 text-base focus:border-navy focus:outline-none"
+            >
+              <option value="">I&apos;ll be added later</option>
+              {openProjects.map((p) => (
+                <optgroup key={p.id} label={p.name}>
+                  <option value={`${p.id}:contractor`}>
+                    Contractor{p.contractor ? ` — ${p.contractor}` : ""}
+                  </option>
+                  <option value={`${p.id}:cm`}>
+                    Construction Manager
+                    {p.constructionManager ? ` — ${p.constructionManager}` : ""}
+                  </option>
+                </optgroup>
+              ))}
+            </select>
+            <span className="mt-1 block text-xs text-slate-400">
+              The project Owner approves your request before you get access.
+            </span>
+          </label>
+        )}
       </div>
 
       <div>

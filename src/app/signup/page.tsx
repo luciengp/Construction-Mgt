@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { getCurrentTerms } from "@/lib/legal";
+import { getOpenSignupProjects } from "@/lib/data/members";
 import { SignupForm } from "./SignupForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function SignupPage() {
-  const terms = await getCurrentTerms();
+  const [terms, openProjects] = await Promise.all([
+    getCurrentTerms(),
+    getOpenSignupProjects(),
+  ]);
 
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-8">
@@ -21,7 +25,11 @@ export default async function SignupPage() {
         </div>
 
         {terms ? (
-          <SignupForm agreementVersion={terms.version} agreementBody={terms.bodyMd} />
+          <SignupForm
+            agreementVersion={terms.version}
+            agreementBody={terms.bodyMd}
+            openProjects={openProjects}
+          />
         ) : (
           <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-600 shadow-sm">
             The Platform Terms could not be loaded. Sign-up is disabled until the
