@@ -2,9 +2,10 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
-import { getProjectMembers } from "@/lib/data/members";
+import { getProjectMembers, getUsersAwaitingAssignment } from "@/lib/data/members";
 import { AddMemberForm } from "./AddMemberForm";
 import { MemberRowItem } from "./MemberRow";
+import { PendingUserRow } from "./PendingUserRow";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,10 @@ export default async function AdminPage({
     );
   }
 
-  const members = await getProjectMembers(params.projectId);
+  const [members, pending] = await Promise.all([
+    getProjectMembers(params.projectId),
+    getUsersAwaitingAssignment(),
+  ]);
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
@@ -48,16 +52,44 @@ export default async function AdminPage({
       <div className="mx-auto max-w-3xl space-y-4 px-4 pt-4 sm:px-6">
         <AddMemberForm projectId={params.projectId} />
 
-        <div className="divide-y divide-slate-100 overflow-hidden rounded-xl bg-white shadow-sm">
-          {members.map((m) => (
-            <MemberRowItem
-              key={m.id}
-              projectId={params.projectId}
-              member={m}
-              isSelf={m.userId === user.id}
-            />
-          ))}
-        </div>
+        {pending.length > 0 && (
+          <section className="overflow-hidden rounded-xl bg-white shadow-sm">
+            <div className="border-b border-slate-100 bg-gold/10 px-4 py-2.5">
+              <p className="text-sm font-semibold text-navy">
+                New sign-ups awaiting assignment ({pending.length})
+              </p>
+              <p className="text-xs text-slate-500">
+                People who created accounts but have no project yet. Pick a role
+                and add them here.
+              </p>
+            </div>
+            <div className="divide-y divide-slate-100">
+              {pending.map((u) => (
+                <PendingUserRow
+                  key={u.userId}
+                  projectId={params.projectId}
+                  user={u}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section>
+          <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Members on this project
+          </p>
+          <div className="divide-y divide-slate-100 overflow-hidden rounded-xl bg-white shadow-sm">
+            {members.map((m) => (
+              <MemberRowItem
+                key={m.id}
+                projectId={params.projectId}
+                member={m}
+                isSelf={m.userId === user.id}
+              />
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );

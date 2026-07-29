@@ -40,11 +40,24 @@ export default async function ProjectsPage() {
         </div>
 
         {memberships.length === 0 ? (
-          <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-600 shadow-sm">
-            You are signed in as{" "}
-            <span className="font-medium">{user.email}</span> but have no active
-            project membership yet. Ask an Owner or Construction Manager to add
-            you to a project.
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <h2 className="mb-2 text-base font-semibold text-navy">
+              You&apos;re signed in — one step to go
+            </h2>
+            <p className="mb-4 text-sm text-slate-600">
+              Your account is created, but nobody has added you to a project yet.
+              Give this email to the project&apos;s Owner or Construction Manager
+              and ask them to add you:
+            </p>
+            <div className="mb-4 flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+              <code className="truncate text-sm font-medium text-navy">
+                {user.email}
+              </code>
+            </div>
+            <p className="text-xs text-slate-500">
+              Once they add you, refresh this page and your project will appear
+              here.
+            </p>
           </div>
         ) : (
           <ul className="space-y-3">

@@ -31,6 +31,38 @@ async function requireOwner(projectId: string): Promise<OwnerGuard> {
   return { ok: true, userId: user.id };
 }
 
+// One-click assignment of an already-signed-up user (from the "awaiting
+// assignment" pool) to this project with the chosen role.
+export async function assignPendingUser(
+  projectId: string,
+  userId: string,
+  role: Role
+): Promise<void> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return;
+  if (!ROLES.includes(role)) return;
+
+  const admin = createAdminClient();
+  const { data: project } = await admin
+    .from("projects")
+    .select("org_id")
+    .eq("id", projectId)
+    .single();
+  if (!project) return;
+
+  await admin.from("memberships").upsert(
+    {
+      user_id: userId,
+      org_id: project.org_id,
+      project_id: projectId,
+      role,
+      active: true,
+    },
+    { onConflict: "user_id,project_id" }
+  );
+  revalidatePath(`/projects/${projectId}/admin`);
+}
+
 // Add a member. Email members get an auth account (invited by email if no
 // password); PIN members (site engineers) get an account + a hashed PIN.
 export async function addMember(

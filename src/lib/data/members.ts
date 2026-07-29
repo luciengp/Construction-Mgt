@@ -42,3 +42,36 @@ export async function getProjectMembers(
     hasPin: m.pin_hash !== null,
   }));
 }
+
+export interface PendingUser {
+  userId: string;
+  email: string;
+  createdAt: string;
+}
+
+// Users who have signed up but have no membership on ANY project. This is what
+// the Admin sees as "new users awaiting assignment" — the natural pool of
+// people who created an account and are waiting to be added to a project.
+// Uses the service role because auth.users is not client-readable.
+export async function getUsersAwaitingAssignment(): Promise<PendingUser[]> {
+  const admin = createAdminClient();
+  const { data: usersData } = await admin.auth.admin.listUsers({ perPage: 1000 });
+  const users = usersData?.users ?? [];
+  if (users.length === 0) return [];
+
+  const { data: memberships } = await admin
+    .from("memberships")
+    .select("user_id")
+    .eq("active", true);
+  const assigned = new Set((memberships ?? []).map((m) => m.user_id));
+
+  return users
+    .filter((u) => u.email && !assigned.has(u.id))
+    .sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? ""))
+    .slice(0, 30)
+    .map((u) => ({
+      userId: u.id,
+      email: u.email!,
+      createdAt: u.created_at ?? "",
+    }));
+}
