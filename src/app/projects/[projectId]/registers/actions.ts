@@ -15,37 +15,64 @@ async function requireOwner(projectId: string): Promise<boolean> {
   return membership?.role === "owner";
 }
 
-// Owner deletes a single inspection record. Any NCR it raised is left in place
-// (it may still be a valid open item); clear NCRs from the NCR register if
-// needed. Deleting the active record reverts the inspection's gate state.
+// Owner deletes a single inspection record. If that record raised an NCR, the
+// NCR is cleared too (deleting the FAIL removes the reason it exists), which
+// also unblocks the gate. Deleting the active record reverts the gate state.
 export async function deleteRecord(
   projectId: string,
   recordId: string
 ): Promise<void> {
   if (!(await requireOwner(projectId))) return;
   const admin = createAdminClient();
+
+  const { data: record } = await admin
+    .from("inspection_records")
+    .select("ncr_id")
+    .eq("id", recordId)
+    .eq("project_id", projectId)
+    .maybeSingle();
+
   await admin
     .from("inspection_records")
     .delete()
     .eq("id", recordId)
     .eq("project_id", projectId);
+
+  if (record?.ncr_id) {
+    await admin
+      .from("ncrs")
+      .delete()
+      .eq("id", record.ncr_id)
+      .eq("project_id", projectId);
+  }
+
   revalidatePath(`/projects/${projectId}/registers`);
   revalidatePath(`/projects/${projectId}`);
 }
 
 // Owner resets an inspection: deletes ALL its records so it returns to
-// "Not started". Photos are kept (they are evidence); delete them separately.
+// "Not started", and clears any NCRs those records raised. Photos are kept
+// (they are evidence); delete them separately.
 export async function resetInspection(
   projectId: string,
   inspectionCode: string
 ): Promise<void> {
   if (!(await requireOwner(projectId))) return;
   const admin = createAdminClient();
+
   await admin
     .from("inspection_records")
     .delete()
     .eq("project_id", projectId)
     .eq("inspection_code", inspectionCode);
+
+  // Clear NCRs raised by this inspection.
+  await admin
+    .from("ncrs")
+    .delete()
+    .eq("project_id", projectId)
+    .eq("inspection_code", inspectionCode);
+
   revalidatePath(`/projects/${projectId}/registers`);
   revalidatePath(`/projects/${projectId}`);
 }
