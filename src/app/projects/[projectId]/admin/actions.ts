@@ -242,3 +242,101 @@ export async function setMemberPin(
   revalidatePath(`/projects/${projectId}/admin`);
   return { error: null, ok: clear ? "PIN cleared." : "PIN set." };
 }
+
+// Resolve the auth user id behind a membership on this project.
+async function memberUserId(
+  admin: ReturnType<typeof createAdminClient>,
+  projectId: string,
+  membershipId: string
+): Promise<string | null> {
+  const { data } = await admin
+    .from("memberships")
+    .select("user_id")
+    .eq("id", membershipId)
+    .eq("project_id", projectId)
+    .maybeSingle();
+  return data?.user_id ?? null;
+}
+
+// Owner edits a member's login email.
+export async function updateMemberEmail(
+  projectId: string,
+  _prev: AdminState,
+  formData: FormData
+): Promise<AdminState> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return { error: guard.error, ok: null };
+
+  const membershipId = String(formData.get("membershipId") ?? "");
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return { error: "Enter a valid email address.", ok: null };
+  }
+  const admin = createAdminClient();
+  const userId = await memberUserId(admin, projectId, membershipId);
+  if (!userId) return { error: "Member not found.", ok: null };
+
+  const { error } = await admin.auth.admin.updateUserById(userId, {
+    email,
+    email_confirm: true,
+  });
+  if (error) return { error: error.message, ok: null };
+  revalidatePath(`/projects/${projectId}/admin`);
+  return { error: null, ok: `Email updated to ${email}.` };
+}
+
+// Owner sets a member's password directly (for a low-tech user who can't do
+// the email reset themselves).
+export async function setMemberPassword(
+  projectId: string,
+  _prev: AdminState,
+  formData: FormData
+): Promise<AdminState> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return { error: guard.error, ok: null };
+
+  const membershipId = String(formData.get("membershipId") ?? "");
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 8) {
+    return { error: "Password must be at least 8 characters.", ok: null };
+  }
+  const admin = createAdminClient();
+  const userId = await memberUserId(admin, projectId, membershipId);
+  if (!userId) return { error: "Member not found.", ok: null };
+
+  const { error } = await admin.auth.admin.updateUserById(userId, { password });
+  if (error) return { error: error.message, ok: null };
+  revalidatePath(`/projects/${projectId}/admin`);
+  return { error: null, ok: "Password updated." };
+}
+
+// Owner removes a member from the project. If that was the person's only
+// project, their account is deleted entirely; otherwise just this membership.
+export async function deleteMember(
+  projectId: string,
+  membershipId: string
+): Promise<void> {
+  const guard = await requireOwner(projectId);
+  if (!guard.ok) return;
+  const admin = createAdminClient();
+  const userId = await memberUserId(admin, projectId, membershipId);
+  if (!userId) return;
+  // Never let the Owner remove their own membership here (avoids locking the
+  // project out of its only owner by accident).
+  if (userId === guard.userId) return;
+
+  await admin
+    .from("memberships")
+    .delete()
+    .eq("id", membershipId)
+    .eq("project_id", projectId);
+
+  const { data: others } = await admin
+    .from("memberships")
+    .select("id")
+    .eq("user_id", userId);
+  if ((others?.length ?? 0) === 0) {
+    await admin.auth.admin.deleteUser(userId);
+  }
+  revalidatePath(`/projects/${projectId}/admin`);
+}

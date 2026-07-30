@@ -43,6 +43,44 @@ export async function loginWithMagicLink(
   return { error: null };
 }
 
+// Member self-service password reset. Sends an email with a recovery link
+// that returns to /auth/callback and lands on /reset-password to set a new one.
+export async function requestPasswordReset(
+  _prev: AuthActionState,
+  formData: FormData
+): Promise<AuthActionState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!email) return { error: "Enter your email." };
+
+  const supabase = createClient();
+  // Don't reveal whether the email exists — always report success.
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${originFromEnv()}/auth/callback?next=/reset-password`,
+  });
+  return { error: null };
+}
+
+// Set a new password for the currently-signed-in (recovery) session.
+export async function updateMyPassword(
+  _prev: AuthActionState,
+  formData: FormData
+): Promise<AuthActionState> {
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 8) {
+    return { error: "Password must be at least 8 characters." };
+  }
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "Your reset link has expired. Request a new one." };
+  }
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: error.message };
+  redirect("/projects");
+}
+
 // 6-digit PIN sign-in for the contractor's site engineer. The PIN resolves,
 // server-side, to a real membership → a real audited identity. We then mint a
 // session for that user without exposing any password to the client.

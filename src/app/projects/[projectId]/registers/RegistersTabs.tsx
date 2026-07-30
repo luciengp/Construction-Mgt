@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { RegistersData } from "@/lib/data/registers";
+import { deleteRecord, deletePhoto } from "./actions";
 
 type Tab = "log" | "ncrs" | "defects" | "photos";
 
@@ -11,7 +12,15 @@ const RESULT_TONE: Record<string, string> = {
   FAIL: "bg-status-fail/12 text-status-fail",
 };
 
-export function RegistersTabs({ data }: { data: RegistersData }) {
+export function RegistersTabs({
+  data,
+  projectId,
+  canManage,
+}: {
+  data: RegistersData;
+  projectId: string;
+  canManage: boolean;
+}) {
   const [tab, setTab] = useState<Tab>("log");
 
   const tabs: { key: Tab; label: string; count: number }[] = [
@@ -40,8 +49,8 @@ export function RegistersTabs({ data }: { data: RegistersData }) {
 
       {tab === "log" && (
         <Section empty={data.log.length === 0} emptyText="No inspection records yet.">
-          {data.log.map((e, i) => (
-            <div key={i} className="flex items-center gap-3 p-3">
+          {data.log.map((e) => (
+            <div key={e.id} className="flex items-center gap-3 p-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-slate-800">
                   {e.inspectionCode} · {e.inspectionName}
@@ -58,6 +67,12 @@ export function RegistersTabs({ data }: { data: RegistersData }) {
                 <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${RESULT_TONE[e.result] ?? "bg-slate-200 text-slate-600"}`}>
                   {e.result === "PASS_WITH_COMMENT" ? "PWC" : e.result}
                 </span>
+              )}
+              {canManage && (
+                <ConfirmDelete
+                  label="Delete"
+                  onConfirm={() => deleteRecord(projectId, e.id)}
+                />
               )}
             </div>
           ))}
@@ -116,41 +131,95 @@ export function RegistersTabs({ data }: { data: RegistersData }) {
           ) : (
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-3">
               {data.photos.map((p) => (
-                <a
-                  key={p.ref}
-                  href={p.url ?? "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={`${p.ref} — open full size`}
-                  className="group overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+                <div
+                  key={p.id}
+                  className="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
-                  {p.url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.url}
-                      alt={p.ref}
-                      loading="lazy"
-                      className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
-                    />
-                  ) : (
-                    <div className="flex aspect-square items-center justify-center bg-slate-100 text-xs text-slate-400">
-                      unavailable
+                  <a
+                    href={p.url ?? "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={`${p.ref} — open full size`}
+                  >
+                    {p.url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.url}
+                        alt={p.ref}
+                        loading="lazy"
+                        className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <div className="flex aspect-square items-center justify-center bg-slate-100 text-xs text-slate-400">
+                        unavailable
+                      </div>
+                    )}
+                    <div className="p-2">
+                      <p className="truncate text-[11px] font-medium text-slate-700">{p.ref}</p>
+                      <p className="text-[10px] text-slate-400">
+                        {p.inspectionCode}
+                        {p.hidden ? " · hidden" : ""}
+                      </p>
+                    </div>
+                  </a>
+                  {canManage && (
+                    <div className="absolute right-1.5 top-1.5">
+                      <ConfirmDelete
+                        label="✕"
+                        compact
+                        onConfirm={() => deletePhoto(projectId, p.id)}
+                      />
                     </div>
                   )}
-                  <div className="p-2">
-                    <p className="truncate text-[11px] font-medium text-slate-700">{p.ref}</p>
-                    <p className="text-[10px] text-slate-400">
-                      {p.inspectionCode}
-                      {p.hidden ? " · hidden" : ""}
-                    </p>
-                  </div>
-                </a>
+                </div>
               ))}
             </div>
           )}
         </div>
       )}
     </div>
+  );
+}
+
+// Two-click confirm so a destructive delete can't happen on a single tap.
+function ConfirmDelete({
+  label,
+  onConfirm,
+  compact,
+}: {
+  label: string;
+  onConfirm: () => void | Promise<void>;
+  compact?: boolean;
+}) {
+  const [armed, setArmed] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const base = compact
+    ? "rounded-md px-1.5 py-0.5 text-[11px] font-bold shadow"
+    : "shrink-0 rounded-lg border px-2.5 py-1 text-xs font-medium";
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      onClick={() => {
+        if (!armed) {
+          setArmed(true);
+          setTimeout(() => setArmed(false), 4000);
+          return;
+        }
+        startTransition(() => {
+          void onConfirm();
+        });
+      }}
+      className={`${base} ${
+        armed
+          ? "border-status-fail bg-status-fail text-white"
+          : compact
+            ? "bg-white/90 text-status-fail"
+            : "border-status-fail/40 text-status-fail"
+      }`}
+    >
+      {armed ? (compact ? "✓?" : "Confirm delete") : label}
+    </button>
   );
 }
 

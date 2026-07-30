@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 
 export interface LogEntry {
+  id: string;
   inspectionCode: string;
   inspectionName: string;
   milestoneCode: string;
@@ -29,6 +30,7 @@ export interface DefectEntry {
 }
 
 export interface PhotoEntry {
+  id: string;
   ref: string;
   inspectionCode: string;
   milestoneCode: string;
@@ -55,7 +57,7 @@ export async function getRegisters(projectId: string): Promise<RegistersData | n
       supabase.from("inspections").select("code, name").eq("project_id", projectId),
       supabase
         .from("inspection_records")
-        .select("inspection_code, result, signoff, contractor_signed_by, cm_signed_by, created_at")
+        .select("id, inspection_code, result, signoff, contractor_signed_by, cm_signed_by, created_at")
         .eq("project_id", projectId)
         .order("created_at", { ascending: false }),
       supabase
@@ -70,7 +72,7 @@ export async function getRegisters(projectId: string): Promise<RegistersData | n
         .order("seq"),
       supabase
         .from("photos")
-        .select("ref, inspection_code, milestone_code, family_code, hidden, storage_path, created_at")
+        .select("id, ref, inspection_code, milestone_code, family_code, hidden, storage_path, created_at")
         .eq("project_id", projectId)
         .order("created_at", { ascending: false })
         .limit(200),
@@ -91,6 +93,7 @@ export async function getRegisters(projectId: string): Promise<RegistersData | n
     milestoneByInspection.set(i.code, i.milestone_code);
 
   const log: LogEntry[] = (recordsRes.data ?? []).map((r) => ({
+    id: r.id,
     inspectionCode: r.inspection_code,
     inspectionName: nameByCode.get(r.inspection_code) ?? "",
     milestoneCode: milestoneByInspection.get(r.inspection_code) ?? "",
@@ -109,6 +112,7 @@ export async function getRegisters(projectId: string): Promise<RegistersData | n
     )
   );
   const photos: PhotoEntry[] = photoRows.map((p, i) => ({
+    id: p.id,
     ref: p.ref,
     inspectionCode: p.inspection_code,
     milestoneCode: p.milestone_code,

@@ -39,7 +39,11 @@ export default async function RegistersPage({
       </header>
 
       <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
-        <RegistersTabs data={data} />
+        <RegistersTabs
+          data={data}
+          projectId={params.projectId}
+          canManage={membership.role === "owner"}
+        />
       </div>
     </main>
   );
