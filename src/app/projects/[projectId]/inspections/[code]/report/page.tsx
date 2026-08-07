@@ -25,7 +25,7 @@ const STATE_LABEL: Record<Check["state"], string> = {
   na: "N/A",
 };
 
-function Cell({
+function StateCell({
   answer,
 }: {
   answer: { state: Check["state"]; note: string | null } | null;
@@ -34,16 +34,24 @@ function Cell({
     return <span className="text-xs text-slate-300">—</span>;
   }
   return (
-    <div className="space-y-1">
-      <span
-        className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${STATE_TONE[answer.state]}`}
-      >
-        {STATE_LABEL[answer.state]}
-      </span>
-      {answer.note && (
-        <p className="text-[11px] leading-snug text-slate-500">{answer.note}</p>
-      )}
-    </div>
+    <span
+      className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${STATE_TONE[answer.state]}`}
+    >
+      {STATE_LABEL[answer.state]}
+    </span>
+  );
+}
+
+function NoteCell({
+  answer,
+}: {
+  answer: { state: Check["state"]; note: string | null } | null;
+}) {
+  if (!answer?.note) {
+    return <span className="text-xs text-slate-300">—</span>;
+  }
+  return (
+    <p className="text-[11px] leading-snug text-slate-600">{answer.note}</p>
   );
 }
 
@@ -123,23 +131,33 @@ export default async function ReportPage({
             </p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[520px] text-left text-sm">
+              <table className="w-full min-w-[720px] text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400">
                     <th className="px-4 py-2 font-semibold">Check</th>
-                    <th className="w-40 px-4 py-2 font-semibold">Contractor</th>
-                    <th className="w-40 px-4 py-2 font-semibold">CM</th>
+                    <th className="w-20 px-3 py-2 text-center font-semibold text-status-pass">
+                      Contractor
+                    </th>
+                    <th className="w-48 px-3 py-2 font-semibold">Contractor comment</th>
+                    <th className="w-20 px-3 py-2 text-center font-semibold text-navy">CM</th>
+                    <th className="w-48 px-3 py-2 font-semibold">CM comment</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
                   {report.rows.map((row) => (
                     <tr key={row.seq} className="align-top">
                       <td className="px-4 py-3 text-slate-700">{row.text}</td>
-                      <td className="px-4 py-3">
-                        <Cell answer={row.contractor} />
+                      <td className="px-3 py-3 text-center">
+                        <StateCell answer={row.contractor} />
                       </td>
-                      <td className="px-4 py-3">
-                        <Cell answer={row.cm} />
+                      <td className="border-l border-slate-50 px-3 py-3">
+                        <NoteCell answer={row.contractor} />
+                      </td>
+                      <td className="border-l border-slate-50 px-3 py-3 text-center">
+                        <StateCell answer={row.cm} />
+                      </td>
+                      <td className="border-l border-slate-50 px-3 py-3">
+                        <NoteCell answer={row.cm} />
                       </td>
                     </tr>
                   ))}
