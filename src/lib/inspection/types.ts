@@ -7,6 +7,8 @@ import type { CheckState, Result } from "@/domain/types";
 export interface SubmitPayload {
   result: Result;
   checkStates: Record<string, CheckState>;
+  /** Optional per-check note keyed by checklist seq. */
+  checkNotes: Record<string, string>;
   notes: string | null;
   area: string | null;
   releaseToCover: boolean;

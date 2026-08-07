@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import type { RegistersData } from "@/lib/data/registers";
 import { deleteRecord, deletePhoto } from "./actions";
 
@@ -51,23 +52,38 @@ export function RegistersTabs({
         <Section empty={data.log.length === 0} emptyText="No inspection records yet.">
           {data.log.map((e) => (
             <div key={e.id} className="flex items-center gap-3 p-3">
-              <div className="min-w-0 flex-1">
+              <Link
+                href={`/projects/${projectId}/inspections/${e.inspectionCode}/report`}
+                className="min-w-0 flex-1"
+              >
                 <p className="truncate text-sm font-medium text-slate-800">
                   {e.inspectionCode} · {e.inspectionName}
                 </p>
                 <p className="text-xs text-slate-500">
                   {e.milestoneCode} · {e.signoff}
                   {" · "}
-                  {e.contractorSigned ? "C✓" : "C–"} {e.cmSigned ? "CM✓" : "CM–"}
+                  <span className={e.contractorSigned ? "text-status-pass" : "text-slate-400"}>
+                    {e.contractorSigned ? "Contractor ✓" : "Contractor –"}
+                  </span>
+                  {"  "}
+                  <span className={e.cmSigned ? "text-status-pass" : "text-slate-400"}>
+                    {e.cmSigned ? "CM ✓" : "CM –"}
+                  </span>
                   {" · "}
                   {new Date(e.createdAt).toLocaleDateString()}
                 </p>
-              </div>
+              </Link>
               {e.result && (
                 <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${RESULT_TONE[e.result] ?? "bg-slate-200 text-slate-600"}`}>
                   {e.result === "PASS_WITH_COMMENT" ? "PWC" : e.result}
                 </span>
               )}
+              <Link
+                href={`/projects/${projectId}/inspections/${e.inspectionCode}/report`}
+                className="shrink-0 rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-navy"
+              >
+                Report
+              </Link>
               {canManage && (
                 <ConfirmDelete
                   label="Delete"
@@ -123,62 +139,105 @@ export function RegistersTabs({
       )}
 
       {tab === "photos" && (
-        <div>
+        <div className="space-y-5">
           {data.photos.length === 0 ? (
             <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
               No photos uploaded yet.
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-3">
-              {data.photos.map((p) => (
-                <div
-                  key={p.id}
-                  className="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <a
-                    href={p.url ?? "#"}
-                    target="_blank"
-                    rel="noreferrer"
-                    title={`${p.ref} — open full size`}
+            groupByInspection(data.photos).map((group) => (
+              <div key={group.inspectionCode}>
+                <div className="mb-2 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-navy">
+                    {group.inspectionCode}
+                    <span className="ml-2 text-xs font-normal text-slate-400">
+                      {group.milestoneCode} · {group.photos.length} photo
+                      {group.photos.length === 1 ? "" : "s"}
+                    </span>
+                  </h3>
+                  <Link
+                    href={`/projects/${projectId}/inspections/${group.inspectionCode}/report`}
+                    className="text-xs font-medium text-navy underline"
                   >
-                    {p.url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={p.url}
-                        alt={p.ref}
-                        loading="lazy"
-                        className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <div className="flex aspect-square items-center justify-center bg-slate-100 text-xs text-slate-400">
-                        unavailable
-                      </div>
-                    )}
-                    <div className="p-2">
-                      <p className="truncate text-[11px] font-medium text-slate-700">{p.ref}</p>
-                      <p className="text-[10px] text-slate-400">
-                        {p.inspectionCode}
-                        {p.hidden ? " · hidden" : ""}
-                      </p>
-                    </div>
-                  </a>
-                  {canManage && (
-                    <div className="absolute right-1.5 top-1.5">
-                      <ConfirmDelete
-                        label="✕"
-                        compact
-                        onConfirm={() => deletePhoto(projectId, p.id)}
-                      />
-                    </div>
-                  )}
+                    Report
+                  </Link>
                 </div>
-              ))}
-            </div>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-3">
+                  {group.photos.map((p) => (
+                    <div
+                      key={p.id}
+                      className="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+                    >
+                      <a
+                        href={p.url ?? "#"}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={`${p.ref} — open full size`}
+                      >
+                        {p.url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={p.url}
+                            alt={p.ref}
+                            loading="lazy"
+                            className="aspect-square w-full object-cover transition-transform group-hover:scale-[1.03]"
+                          />
+                        ) : (
+                          <div className="flex aspect-square items-center justify-center bg-slate-100 text-xs text-slate-400">
+                            unavailable
+                          </div>
+                        )}
+                        <div className="p-2">
+                          <p className="truncate text-[11px] font-medium text-slate-700">{p.ref}</p>
+                          {p.hidden && (
+                            <p className="text-[10px] text-slate-400">hidden</p>
+                          )}
+                        </div>
+                      </a>
+                      {canManage && (
+                        <div className="absolute right-1.5 top-1.5">
+                          <ConfirmDelete
+                            label="✕"
+                            compact
+                            onConfirm={() => deletePhoto(projectId, p.id)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
           )}
         </div>
       )}
     </div>
   );
+}
+
+type PhotoGroup = {
+  inspectionCode: string;
+  milestoneCode: string;
+  photos: RegistersData["photos"];
+};
+
+// Arrange photos by their inspection check, preserving the newest-first order
+// each group first appears in.
+function groupByInspection(photos: RegistersData["photos"]): PhotoGroup[] {
+  const groups = new Map<string, PhotoGroup>();
+  for (const p of photos) {
+    let g = groups.get(p.inspectionCode);
+    if (!g) {
+      g = {
+        inspectionCode: p.inspectionCode,
+        milestoneCode: p.milestoneCode,
+        photos: [],
+      };
+      groups.set(p.inspectionCode, g);
+    }
+    g.photos.push(p);
+  }
+  return Array.from(groups.values());
 }
 
 // Two-click confirm so a destructive delete can't happen on a single tap.

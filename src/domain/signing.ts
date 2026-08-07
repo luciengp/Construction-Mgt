@@ -112,6 +112,9 @@ export interface RecordWrite {
   cmSignedBy: string | null;
   cmSignedAt: string | null;
   checks: Check[];
+  /** This-party answers stored on their own side; the other side preserved. */
+  contractorChecks: Check[] | null;
+  cmChecks: Check[] | null;
   notes: string | null;
   area: string | null;
   hiddenRelease: HiddenRelease;
@@ -167,6 +170,8 @@ function freshRecord(
     signoff: side === "contractor" ? "AWAITING_CM" : "AWAITING_CONTRACTOR",
     ...signatureFields(side, signer.userId, now),
     checks: submission.checks,
+    contractorChecks: side === "contractor" ? submission.checks : null,
+    cmChecks: side === "cm" ? submission.checks : null,
     notes: submission.notes,
     area: submission.area,
     hiddenRelease: computeHiddenRelease(
@@ -263,6 +268,12 @@ export function decideSubmit(
         cmSignedBy: side === "cm" ? sig.cmSignedBy : activeRecord.cmSignedBy,
         cmSignedAt: side === "cm" ? sig.cmSignedAt : activeRecord.cmSignedAt,
         checks: submission.checks,
+        contractorChecks:
+          side === "contractor"
+            ? submission.checks
+            : (activeRecord.contractorChecks ?? null),
+        cmChecks:
+          side === "cm" ? submission.checks : (activeRecord.cmChecks ?? null),
         notes: submission.notes,
         area: submission.area,
         hiddenRelease: computeHiddenRelease(
@@ -312,6 +323,12 @@ export function decideSubmit(
       cmSignedBy: side === "cm" ? sig.cmSignedBy : activeRecord.cmSignedBy,
       cmSignedAt: side === "cm" ? sig.cmSignedAt : activeRecord.cmSignedAt,
       checks: submission.checks,
+      contractorChecks:
+        side === "contractor"
+          ? submission.checks
+          : (activeRecord.contractorChecks ?? null),
+      cmChecks:
+        side === "cm" ? submission.checks : (activeRecord.cmChecks ?? null),
       notes: submission.notes ?? activeRecord.notes,
       area: submission.area ?? activeRecord.area,
       hiddenRelease: computeHiddenRelease(

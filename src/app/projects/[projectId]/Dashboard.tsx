@@ -190,16 +190,14 @@ function MilestoneGate({
           {inspections.map((i) => {
             const ib = inspectionBadge(i);
             return (
-              <li key={i.code}>
+              <li key={i.code} className="flex items-center gap-2 pr-3 hover:bg-slate-50">
                 <Link
                   href={
                     canSign
                       ? `/projects/${projectId}/inspections/${i.code}`
-                      : "#"
+                      : `/projects/${projectId}/inspections/${i.code}/report`
                   }
-                  className={`flex items-center gap-3 px-4 py-3 ${
-                    canSign ? "hover:bg-slate-50" : "cursor-default"
-                  }`}
+                  className="flex min-w-0 flex-1 items-center gap-3 px-4 py-3"
                 >
                   <span className={`h-2 w-2 shrink-0 rounded-full ${TONE_DOT[ib.tone]}`} />
                   <div className="min-w-0 flex-1">
@@ -225,6 +223,13 @@ function MilestoneGate({
                   >
                     {ib.label}
                   </span>
+                </Link>
+                <Link
+                  href={`/projects/${projectId}/inspections/${i.code}/report`}
+                  className="shrink-0 rounded-lg border border-slate-200 px-2 py-1 text-[11px] font-medium text-navy"
+                  title="View Contractor vs CM report"
+                >
+                  Report
                 </Link>
               </li>
             );

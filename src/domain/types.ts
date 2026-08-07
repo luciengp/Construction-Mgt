@@ -22,6 +22,8 @@ export type CheckState = "pass" | "fail" | "na";
 export interface Check {
   text: string;
   state: CheckState;
+  /** Optional per-check note from the signing party. */
+  note?: string;
 }
 
 /** Result ranking per Section 4.2 — a countersigner may only downgrade. */
@@ -61,5 +63,8 @@ export interface RecordSnapshot {
   notes: string | null;
   hiddenRelease: HiddenRelease;
   checks: Check[];
+  /** Each party's own answers, preserved so both can be shown side by side. */
+  contractorChecks?: Check[] | null;
+  cmChecks?: Check[] | null;
   ncrId: string | null;
 }

@@ -43,17 +43,21 @@ export async function performInspectionSubmit(
     supabase.from("checklist_items").select("seq, text").eq("inspection_id", insp.id).order("seq"),
     supabase
       .from("inspection_records")
-      .select("id, result, signoff, contractor_signed_by, contractor_signed_at, cm_signed_by, cm_signed_at, area, notes, hidden_release, checks, ncr_id, created_at")
+      .select("id, result, signoff, contractor_signed_by, contractor_signed_at, cm_signed_by, cm_signed_at, area, notes, hidden_release, checks, contractor_checks, cm_checks, ncr_id, created_at")
       .eq("project_id", projectId)
       .eq("inspection_code", code),
     supabase.from("photos").select("id", { count: "exact", head: true }).eq("project_id", projectId).eq("inspection_code", code),
   ]);
 
   const checklist = (items ?? []).map((i) => ({ seq: i.seq, text: i.text }));
-  const checks: Check[] = checklist.map((item) => ({
-    text: item.text,
-    state: payload.checkStates[String(item.seq)] ?? "na",
-  }));
+  const checks: Check[] = checklist.map((item) => {
+    const note = (payload.checkNotes?.[String(item.seq)] ?? "").trim();
+    return {
+      text: item.text,
+      state: payload.checkStates[String(item.seq)] ?? "na",
+      ...(note ? { note } : {}),
+    };
+  });
 
   const recordsRaw: (RecordSnapshot & { createdAt: string })[] = (records ?? []).map((r) => ({
     id: r.id,
@@ -67,6 +71,8 @@ export async function performInspectionSubmit(
     notes: r.notes,
     hiddenRelease: r.hidden_release,
     checks: (r.checks as Check[]) ?? [],
+    contractorChecks: (r.contractor_checks as Check[] | null) ?? null,
+    cmChecks: (r.cm_checks as Check[] | null) ?? null,
     ncrId: r.ncr_id,
     createdAt: r.created_at,
   }));
@@ -109,6 +115,8 @@ export async function performInspectionSubmit(
     notes: w.notes,
     hidden_release: w.hiddenRelease,
     checks: w.checks,
+    contractor_checks: w.contractorChecks,
+    cm_checks: w.cmChecks,
   };
 
   let recordId: string;

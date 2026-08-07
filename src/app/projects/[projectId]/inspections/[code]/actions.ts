@@ -17,14 +17,18 @@ export interface SubmitResult {
 
 function payloadFromForm(formData: FormData): SubmitPayload {
   const checkStates: Record<string, CheckState> = {};
+  const checkNotes: Record<string, string> = {};
   Array.from(formData.entries()).forEach(([k, v]) => {
     if (k.startsWith("check_")) {
       checkStates[k.slice("check_".length)] = String(v) as CheckState;
+    } else if (k.startsWith("note_")) {
+      checkNotes[k.slice("note_".length)] = String(v);
     }
   });
   return {
     result: String(formData.get("result") ?? "") as Result,
     checkStates,
+    checkNotes,
     notes: formData.get("notes")?.toString() ?? null,
     area: formData.get("area")?.toString() ?? null,
     releaseToCover: formData.get("releaseToCover") === "on",
@@ -75,10 +79,14 @@ export async function saveDraft(
     .eq("inspection_id", insp.id)
     .order("seq");
   const payload = payloadFromForm(formData);
-  const checks = (items ?? []).map((i) => ({
-    text: i.text,
-    state: payload.checkStates[String(i.seq)] ?? "na",
-  }));
+  const checks = (items ?? []).map((i) => {
+    const note = (payload.checkNotes[String(i.seq)] ?? "").trim();
+    return {
+      text: i.text,
+      state: payload.checkStates[String(i.seq)] ?? "na",
+      ...(note ? { note } : {}),
+    };
+  });
 
   await supabase.from("drafts").upsert(
     {

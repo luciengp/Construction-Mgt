@@ -14,12 +14,15 @@ import type { CheckState, Result } from "@/domain/types";
 function payloadFromForm(form: HTMLFormElement): SubmitPayload {
   const fd = new FormData(form);
   const checkStates: Record<string, CheckState> = {};
+  const checkNotes: Record<string, string> = {};
   Array.from(fd.entries()).forEach(([k, v]) => {
     if (k.startsWith("check_")) checkStates[k.slice(6)] = String(v) as CheckState;
+    else if (k.startsWith("note_")) checkNotes[k.slice(5)] = String(v);
   });
   return {
     result: String(fd.get("result") ?? "") as Result,
     checkStates,
+    checkNotes,
     notes: fd.get("notes")?.toString() ?? null,
     area: fd.get("area")?.toString() ?? null,
     releaseToCover: fd.get("releaseToCover") === "on",
@@ -57,12 +60,20 @@ function PrimaryButton({ label }: { label: string }) {
 
 export function InspectionForm({ detail }: { detail: InspectionDetail }) {
   const prefill = detail.draft ?? detail.activeRecord ?? null;
+  // Prefill this party's own answers/notes: prefer a draft, else this side's
+  // previously stored checks, else the effective checks.
+  const myPrefill =
+    detail.draft?.checks ?? detail.myChecks ?? detail.activeRecord?.checks ?? null;
   const initialChecks: Record<number, CheckState> = {};
+  const initialNotes: Record<number, string> = {};
   detail.checklist.forEach((item, idx) => {
-    initialChecks[item.seq] = prefill?.checks?.[idx]?.state ?? "na";
+    initialChecks[item.seq] = myPrefill?.[idx]?.state ?? "na";
+    initialNotes[item.seq] = myPrefill?.[idx]?.note ?? "";
   });
 
   const [checks, setChecks] = useState<Record<number, CheckState>>(initialChecks);
+  const [checkNotes, setCheckNotes] =
+    useState<Record<number, string>>(initialNotes);
   const [result, setResult] = useState<Result | "">(
     (detail.activeRecord?.result as Result) ?? ""
   );
@@ -164,28 +175,52 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
 
       {/* Checklist */}
       <div className="space-y-2">
-        {detail.checklist.map((item) => (
-          <div key={item.seq} className="rounded-xl bg-white p-3 shadow-sm">
-            <p className="mb-2 text-sm text-slate-700">{item.text}</p>
-            <input type="hidden" name={`check_${item.seq}`} value={checks[item.seq]} />
-            <div className="grid grid-cols-3 gap-1.5">
-              {CHECK_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  disabled={readOnly}
-                  data-on={checks[item.seq] === opt.value}
-                  onClick={() =>
-                    setChecks((c) => ({ ...c, [item.seq]: opt.value }))
-                  }
-                  className={`rounded-lg border border-slate-200 py-2 text-sm font-medium text-slate-600 ${opt.tone}`}
-                >
-                  {opt.label}
-                </button>
-              ))}
+        {detail.checklist.map((item) => {
+          const otherNote = detail.otherChecks?.[
+            detail.checklist.indexOf(item)
+          ]?.note;
+          return (
+            <div key={item.seq} className="rounded-xl bg-white p-3 shadow-sm">
+              <p className="mb-2 text-sm text-slate-700">{item.text}</p>
+              <input type="hidden" name={`check_${item.seq}`} value={checks[item.seq]} />
+              <div className="grid grid-cols-3 gap-1.5">
+                {CHECK_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    disabled={readOnly}
+                    data-on={checks[item.seq] === opt.value}
+                    onClick={() =>
+                      setChecks((c) => ({ ...c, [item.seq]: opt.value }))
+                    }
+                    className={`rounded-lg border border-slate-200 py-2 text-sm font-medium text-slate-600 ${opt.tone}`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              {otherNote && (
+                <p className="mt-2 rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs text-slate-600">
+                  <span className="font-semibold text-slate-500">
+                    {detail.role === "contractor" ? "CM" : "Contractor"} note:
+                  </span>{" "}
+                  {otherNote}
+                </p>
+              )}
+              <input
+                type="text"
+                name={`note_${item.seq}`}
+                value={checkNotes[item.seq] ?? ""}
+                onChange={(e) =>
+                  setCheckNotes((n) => ({ ...n, [item.seq]: e.target.value }))
+                }
+                disabled={readOnly}
+                placeholder="Note (optional)"
+                className="mt-2 w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs focus:border-navy focus:outline-none"
+              />
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Area */}

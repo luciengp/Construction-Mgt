@@ -48,6 +48,10 @@ export interface InspectionDetail {
   /** I have already signed this active record (self-edit available). */
   iAlreadySigned: boolean;
   draft: { checks: Check[]; notes: string | null; area: string | null } | null;
+  /** The signing party's own previously stored checks (for prefill). */
+  myChecks: Check[] | null;
+  /** The other party's stored checks (shown inline as read-only context). */
+  otherChecks: Check[] | null;
   photoCount: number;
 }
 
@@ -75,7 +79,7 @@ export async function getInspectionDetail(
       .order("seq"),
     supabase
       .from("inspection_records")
-      .select("id, result, signoff, contractor_signed_by, cm_signed_by, notes, area, hidden_release, checks, created_at")
+      .select("id, result, signoff, contractor_signed_by, cm_signed_by, notes, area, hidden_release, checks, contractor_checks, cm_checks, created_at")
       .eq("project_id", projectId)
       .eq("inspection_code", code),
     supabase
@@ -103,6 +107,8 @@ export async function getInspectionDetail(
     area: r.area,
     hiddenRelease: r.hidden_release as HiddenRelease,
     checks: (r.checks as Check[]) ?? [],
+    contractorChecks: (r.contractor_checks as Check[] | null) ?? null,
+    cmChecks: (r.cm_checks as Check[] | null) ?? null,
     createdAt: r.created_at,
   }));
 
@@ -139,6 +145,19 @@ export async function getInspectionDetail(
     | { checks?: Check[]; notes?: string | null; area?: string | null }
     | undefined;
 
+  const myChecks =
+    side === "contractor"
+      ? (active?.contractorChecks ?? null)
+      : side === "cm"
+        ? (active?.cmChecks ?? null)
+        : null;
+  const otherChecks =
+    side === "contractor"
+      ? (active?.cmChecks ?? null)
+      : side === "cm"
+        ? (active?.contractorChecks ?? null)
+        : null;
+
   return {
     projectId,
     code: insp.code,
@@ -164,6 +183,8 @@ export async function getInspectionDetail(
           area: draftPayload.area ?? null,
         }
       : null,
+    myChecks,
+    otherChecks,
     photoCount: photosRes.count ?? 0,
   };
 }
