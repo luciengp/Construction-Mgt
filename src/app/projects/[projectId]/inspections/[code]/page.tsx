@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
 import { getInspectionDetail } from "@/lib/data/inspection";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { InspectionForm } from "./InspectionForm";
 
 export const dynamic = "force-dynamic";
@@ -36,12 +37,13 @@ export default async function InspectionPage({
           <Link href={`/projects/${params.projectId}`} className="text-white/80">
             ←
           </Link>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h1 className="truncate text-sm font-semibold">
               {detail.code} · {detail.milestoneCode}
             </h1>
             <p className="truncate text-xs text-white/60">{detail.name}</p>
           </div>
+          <LanguageToggle />
         </div>
       </header>
 

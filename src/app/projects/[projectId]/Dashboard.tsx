@@ -10,6 +10,8 @@ import {
   TONE_DOT,
 } from "@/lib/status";
 import { SyncManager } from "@/components/SyncManager";
+import { useDict } from "@/lib/i18n/LanguageProvider";
+import type { Dict } from "@/lib/i18n/dictionaries";
 
 type Filter =
   | "all"
@@ -19,13 +21,13 @@ type Filter =
   | "hidden"
   | "hold";
 
-const FILTERS: { key: Filter; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "failed", label: "Failed" },
-  { key: "awaiting", label: "Awaiting sign-off" },
-  { key: "outstanding", label: "Outstanding" },
-  { key: "hidden", label: "Hidden works" },
-  { key: "hold", label: "Hold points" },
+const FILTER_KEYS: { key: Filter; label: keyof Dict["dashboard"] }[] = [
+  { key: "all", label: "filterAll" },
+  { key: "failed", label: "filterFailed" },
+  { key: "awaiting", label: "filterAwaiting" },
+  { key: "outstanding", label: "filterOutstanding" },
+  { key: "hidden", label: "filterHidden" },
+  { key: "hold", label: "filterHold" },
 ];
 
 function matches(i: InspectionView, f: Filter): boolean {
@@ -71,6 +73,7 @@ export function Dashboard({
   data: DashboardData;
   role: string;
 }) {
+  const dict = useDict();
   const [filter, setFilter] = useState<Filter>("all");
   const canSign = role === "owner" || role === "cm" || role === "contractor";
 
@@ -88,21 +91,21 @@ export function Dashboard({
     <div className="space-y-5">
       <SyncManager />
       <section className="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3">
-        <Kpi value={data.kpis.passed} label="Inspections passed" tone="text-status-pass" />
-        <Kpi value={data.kpis.failedOrNcr} label="Failed / NCR open" tone="text-status-fail" />
-        <Kpi value={data.kpis.awaitingSignoff} label="Awaiting sign-off" tone="text-[#8a6100]" />
-        <Kpi value={data.kpis.hiddenToRelease} label="Hidden works to release" tone="text-navy" />
+        <Kpi value={data.kpis.passed} label={dict.dashboard.kpiPassed} tone="text-status-pass" />
+        <Kpi value={data.kpis.failedOrNcr} label={dict.dashboard.kpiFailed} tone="text-status-fail" />
+        <Kpi value={data.kpis.awaitingSignoff} label={dict.dashboard.kpiAwaiting} tone="text-[#8a6100]" />
+        <Kpi value={data.kpis.hiddenToRelease} label={dict.dashboard.kpiHidden} tone="text-navy" />
         <Kpi
           value={`${data.kpis.milestonesComplete}/${data.kpis.milestonesTotal}`}
-          label="Gates ready"
+          label={dict.dashboard.kpiGates}
           tone="text-navy"
         />
-        <Kpi value={data.milestones.reduce((s,m)=>s+m.inspections.length,0)} label="Total inspections" tone="text-slate-700" />
+        <Kpi value={data.milestones.reduce((s,m)=>s+m.inspections.length,0)} label={dict.dashboard.kpiTotal} tone="text-slate-700" />
       </section>
 
       <section className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         <div className="flex gap-2 whitespace-nowrap sm:flex-wrap">
-          {FILTERS.map((f) => (
+          {FILTER_KEYS.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
@@ -112,7 +115,7 @@ export function Dashboard({
                   : "bg-white text-slate-600 shadow-sm"
               }`}
             >
-              {f.label}
+              {dict.dashboard[f.label]}
             </button>
           ))}
         </div>
@@ -121,7 +124,7 @@ export function Dashboard({
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
         {filtered.length === 0 && (
           <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm lg:col-span-2">
-            Nothing matches this filter.
+            {dict.dashboard.noMatch}
           </p>
         )}
         {filtered.map(({ milestone, insps }) => (
@@ -152,6 +155,7 @@ function MilestoneGate({
   canSign: boolean;
   defaultOpen: boolean;
 }) {
+  const dict = useDict();
   const [open, setOpen] = useState(defaultOpen);
   const badge = gateBadge(milestone.gate);
 
@@ -167,7 +171,7 @@ function MilestoneGate({
             {milestone.code} · {milestone.description}
           </p>
           <p className="text-xs text-slate-500">
-            {milestone.gate.passedCount}/{milestone.gate.totalCount} passed
+            {milestone.gate.passedCount}/{milestone.gate.totalCount} {dict.dashboard.passedOf}
             {milestone.contractValue > 0 &&
               ` · ${milestone.contractValue.toLocaleString()} THB`}
           </p>
@@ -175,7 +179,7 @@ function MilestoneGate({
         <span
           className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${TONE_CLASSES[badge.tone]}`}
         >
-          {badge.label}
+          {dict.status[badge.key]}
         </span>
       </button>
 
@@ -208,12 +212,12 @@ function MilestoneGate({
                       <span className="text-xs text-slate-400">{i.pointType}</span>
                       {i.hidden && (
                         <span className="rounded bg-navy/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-navy">
-                          Hidden
+                          {dict.dashboard.hidden}
                         </span>
                       )}
                       {i.hasDraft && (
                         <span className="rounded bg-gold/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-[#8a6100]">
-                          Draft
+                          {dict.dashboard.draft}
                         </span>
                       )}
                     </div>
@@ -221,15 +225,15 @@ function MilestoneGate({
                   <span
                     className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${TONE_CLASSES[ib.tone]}`}
                   >
-                    {ib.label}
+                    {dict.status[ib.key]}
                   </span>
                 </Link>
                 <Link
                   href={`/projects/${projectId}/inspections/${i.code}/report`}
                   className="shrink-0 rounded-lg border border-slate-200 px-2 py-1 text-[11px] font-medium text-navy"
-                  title="View Contractor vs CM report"
+                  title={dict.dashboard.reportTitle}
                 >
-                  Report
+                  {dict.common.report}
                 </Link>
               </li>
             );

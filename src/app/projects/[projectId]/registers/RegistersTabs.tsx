@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import type { RegistersData } from "@/lib/data/registers";
+import { useDict } from "@/lib/i18n/LanguageProvider";
 import { deleteRecord, deletePhoto } from "./actions";
 
 type Tab = "log" | "ncrs" | "defects" | "photos";
@@ -22,13 +23,14 @@ export function RegistersTabs({
   projectId: string;
   canManage: boolean;
 }) {
+  const dict = useDict();
   const [tab, setTab] = useState<Tab>("log");
 
   const tabs: { key: Tab; label: string; count: number }[] = [
-    { key: "log", label: "Log", count: data.log.length },
-    { key: "ncrs", label: "NCRs", count: data.ncrs.length },
-    { key: "defects", label: "Defects", count: data.defects.length },
-    { key: "photos", label: "Photos", count: data.photos.length },
+    { key: "log", label: dict.registers.tabLog, count: data.log.length },
+    { key: "ncrs", label: dict.registers.tabNcrs, count: data.ncrs.length },
+    { key: "defects", label: dict.registers.tabDefects, count: data.defects.length },
+    { key: "photos", label: dict.registers.tabPhotos, count: data.photos.length },
   ];
 
   return (
@@ -49,7 +51,7 @@ export function RegistersTabs({
       </div>
 
       {tab === "log" && (
-        <Section empty={data.log.length === 0} emptyText="No inspection records yet.">
+        <Section empty={data.log.length === 0} emptyText={dict.registers.logEmpty}>
           {data.log.map((e) => (
             <div key={e.id} className="flex items-center gap-3 p-3">
               <Link
@@ -63,11 +65,11 @@ export function RegistersTabs({
                   {e.milestoneCode} · {e.signoff}
                   {" · "}
                   <span className={e.contractorSigned ? "text-status-pass" : "text-slate-400"}>
-                    {e.contractorSigned ? "Contractor ✓" : "Contractor –"}
+                    {dict.registers.contractor} {e.contractorSigned ? "✓" : "–"}
                   </span>
                   {"  "}
                   <span className={e.cmSigned ? "text-status-pass" : "text-slate-400"}>
-                    {e.cmSigned ? "CM ✓" : "CM –"}
+                    {dict.registers.cm} {e.cmSigned ? "✓" : "–"}
                   </span>
                   {" · "}
                   {new Date(e.createdAt).toLocaleDateString()}
@@ -82,11 +84,12 @@ export function RegistersTabs({
                 href={`/projects/${projectId}/inspections/${e.inspectionCode}/report`}
                 className="shrink-0 rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-navy"
               >
-                Report
+                {dict.common.report}
               </Link>
               {canManage && (
                 <ConfirmDelete
-                  label="Delete"
+                  label={dict.registers.delete}
+                  confirmLabel={dict.registers.confirmDelete}
                   onConfirm={() => deleteRecord(projectId, e.id)}
                 />
               )}
@@ -96,7 +99,7 @@ export function RegistersTabs({
       )}
 
       {tab === "ncrs" && (
-        <Section empty={data.ncrs.length === 0} emptyText="No NCRs raised. 🎉">
+        <Section empty={data.ncrs.length === 0} emptyText={dict.registers.ncrsEmpty}>
           {data.ncrs.map((n) => (
             <div key={n.seq} className="p-3">
               <div className="flex items-center justify-between">
@@ -110,7 +113,7 @@ export function RegistersTabs({
               </div>
               <p className="mt-1 whitespace-pre-wrap text-xs text-slate-600">{n.description}</p>
               {n.dueDate && (
-                <p className="mt-1 text-xs text-slate-400">Due {n.dueDate}</p>
+                <p className="mt-1 text-xs text-slate-400">{dict.registers.due} {n.dueDate}</p>
               )}
             </div>
           ))}
@@ -118,7 +121,7 @@ export function RegistersTabs({
       )}
 
       {tab === "defects" && (
-        <Section empty={data.defects.length === 0} emptyText="No defects logged.">
+        <Section empty={data.defects.length === 0} emptyText={dict.registers.defectsEmpty}>
           {data.defects.map((d) => (
             <div key={d.seq} className="flex items-start gap-3 p-3">
               <span className="mt-0.5 shrink-0 rounded bg-navy/10 px-1.5 py-0.5 text-[10px] font-bold text-navy">
@@ -142,7 +145,7 @@ export function RegistersTabs({
         <div className="space-y-5">
           {data.photos.length === 0 ? (
             <p className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-sm">
-              No photos uploaded yet.
+              {dict.registers.photosEmpty}
             </p>
           ) : (
             groupByInspection(data.photos).map((group) => (
@@ -151,15 +154,17 @@ export function RegistersTabs({
                   <h3 className="text-sm font-semibold text-navy">
                     {group.inspectionCode}
                     <span className="ml-2 text-xs font-normal text-slate-400">
-                      {group.milestoneCode} · {group.photos.length} photo
-                      {group.photos.length === 1 ? "" : "s"}
+                      {group.milestoneCode} · {group.photos.length}{" "}
+                      {group.photos.length === 1
+                        ? dict.registers.photoCount
+                        : dict.registers.photosCount}
                     </span>
                   </h3>
                   <Link
                     href={`/projects/${projectId}/inspections/${group.inspectionCode}/report`}
                     className="text-xs font-medium text-navy underline"
                   >
-                    Report
+                    {dict.common.report}
                   </Link>
                 </div>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-3">
@@ -243,10 +248,12 @@ function groupByInspection(photos: RegistersData["photos"]): PhotoGroup[] {
 // Two-click confirm so a destructive delete can't happen on a single tap.
 function ConfirmDelete({
   label,
+  confirmLabel = "Confirm delete",
   onConfirm,
   compact,
 }: {
   label: string;
+  confirmLabel?: string;
   onConfirm: () => void | Promise<void>;
   compact?: boolean;
 }) {
@@ -277,7 +284,7 @@ function ConfirmDelete({
             : "border-status-fail/40 text-status-fail"
       }`}
     >
-      {armed ? (compact ? "✓?" : "Confirm delete") : label}
+      {armed ? (compact ? "✓?" : confirmLabel) : label}
     </button>
   );
 }

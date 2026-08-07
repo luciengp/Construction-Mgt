@@ -10,6 +10,8 @@ import { SyncManager } from "@/components/SyncManager";
 import type { SubmitPayload } from "@/lib/inspection/types";
 import type { InspectionDetail } from "@/lib/data/inspection";
 import type { CheckState, Result } from "@/domain/types";
+import { useDict } from "@/lib/i18n/LanguageProvider";
+import type { Dict } from "@/lib/i18n/dictionaries";
 
 function payloadFromForm(form: HTMLFormElement): SubmitPayload {
   const fd = new FormData(form);
@@ -29,22 +31,30 @@ function payloadFromForm(form: HTMLFormElement): SubmitPayload {
   };
 }
 
-const PRIMARY_LABEL: Record<string, string> = {
-  submit: "Submit",
-  countersign: "Countersign",
-  self_edit: "Update my entry",
-  reinspect: "Submit re-inspection",
-  read_only: "",
-};
+function primaryLabelFor(mode: string, d: Dict): string {
+  switch (mode) {
+    case "submit":
+      return d.inspection.submit;
+    case "countersign":
+      return d.inspection.countersign;
+    case "self_edit":
+      return d.inspection.updateEntry;
+    case "reinspect":
+      return d.inspection.reinspect;
+    default:
+      return "";
+  }
+}
 
-const CHECK_OPTIONS: { value: CheckState; label: string; tone: string }[] = [
-  { value: "pass", label: "Pass", tone: "data-[on=true]:bg-status-pass data-[on=true]:text-white" },
-  { value: "fail", label: "Fail", tone: "data-[on=true]:bg-status-fail data-[on=true]:text-white" },
-  { value: "na", label: "N/A", tone: "data-[on=true]:bg-slate-500 data-[on=true]:text-white" },
-];
+const CHECK_TONES: Record<CheckState, string> = {
+  pass: "data-[on=true]:bg-status-pass data-[on=true]:text-white",
+  fail: "data-[on=true]:bg-status-fail data-[on=true]:text-white",
+  na: "data-[on=true]:bg-slate-500 data-[on=true]:text-white",
+};
 
 function PrimaryButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
+  const dict = useDict();
   return (
     <button
       type="submit"
@@ -53,12 +63,18 @@ function PrimaryButton({ label }: { label: string }) {
       disabled={pending}
       className="w-full rounded-xl bg-navy py-4 text-base font-semibold text-white transition-colors hover:bg-navy-light disabled:opacity-40"
     >
-      {pending ? "Saving…" : label}
+      {pending ? `${dict.common.loading}` : label}
     </button>
   );
 }
 
 export function InspectionForm({ detail }: { detail: InspectionDetail }) {
+  const dict = useDict();
+  const checkOptions: { value: CheckState; label: string; tone: string }[] = [
+    { value: "pass", label: dict.inspection.pass, tone: CHECK_TONES.pass },
+    { value: "fail", label: dict.inspection.fail, tone: CHECK_TONES.fail },
+    { value: "na", label: dict.inspection.na, tone: CHECK_TONES.na },
+  ];
   const prefill = detail.draft ?? detail.activeRecord ?? null;
   // Prefill this party's own answers/notes: prefer a draft, else this side's
   // previously stored checks, else the effective checks.
@@ -93,7 +109,7 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
   const [queued, setQueued] = useState(false);
 
   const readOnly = detail.formMode === "read_only";
-  const primaryLabel = PRIMARY_LABEL[detail.formMode];
+  const primaryLabel = primaryLabelFor(detail.formMode, dict);
   const belowMin = photoCount < detail.minPhotos;
 
   // Offline intercept: when the primary submit fires with no connectivity,
@@ -118,17 +134,13 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
         <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-status-warn/20 text-xl">
           ⏳
         </div>
-        <h2 className="mb-1 text-lg font-semibold text-navy">Saved offline</h2>
-        <p className="mb-5 text-sm text-slate-600">
-          No signal right now. This sign-off is queued on your device and will
-          submit automatically when you&apos;re back online — your work is not
-          lost.
-        </p>
+        <h2 className="mb-1 text-lg font-semibold text-navy">{dict.inspection.savedOffline}</h2>
+        <p className="mb-5 text-sm text-slate-600">{dict.inspection.savedOfflineBody}</p>
         <Link
           href={`/projects/${detail.projectId}`}
           className="inline-block rounded-xl bg-navy px-6 py-3 text-sm font-semibold text-white"
         >
-          Back to dashboard
+          {dict.inspection.backToDashboard}
         </Link>
       </div>
     );
@@ -139,37 +151,28 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
       <SyncManager />
       {/* Banners */}
       {detail.awaitingMyCountersignature && (
-        <Banner tone="warn">
-          The other party has signed. Review and <strong>countersign</strong> —
-          you may only confirm or downgrade the result.
-        </Banner>
+        <Banner tone="warn">{dict.inspection.bannerCountersign}</Banner>
       )}
       {detail.iAlreadySigned && (
-        <Banner tone="neutral">
-          You have already signed this record; it is awaiting the other party.
-          Saving again updates your entry.
-        </Banner>
+        <Banner tone="neutral">{dict.inspection.bannerAlreadySigned}</Banner>
       )}
       {detail.formMode === "reinspect" && (
-        <Banner tone="neutral">
-          This inspection is complete. Submitting starts a{" "}
-          <strong>re-inspection</strong>; the previous record is kept as history.
-        </Banner>
+        <Banner tone="neutral">{dict.inspection.bannerReinspect}</Banner>
       )}
-      {detail.draft && (
-        <Banner tone="warn">A saved draft is in progress. It was loaded below.</Banner>
-      )}
+      {detail.draft && <Banner tone="warn">{dict.inspection.bannerDraft}</Banner>}
 
       {/* Identity */}
       <div className="rounded-xl bg-white p-4 text-sm shadow-sm">
         <p className="text-slate-500">
-          Signing as{" "}
+          {dict.inspection.signingAs}{" "}
           <span className="font-semibold text-navy">
-            {detail.role === "contractor" ? "Contractor" : "Construction Manager (CM side)"}
+            {detail.role === "contractor"
+              ? dict.inspection.contractor
+              : dict.inspection.cmSide}
           </span>
         </p>
         {detail.tests && (
-          <p className="mt-1 text-xs text-slate-400">Tests: {detail.tests}</p>
+          <p className="mt-1 text-xs text-slate-400">{dict.inspection.tests}: {detail.tests}</p>
         )}
       </div>
 
@@ -184,7 +187,7 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
               <p className="mb-2 text-sm text-slate-700">{item.text}</p>
               <input type="hidden" name={`check_${item.seq}`} value={checks[item.seq]} />
               <div className="grid grid-cols-3 gap-1.5">
-                {CHECK_OPTIONS.map((opt) => (
+                {checkOptions.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
@@ -202,7 +205,9 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
               {otherNote && (
                 <p className="mt-2 rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs text-slate-600">
                   <span className="font-semibold text-slate-500">
-                    {detail.role === "contractor" ? "CM" : "Contractor"} note:
+                    {detail.role === "contractor"
+                      ? dict.inspection.cmNote
+                      : dict.inspection.contractorNote}
                   </span>{" "}
                   {otherNote}
                 </p>
@@ -215,7 +220,7 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
                   setCheckNotes((n) => ({ ...n, [item.seq]: e.target.value }))
                 }
                 disabled={readOnly}
-                placeholder="Note (optional)"
+                placeholder={dict.inspection.noteOptional}
                 className="mt-2 w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs focus:border-navy focus:outline-none"
               />
             </div>
@@ -225,7 +230,7 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
 
       {/* Area */}
       <label className="block text-sm font-medium text-slate-700">
-        Area / location
+        {dict.inspection.areaLabel}
         <input
           type="text"
           name="area"
@@ -240,12 +245,13 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
       <div className="rounded-xl bg-white p-4 shadow-sm">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-sm font-medium text-slate-700">
-            Photos {detail.hidden && <span className="text-navy">(hidden work)</span>}
+            {dict.inspection.photos}{" "}
+            {detail.hidden && <span className="text-navy">{dict.inspection.hiddenWork}</span>}
           </p>
           <span
             className={`text-xs font-semibold ${belowMin ? "text-status-warn" : "text-status-pass"}`}
           >
-            {photoCount} / min {detail.minPhotos}
+            {photoCount} / {dict.inspection.minPhotos} {detail.minPhotos}
           </span>
         </div>
         <PhotoUploader
@@ -258,16 +264,13 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
           onUploaded={() => setPhotoCount((n) => n + 1)}
         />
         {belowMin && (
-          <p className="mt-2 text-xs text-status-warn">
-            Below the photographic minimum — you can still submit, but this is
-            recorded.
-          </p>
+          <p className="mt-2 text-xs text-status-warn">{dict.inspection.belowMin}</p>
         )}
       </div>
 
       {/* Result */}
       <div className="rounded-xl bg-white p-4 shadow-sm">
-        <p className="mb-2 text-sm font-medium text-slate-700">Result</p>
+        <p className="mb-2 text-sm font-medium text-slate-700">{dict.inspection.result}</p>
         <div className="grid grid-cols-1 gap-2">
           {(["PASS", "PASS_WITH_COMMENT", "FAIL"] as Result[]).map((r) => (
             <label
@@ -285,14 +288,20 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
                 disabled={readOnly}
                 className="h-4 w-4"
               />
-              {r === "PASS" ? "Pass" : r === "PASS_WITH_COMMENT" ? "Pass with comment" : "Fail"}
+              {r === "PASS"
+                ? dict.inspection.pass
+                : r === "PASS_WITH_COMMENT"
+                  ? dict.inspection.passWithComment
+                  : dict.inspection.fail}
             </label>
           ))}
         </div>
 
         {(result === "PASS_WITH_COMMENT" || result === "FAIL") && (
           <label className="mt-3 block text-sm font-medium text-slate-700">
-            {result === "PASS_WITH_COMMENT" ? "Comment (required)" : "Notes"}
+            {result === "PASS_WITH_COMMENT"
+              ? dict.inspection.commentRequired
+              : dict.inspection.notes}
             <textarea
               name="notes"
               value={notes}
@@ -317,15 +326,13 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
             className="mt-0.5 h-5 w-5 shrink-0"
           />
           <span>
-            <strong>Release to cover.</strong> Only reads RELEASED when the record
-            is complete (both signed), the result is a pass, and this box is
-            ticked.
+            <strong>{dict.inspection.releaseTitle}</strong> {dict.inspection.releaseBody}
           </span>
         </label>
       )}
 
       {state.error && <Banner tone="fail">{state.error}</Banner>}
-      {draftState.saved && <Banner tone="pass">Draft saved.</Banner>}
+      {draftState.saved && <Banner tone="pass">{dict.inspection.draftSaved}</Banner>}
 
       {!readOnly && (
         <div className="space-y-2">
@@ -335,7 +342,7 @@ export function InspectionForm({ detail }: { detail: InspectionDetail }) {
             formAction={draftAction}
             className="w-full rounded-xl border border-slate-300 bg-white py-3 text-sm font-semibold text-slate-600"
           >
-            Save draft
+            {dict.inspection.saveDraft}
           </button>
         </div>
       )}

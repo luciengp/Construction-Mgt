@@ -3,17 +3,12 @@ import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
 import { getDashboard } from "@/lib/data/dashboard";
+import { getServerDict } from "@/lib/i18n/server";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { signOut } from "../actions";
 import { Dashboard } from "./Dashboard";
 
 export const dynamic = "force-dynamic";
-
-const ROLE_LABEL: Record<string, string> = {
-  owner: "Owner",
-  cm: "Construction Manager",
-  contractor: "Contractor",
-  viewer: "Viewer",
-};
 
 export default async function ProjectHome({
   params,
@@ -32,31 +27,36 @@ export default async function ProjectHome({
   const data = await getDashboard(params.projectId);
   if (!data) notFound();
 
+  const dict = getServerDict();
+  const roleLabel =
+    dict.role[membership.role as keyof typeof dict.role] ?? membership.role;
+
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
       <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <div className="min-w-0">
             <h1 className="truncate text-base font-semibold">{data.projectName}</h1>
             <p className="text-xs text-white/60">
-              {ROLE_LABEL[membership.role] ?? membership.role}
+              {roleLabel}
               {membership.displayName ? ` · ${membership.displayName}` : ""}
             </p>
           </div>
           <nav className="flex items-center gap-3 text-xs">
+            <LanguageToggle />
             <Link href={`/projects/${params.projectId}/registers`} className="text-white/80 underline">
-              Registers
+              {dict.nav.registers}
             </Link>
             <Link href={`/projects/${params.projectId}/payments`} className="text-white/80 underline">
-              Payments
+              {dict.nav.payments}
             </Link>
             {membership.role === "owner" && (
               <Link href={`/projects/${params.projectId}/admin`} className="text-white/80 underline">
-                Admin
+                {dict.nav.admin}
               </Link>
             )}
             <form action={signOut}>
-              <button className="text-white/80 underline">Sign out</button>
+              <button className="text-white/80 underline">{dict.common.signOut}</button>
             </form>
           </nav>
         </div>

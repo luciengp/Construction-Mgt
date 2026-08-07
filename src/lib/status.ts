@@ -1,10 +1,17 @@
 import type { GateEvaluation } from "@/domain/gates";
 import type { InspectionView } from "@/lib/data/dashboard";
+import type { Dict } from "@/lib/i18n/dictionaries";
 
 export type StatusTone = "pass" | "warn" | "fail" | "neutral";
 
+/** Key into dict.status, used to render a translated label. */
+export type StatusKey = keyof Dict["status"];
+
 export interface StatusBadge {
+  /** English fallback label. */
   label: string;
+  /** Translation key; render dict.status[key] when a dictionary is available. */
+  key: StatusKey;
   tone: StatusTone;
 }
 
@@ -25,31 +32,29 @@ export const TONE_DOT: Record<StatusTone, string> = {
 export function gateBadge(gate: GateEvaluation): StatusBadge {
   switch (gate.status) {
     case "READY":
-      return { label: "Ready for payment", tone: "pass" };
+      return { label: "Ready for payment", key: "ready", tone: "pass" };
     case "BLOCKED":
-      return { label: "Blocked", tone: "fail" };
+      return { label: "Blocked", key: "blocked", tone: "fail" };
     case "AWAITING_SIGNOFF":
-      return { label: "Awaiting sign-off", tone: "warn" };
+      return { label: "Awaiting sign-off", key: "awaiting", tone: "warn" };
     case "IN_PROGRESS":
-      return { label: "In progress", tone: "warn" };
+      return { label: "In progress", key: "inProgress", tone: "warn" };
     case "NOT_READY":
-      return { label: "Not started", tone: "neutral" };
+      return { label: "Not started", key: "notStarted", tone: "neutral" };
   }
 }
 
 export function inspectionBadge(i: InspectionView): StatusBadge {
-  if (i.hasActiveFail) return { label: "Failed", tone: "fail" };
+  if (i.hasActiveFail) return { label: "Failed", key: "failed", tone: "fail" };
   if (i.countsAsPassed) {
     return i.result === "PASS_WITH_COMMENT"
-      ? { label: "Pass (comment)", tone: "warn" }
-      : { label: "Passed", tone: "pass" };
+      ? { label: "Pass (comment)", key: "passComment", tone: "warn" }
+      : { label: "Passed", key: "passed", tone: "pass" };
   }
   if (i.awaiting) {
-    return {
-      label:
-        i.signoff === "AWAITING_CM" ? "Awaiting CM" : "Awaiting contractor",
-      tone: "warn",
-    };
+    return i.signoff === "AWAITING_CM"
+      ? { label: "Awaiting CM", key: "awaitingCm", tone: "warn" }
+      : { label: "Awaiting contractor", key: "awaitingContractor", tone: "warn" };
   }
-  return { label: "Outstanding", tone: "neutral" };
+  return { label: "Outstanding", key: "outstanding", tone: "neutral" };
 }

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
+import { getLang } from "@/lib/i18n/server";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,13 +43,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = getLang();
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ServiceWorkerRegistration />
-        {children}
+        <LanguageProvider lang={lang}>{children}</LanguageProvider>
       </body>
     </html>
   );
