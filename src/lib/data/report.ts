@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getLang, localize } from "@/lib/i18n/server";
 import { findActiveRecord } from "@/domain/signing";
 import type { Check, Result } from "@/domain/types";
 
@@ -45,10 +46,11 @@ export async function getInspectionReport(
   code: string
 ): Promise<InspectionReport | null> {
   const supabase = createClient();
+  const lang = getLang();
 
   const { data: insp } = await supabase
     .from("inspections")
-    .select("id, code, name, milestone_code, family_code, hidden, min_photos")
+    .select("id, code, name, name_th, milestone_code, family_code, hidden, min_photos")
     .eq("project_id", projectId)
     .eq("code", code)
     .single();
@@ -58,7 +60,7 @@ export async function getInspectionReport(
     supabase.from("projects").select("name").eq("id", projectId).single(),
     supabase
       .from("checklist_items")
-      .select("seq, text")
+      .select("seq, text, text_th")
       .eq("inspection_id", insp.id)
       .order("seq"),
     supabase
@@ -76,7 +78,10 @@ export async function getInspectionReport(
       .order("created_at", { ascending: true }),
   ]);
 
-  const checklist = (itemsRes.data ?? []).map((i) => ({ seq: i.seq, text: i.text }));
+  const checklist = (itemsRes.data ?? []).map((i) => ({
+    seq: i.seq,
+    text: localize(i.text, i.text_th, lang),
+  }));
 
   const recordsRaw = (recordsRes.data ?? []).map((r) => ({
     signoff: r.signoff as string,
@@ -124,7 +129,7 @@ export async function getInspectionReport(
     projectId,
     projectName: projectRes.data?.name ?? "",
     code: insp.code,
-    name: insp.name,
+    name: localize(insp.name, insp.name_th, lang),
     milestoneCode: insp.milestone_code,
     familyCode: insp.family_code,
     hidden: insp.hidden,

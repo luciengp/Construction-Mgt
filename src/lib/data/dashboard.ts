@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getLang, localize } from "@/lib/i18n/server";
 import {
   evaluateGate,
   activeRecord,
@@ -64,18 +65,19 @@ export async function getDashboard(
   projectId: string
 ): Promise<DashboardData | null> {
   const supabase = createClient();
+  const lang = getLang();
 
   const [projectRes, milestonesRes, inspectionsRes, recordsRes, ncrsRes, defectsRes, draftsRes] =
     await Promise.all([
       supabase.from("projects").select("name").eq("id", projectId).single(),
       supabase
         .from("milestones")
-        .select("code, description, sequence, contract_value, payer")
+        .select("code, description, description_th, sequence, contract_value, payer")
         .eq("project_id", projectId)
         .order("sequence"),
       supabase
         .from("inspections")
-        .select("code, name, milestone_code, family_code, point_type, hidden, min_photos")
+        .select("code, name, name_th, milestone_code, family_code, point_type, hidden, min_photos")
         .eq("project_id", projectId),
       supabase
         .from("inspection_records")
@@ -159,7 +161,7 @@ export async function getDashboard(
           gateActive.result === "PASS_WITH_COMMENT");
       return {
         code: insp.code,
-        name: insp.name,
+        name: localize(insp.name, insp.name_th, lang),
         familyCode: insp.family_code,
         pointType: insp.point_type,
         hidden: insp.hidden,
@@ -196,7 +198,7 @@ export async function getDashboard(
 
     return {
       code: m.code,
-      description: m.description,
+      description: localize(m.description, m.description_th, lang),
       sequence: m.sequence,
       contractValue: Number(m.contract_value),
       payer: m.payer,

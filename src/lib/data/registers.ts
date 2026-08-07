@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getLang, localize } from "@/lib/i18n/server";
 
 export interface LogEntry {
   id: string;
@@ -50,11 +51,12 @@ export interface RegistersData {
 
 export async function getRegisters(projectId: string): Promise<RegistersData | null> {
   const supabase = createClient();
+  const lang = getLang();
 
   const [projectRes, inspectionsRes, recordsRes, ncrsRes, defectsRes, photosRes] =
     await Promise.all([
       supabase.from("projects").select("name").eq("id", projectId).single(),
-      supabase.from("inspections").select("code, name").eq("project_id", projectId),
+      supabase.from("inspections").select("code, name, name_th").eq("project_id", projectId),
       supabase
         .from("inspection_records")
         .select("id, inspection_code, result, signoff, contractor_signed_by, cm_signed_by, created_at")
@@ -81,7 +83,10 @@ export async function getRegisters(projectId: string): Promise<RegistersData | n
   if (projectRes.error || !projectRes.data) return null;
 
   const nameByCode = new Map(
-    (inspectionsRes.data ?? []).map((i) => [i.code, i.name])
+    (inspectionsRes.data ?? []).map((i) => [
+      i.code,
+      localize(i.name, i.name_th, lang),
+    ])
   );
   const milestoneByInspection = new Map<string, string>();
   // Records don't carry milestone; look it up per inspection via a second map.

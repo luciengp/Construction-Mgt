@@ -11,3 +11,17 @@ export function getLang(): Lang {
 export function getServerDict() {
   return getDict(getLang());
 }
+
+/**
+ * Pick the locale-appropriate value for DB content that stores an English
+ * column plus an optional Thai (`*_th`) column. Falls back to English whenever
+ * the Thai translation is missing.
+ */
+export function localize(
+  en: string | null,
+  th: string | null,
+  lang: Lang
+): string {
+  if (lang === "th" && th && th.trim()) return th;
+  return en ?? "";
+}

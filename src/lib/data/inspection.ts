@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getLang, localize } from "@/lib/i18n/server";
 import { findActiveRecord } from "@/domain/signing";
 import { signingSide, type Role, type Check, type Result, type Signoff, type HiddenRelease } from "@/domain/types";
 
@@ -63,9 +64,10 @@ export async function getInspectionDetail(
 ): Promise<InspectionDetail | null> {
   const supabase = createClient();
 
+  const lang = getLang();
   const { data: insp, error } = await supabase
     .from("inspections")
-    .select("code, name, milestone_code, family_code, point_type, hidden, min_photos, tests, drawing_ref, id")
+    .select("code, name, name_th, milestone_code, family_code, point_type, hidden, min_photos, tests, tests_th, drawing_ref, id")
     .eq("project_id", projectId)
     .eq("code", code)
     .single();
@@ -74,7 +76,7 @@ export async function getInspectionDetail(
   const [itemsRes, recordsRes, draftRes, photosRes] = await Promise.all([
     supabase
       .from("checklist_items")
-      .select("seq, text")
+      .select("seq, text, text_th")
       .eq("inspection_id", insp.id)
       .order("seq"),
     supabase
@@ -95,7 +97,10 @@ export async function getInspectionDetail(
       .eq("inspection_code", code),
   ]);
 
-  const checklist = (itemsRes.data ?? []).map((i) => ({ seq: i.seq, text: i.text }));
+  const checklist = (itemsRes.data ?? []).map((i) => ({
+    seq: i.seq,
+    text: localize(i.text, i.text_th, lang),
+  }));
 
   const recordsRaw = (recordsRes.data ?? []).map((r) => ({
     id: r.id,
@@ -161,13 +166,13 @@ export async function getInspectionDetail(
   return {
     projectId,
     code: insp.code,
-    name: insp.name,
+    name: localize(insp.name, insp.name_th, lang),
     milestoneCode: insp.milestone_code,
     familyCode: insp.family_code,
     pointType: insp.point_type,
     hidden: insp.hidden,
     minPhotos: insp.min_photos,
-    tests: insp.tests,
+    tests: localize(insp.tests, insp.tests_th, lang),
     drawingRef: insp.drawing_ref,
     checklist,
     role,
