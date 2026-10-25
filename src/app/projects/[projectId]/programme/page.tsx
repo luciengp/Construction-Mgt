@@ -5,6 +5,7 @@ import { getMembershipForProject } from "@/lib/auth/membership";
 import { getProgramme, getProgrammeProgress } from "@/lib/data/programme";
 import { getServerDict } from "@/lib/i18n/server";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { signOut } from "../../actions";
 import { ProgrammeTable } from "./ProgrammeTable";
 
 export const dynamic = "force-dynamic";
@@ -28,25 +29,45 @@ export default async function ProgrammePage({
   const progress = await getProgrammeProgress(params.projectId);
 
   const dict = getServerDict();
+  const roleLabel =
+    dict.role[membership.role as keyof typeof dict.role] ?? membership.role;
   const pct = (c: { done: number; total: number } | undefined) =>
     c && c.total ? Math.round((c.done / c.total) * 100) : 0;
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
       <header className="sticky top-0 z-10 bg-navy px-4 py-3 text-white sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center gap-3">
-          <Link href={`/projects/${params.projectId}`} className="text-white/80">←</Link>
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-sm font-semibold">{dict.programme.title}</h1>
-            <p className="truncate text-xs text-white/60">{data.projectName}</p>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <Link href="/projects" className="text-white/80">←</Link>
+            <div className="min-w-0">
+              <h1 className="truncate text-base font-semibold">{data.projectName}</h1>
+              <p className="truncate text-xs text-white/60">
+                {dict.programme.title} · {roleLabel}
+                {membership.displayName ? ` · ${membership.displayName}` : ""}
+              </p>
+            </div>
           </div>
-          <LanguageToggle />
-          <Link
-            href={`/projects/${params.projectId}/registers`}
-            className="text-xs text-white/80 underline"
-          >
-            {dict.nav.registers}
-          </Link>
+          <nav className="flex items-center gap-3 text-xs">
+            <LanguageToggle />
+            <Link href={`/projects/${params.projectId}/overview`} className="text-white/80 underline">
+              {dict.nav.overview}
+            </Link>
+            <Link href={`/projects/${params.projectId}/registers`} className="text-white/80 underline">
+              {dict.nav.registers}
+            </Link>
+            <Link href={`/projects/${params.projectId}/payments`} className="text-white/80 underline">
+              {dict.nav.payments}
+            </Link>
+            {membership.role === "owner" && (
+              <Link href={`/projects/${params.projectId}/admin`} className="text-white/80 underline">
+                {dict.nav.admin}
+              </Link>
+            )}
+            <form action={signOut}>
+              <button className="text-white/80 underline">{dict.common.signOut}</button>
+            </form>
+          </nav>
         </div>
       </header>
 

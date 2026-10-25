@@ -17,6 +17,7 @@ const en = {
     payments: "Payments",
     admin: "Admin",
     programme: "Programme",
+    overview: "Overview",
   },
   role: {
     owner: "Owner",
@@ -192,6 +193,7 @@ const th: Dict = {
     payments: "การชำระเงิน",
     admin: "ผู้ดูแลระบบ",
     programme: "แผนงาน",
+    overview: "ภาพรวม",
   },
   role: {
     owner: "เจ้าของโครงการ",
