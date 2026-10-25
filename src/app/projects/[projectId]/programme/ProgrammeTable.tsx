@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useDict } from "@/lib/i18n/LanguageProvider";
 import { saveContractorTracking, saveCmTracking, saveElement } from "./actions";
 import type { ProgrammeData, ProgrammeRow } from "@/lib/data/programme";
@@ -285,7 +286,15 @@ export function ProgrammeTable({
                                 onChange={(ev) => set(r.code, { remarks: ev.target.value })}
                                 onBlur={() => canM && saveM(r.code)} placeholder="…" />
                             </td>
-                            <td className="px-2 py-1.5 text-center align-top">{appChip(r)}</td>
+                            <td className="px-2 py-1.5 text-center align-top">
+                              <Link
+                                href={`/projects/${projectId}/inspections/${r.code}`}
+                                className="inline-flex flex-col items-center gap-1 rounded-lg border border-navy/25 px-2.5 py-1 hover:bg-navy/5"
+                              >
+                                {appChip(r)}
+                                <span className="text-[10px] font-semibold text-navy">{dict.programme.open} →</span>
+                              </Link>
+                            </td>
                           </tr>
                           {isOpen &&
                             r.elements.map((el) => {

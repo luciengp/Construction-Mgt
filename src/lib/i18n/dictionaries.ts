@@ -173,6 +173,7 @@ const en = {
     inspectionsDone: "Inspections passed",
     elementsDone: "Elements checked",
     exportExcel: "Export to Excel",
+    open: "Open / inspect",
   },
 };
 
@@ -347,6 +348,7 @@ const th: Dict = {
     inspectionsDone: "การตรวจที่ผ่าน",
     elementsDone: "องค์ประกอบที่ตรวจแล้ว",
     exportExcel: "ส่งออกเป็น Excel",
+    open: "เปิด / ตรวจ",
   },
 };
 
