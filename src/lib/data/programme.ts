@@ -3,12 +3,25 @@ import { getLang, localize } from "@/lib/i18n/server";
 import { findActiveRecord } from "@/domain/signing";
 import type { Result } from "@/domain/types";
 
+export interface ProgrammeElement {
+  elementId: string;
+  category: string;
+  elementType: string | null;
+  label: string | null;
+  qty: number;
+  contractorResult: string | null;
+  contractorRemarks: string | null;
+  cmResult: string | null;
+  cmRemarks: string | null;
+}
+
 export interface ProgrammeRow {
   code: string;
   name: string;
   pointType: "HOLD" | "WITNESS" | "SURVEILLANCE" | "RECORDS";
   hidden: boolean;
   scheduleSeq: number;
+  elements: ProgrammeElement[];
   // contractor-maintained
   plannedDate: string | null;
   actualDate: string | null;
@@ -49,7 +62,7 @@ export async function getProgramme(
   const supabase = createClient();
   const lang = getLang();
 
-  const [projectRes, phasesRes, trackRes, inspRes, recordsRes] =
+  const [projectRes, phasesRes, trackRes, inspRes, recordsRes, elemRes] =
     await Promise.all([
       supabase.from("projects").select("name").eq("id", projectId).single(),
       supabase
@@ -71,9 +84,34 @@ export async function getProgramme(
         .from("inspection_records")
         .select("inspection_code, result, signoff, created_at")
         .eq("project_id", projectId),
+      supabase
+        .from("elements")
+        .select(
+          "inspection_code, element_id, category, element_type, label, qty, contractor_result, contractor_remarks, cm_result, cm_remarks, sort_order"
+        )
+        .eq("project_id", projectId)
+        .order("sort_order"),
     ]);
 
   if (projectRes.error || !projectRes.data) return null;
+
+  // elements grouped by inspection code
+  const elemByCode = new Map<string, ProgrammeElement[]>();
+  for (const el of elemRes.data ?? []) {
+    const e: ProgrammeElement = {
+      elementId: el.element_id,
+      category: el.category,
+      elementType: el.element_type,
+      label: el.label,
+      qty: el.qty ?? 1,
+      contractorResult: el.contractor_result,
+      contractorRemarks: el.contractor_remarks,
+      cmResult: el.cm_result,
+      cmRemarks: el.cm_remarks,
+    };
+    if (!elemByCode.has(el.inspection_code)) elemByCode.set(el.inspection_code, []);
+    elemByCode.get(el.inspection_code)!.push(e);
+  }
 
   const inspByCode = new Map(
     (inspRes.data ?? []).map((i) => [i.code, i])
@@ -117,6 +155,7 @@ export async function getProgramme(
       pointType: insp.point_type,
       hidden: insp.hidden,
       scheduleSeq: (t.schedule_seq as number) ?? 0,
+      elements: elemByCode.get(t.inspection_code) ?? [],
       plannedDate: t.planned_date,
       actualDate: t.actual_date,
       completionDate: t.completion_date,

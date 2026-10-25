@@ -165,6 +165,10 @@ const en = {
     saving: "Saving…",
     saved: "Saved",
     readOnlyNote: "Read-only — only the Contractor and CM can edit their columns.",
+    items: "items",
+    contractor: "Contractor",
+    cm: "CM",
+    remark: "Remark",
   },
 };
 
@@ -331,6 +335,10 @@ const th: Dict = {
     saving: "กำลังบันทึก…",
     saved: "บันทึกแล้ว",
     readOnlyNote: "อ่านอย่างเดียว — เฉพาะผู้รับเหมาและ CM เท่านั้นที่แก้ไขคอลัมน์ของตนได้",
+    items: "รายการ",
+    contractor: "ผู้รับเหมา",
+    cm: "CM",
+    remark: "หมายเหตุ",
   },
 };
 

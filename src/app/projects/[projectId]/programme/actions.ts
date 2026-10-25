@@ -61,6 +61,48 @@ export async function saveContractorTracking(
 
 const RESULTS = ["PASS", "FAIL", "PASS_WITH_COMMENT", "NA"];
 
+// A single element's pass/fail + remark, for one party.
+export async function saveElement(
+  projectId: string,
+  elementId: string,
+  party: "contractor" | "cm",
+  result: string | null,
+  remarks: string | null
+): Promise<TrackingResult> {
+  const roles: Role[] =
+    party === "contractor" ? ["contractor", "owner"] : ["cm", "owner"];
+  const guard = await requireRole(projectId, roles);
+  if (!guard.ok) return { ok: false, error: guard.error };
+  const r = clean(result);
+  if (r !== null && !RESULTS.includes(r)) {
+    return { ok: false, error: "Invalid result." };
+  }
+  const now = new Date().toISOString();
+  const patch =
+    party === "contractor"
+      ? {
+          contractor_result: r,
+          contractor_remarks: clean(remarks),
+          contractor_by: guard.userId,
+          contractor_at: now,
+        }
+      : {
+          cm_result: r,
+          cm_remarks: clean(remarks),
+          cm_by: guard.userId,
+          cm_at: now,
+        };
+  const supabase = createClient();
+  const { error } = await supabase
+    .from("elements")
+    .update(patch)
+    .eq("project_id", projectId)
+    .eq("element_id", elementId);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath(`/projects/${projectId}/programme`);
+  return { ok: true, error: null };
+}
+
 // CM columns: check date, result, remarks.
 export async function saveCmTracking(
   projectId: string,

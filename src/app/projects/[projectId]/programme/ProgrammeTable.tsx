@@ -2,9 +2,11 @@
 
 import { useState, useTransition } from "react";
 import { useDict } from "@/lib/i18n/LanguageProvider";
-import { saveContractorTracking, saveCmTracking } from "./actions";
+import { saveContractorTracking, saveCmTracking, saveElement } from "./actions";
 import type { ProgrammeData, ProgrammeRow } from "@/lib/data/programme";
 import type { Role } from "@/domain/types";
+
+type ElemEdit = { cResult: string; cRemarks: string; mResult: string; mRemarks: string };
 
 type Editable = {
   planned: string;
@@ -58,11 +60,47 @@ export function ProgrammeTable({
           };
     return m;
   });
+  const [elemState, setElemState] = useState<Record<string, ElemEdit>>(() => {
+    const m: Record<string, ElemEdit> = {};
+    for (const p of data.phases)
+      for (const a of p.activities)
+        for (const r of a.rows)
+          for (const el of r.elements)
+            m[el.elementId] = {
+              cResult: el.contractorResult ?? "",
+              cRemarks: el.contractorRemarks ?? "",
+              mResult: el.cmResult ?? "",
+              mRemarks: el.cmRemarks ?? "",
+            };
+    return m;
+  });
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();
   const [savedCode, setSavedCode] = useState<string | null>(null);
 
   const set = (code: string, patch: Partial<Editable>) =>
     setState((s) => ({ ...s, [code]: { ...s[code], ...patch } }));
+  const setElem = (id: string, patch: Partial<ElemEdit>) =>
+    setElemState((s) => ({ ...s, [id]: { ...s[id], ...patch } }));
+  const toggle = (code: string) =>
+    setExpanded((s) => {
+      const n = new Set(s);
+      if (n.has(code)) n.delete(code);
+      else n.add(code);
+      return n;
+    });
+  function saveElemC(id: string) {
+    const e = elemState[id];
+    startTransition(async () => {
+      await saveElement(projectId, id, "contractor", e.cResult || null, e.cRemarks);
+    });
+  }
+  function saveElemM(id: string) {
+    const e = elemState[id];
+    startTransition(async () => {
+      await saveElement(projectId, id, "cm", e.mResult || null, e.mRemarks);
+    });
+  }
 
   function saveC(code: string) {
     const s = state[code];
@@ -177,14 +215,26 @@ export function ProgrammeTable({
                           : hold
                             ? "bg-[#FDECEC]"
                             : "";
+                        const hasEl = r.elements.length > 0;
+                        const isOpen = expanded.has(r.code);
                         return (
-                          <tr key={r.code} className={`border-t border-slate-100 ${rowTint}`}>
+                          <PhaseGroup key={r.code}>
+                          <tr className={`border-t border-slate-100 ${rowTint}`}>
                             <td className="px-3 py-1.5 align-top">
                               <div className="text-xs font-medium text-slate-800">{r.name}</div>
                               <div className="text-[10px] text-slate-400">
                                 {r.code}
                                 {savedCode === r.code && (
                                   <span className="ml-2 text-status-pass">{dict.programme.saved}</span>
+                                )}
+                                {hasEl && (
+                                  <button
+                                    type="button"
+                                    onClick={() => toggle(r.code)}
+                                    className="ml-2 rounded border border-navy/30 px-1.5 py-0.5 text-[10px] font-semibold text-navy"
+                                  >
+                                    {isOpen ? "▾" : "▸"} {r.elements.length} {dict.programme.items}
+                                  </button>
                                 )}
                               </div>
                             </td>
@@ -237,6 +287,53 @@ export function ProgrammeTable({
                             </td>
                             <td className="px-2 py-1.5 text-center align-top">{appChip(r)}</td>
                           </tr>
+                          {isOpen &&
+                            r.elements.map((el) => {
+                              const ee = elemState[el.elementId];
+                              return (
+                                <tr key={el.elementId} className="border-t border-slate-50 bg-slate-50/50">
+                                  <td className="px-3 py-1 pl-8 align-top">
+                                    <span className="text-[11px] font-semibold text-slate-700">{el.elementId}</span>
+                                    <span className="ml-1 text-[10px] text-slate-400">
+                                      {el.elementType}
+                                      {el.label ? ` · ${el.label}` : ""}
+                                      {el.qty > 1 ? ` ×${el.qty}` : ""}
+                                    </span>
+                                  </td>
+                                  <td className="px-2 py-1 text-center align-top text-[10px] text-slate-400">{el.category}</td>
+                                  <td className={`px-1 py-1 text-center align-top ${CONF}`}>
+                                    <select className={`${dateCls} w-[88px]`} disabled={!canC} value={ee.cResult}
+                                      onChange={(ev) => setElem(el.elementId, { cResult: ev.target.value })}
+                                      onBlur={() => canC && saveElemC(el.elementId)}>
+                                      <option value=""></option>
+                                      {RESULT_OPTS.map((o) => <option key={o.v} value={o.v}>{o.label}</option>)}
+                                    </select>
+                                  </td>
+                                  <td className={`px-1 py-1 align-top ${CONF}`} colSpan={2}>
+                                    <input type="text" className={`${dateCls} w-full text-left`} disabled={!canC} value={ee.cRemarks}
+                                      onChange={(ev) => setElem(el.elementId, { cRemarks: ev.target.value })}
+                                      onBlur={() => canC && saveElemC(el.elementId)}
+                                      placeholder={`${dict.programme.contractor} ${dict.programme.remark.toLowerCase()}`} />
+                                  </td>
+                                  <td className={`px-1 py-1 text-center align-top ${CMF}`}>
+                                    <select className={`${dateCls} w-[88px]`} disabled={!canM} value={ee.mResult}
+                                      onChange={(ev) => setElem(el.elementId, { mResult: ev.target.value })}
+                                      onBlur={() => canM && saveElemM(el.elementId)}>
+                                      <option value=""></option>
+                                      {RESULT_OPTS.map((o) => <option key={o.v} value={o.v}>{o.label}</option>)}
+                                    </select>
+                                  </td>
+                                  <td className={`px-1 py-1 align-top ${CMF}`} colSpan={2}>
+                                    <input type="text" className={`${dateCls} w-full text-left`} disabled={!canM} value={ee.mRemarks}
+                                      onChange={(ev) => setElem(el.elementId, { mRemarks: ev.target.value })}
+                                      onBlur={() => canM && saveElemM(el.elementId)}
+                                      placeholder={`${dict.programme.cm} ${dict.programme.remark.toLowerCase()}`} />
+                                  </td>
+                                  <td className="px-2 py-1 align-top"></td>
+                                </tr>
+                              );
+                            })}
+                          </PhaseGroup>
                         );
                       })}
                     </PhaseGroup>
