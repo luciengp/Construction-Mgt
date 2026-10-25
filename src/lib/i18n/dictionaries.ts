@@ -169,6 +169,10 @@ const en = {
     contractor: "Contractor",
     cm: "CM",
     remark: "Remark",
+    progress: "Progress",
+    inspectionsDone: "Inspections passed",
+    elementsDone: "Elements checked",
+    exportExcel: "Export to Excel",
   },
 };
 
@@ -339,6 +343,10 @@ const th: Dict = {
     contractor: "ผู้รับเหมา",
     cm: "CM",
     remark: "หมายเหตุ",
+    progress: "ความคืบหน้า",
+    inspectionsDone: "การตรวจที่ผ่าน",
+    elementsDone: "องค์ประกอบที่ตรวจแล้ว",
+    exportExcel: "ส่งออกเป็น Excel",
   },
 };
 

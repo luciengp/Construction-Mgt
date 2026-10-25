@@ -56,6 +56,107 @@ export interface ProgrammeData {
   phases: ProgrammePhase[];
 }
 
+export interface ProgressCount {
+  done: number;
+  total: number;
+}
+export interface ProgrammeProgress {
+  inspections: ProgressCount;
+  elements: ProgressCount;
+  byCategory: { category: string; done: number; total: number }[];
+  byPhase: { code: string; name: string; sequence: number; done: number; total: number }[];
+}
+
+const PASSED = (r: string | null | undefined) =>
+  r === "PASS" || r === "PASS_WITH_COMMENT";
+
+/** Lightweight rollup for the dashboard + programme summary. */
+export async function getProgrammeProgress(
+  projectId: string
+): Promise<ProgrammeProgress | null> {
+  const supabase = createClient();
+  const [phasesRes, trackRes, elemRes, recordsRes] = await Promise.all([
+    supabase
+      .from("phases")
+      .select("code, name, sequence")
+      .eq("project_id", projectId)
+      .order("sequence"),
+    supabase
+      .from("inspection_tracking")
+      .select("phase_code, result")
+      .eq("project_id", projectId),
+    supabase
+      .from("elements")
+      .select("category, cm_result")
+      .eq("project_id", projectId),
+    supabase
+      .from("inspection_records")
+      .select("inspection_code, result, signoff, created_at")
+      .eq("project_id", projectId),
+  ]);
+  if (phasesRes.error) return null;
+
+  // an inspection counts as done when the CM tracker result is a pass, OR the
+  // formal app sign-off is COMPLETE with a pass.
+  type Rec = { signoff: string; createdAt: string; result: Result | null };
+  const recByCode = new Map<string, { result: Result | null; signoff: string }>();
+  const grouped = new Map<string, Rec[]>();
+  for (const r of recordsRes.data ?? []) {
+    if (!grouped.has(r.inspection_code)) grouped.set(r.inspection_code, []);
+    grouped.get(r.inspection_code)!.push({
+      signoff: r.signoff as string,
+      createdAt: r.created_at as string,
+      result: r.result as Result | null,
+    });
+  }
+  grouped.forEach((rows, code) => {
+    const a = findActiveRecord<Rec>(rows);
+    if (a) recByCode.set(code, { result: a.result, signoff: a.signoff });
+  });
+
+  const track = trackRes.data ?? [];
+  const phaseTotals = new Map<string, { done: number; total: number }>();
+  let inspDone = 0;
+  for (const t of track) {
+    const appRec = recByCode.get((t as { inspection_code?: string }).inspection_code ?? "");
+    const done =
+      PASSED(t.result as string | null) ||
+      (appRec?.signoff === "COMPLETE" && PASSED(appRec.result));
+    if (done) inspDone++;
+    const pc = phaseTotals.get(t.phase_code as string) ?? { done: 0, total: 0 };
+    pc.total++;
+    if (done) pc.done++;
+    phaseTotals.set(t.phase_code as string, pc);
+  }
+
+  const elems = elemRes.data ?? [];
+  const catTotals = new Map<string, { done: number; total: number }>();
+  let elemDone = 0;
+  for (const e of elems) {
+    const done = PASSED(e.cm_result as string | null);
+    if (done) elemDone++;
+    const cc = catTotals.get(e.category as string) ?? { done: 0, total: 0 };
+    cc.total++;
+    if (done) cc.done++;
+    catTotals.set(e.category as string, cc);
+  }
+
+  return {
+    inspections: { done: inspDone, total: track.length },
+    elements: { done: elemDone, total: elems.length },
+    byCategory: Array.from(catTotals.entries()).map(([category, v]) => ({
+      category,
+      ...v,
+    })),
+    byPhase: (phasesRes.data ?? []).map((p) => ({
+      code: p.code as string,
+      name: p.name as string,
+      sequence: p.sequence as number,
+      ...(phaseTotals.get(p.code as string) ?? { done: 0, total: 0 }),
+    })),
+  };
+}
+
 export async function getProgramme(
   projectId: string
 ): Promise<ProgrammeData | null> {

@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getMembershipForProject } from "@/lib/auth/membership";
 import { getDashboard } from "@/lib/data/dashboard";
+import { getProgrammeProgress } from "@/lib/data/programme";
 import { getServerDict } from "@/lib/i18n/server";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { signOut } from "../actions";
@@ -30,6 +31,15 @@ export default async function ProjectHome({
   const dict = getServerDict();
   const roleLabel =
     dict.role[membership.role as keyof typeof dict.role] ?? membership.role;
+  const progress = await getProgrammeProgress(params.projectId);
+  const ipct =
+    progress && progress.inspections.total
+      ? Math.round((progress.inspections.done / progress.inspections.total) * 100)
+      : 0;
+  const epct =
+    progress && progress.elements.total
+      ? Math.round((progress.elements.done / progress.elements.total) * 100)
+      : 0;
 
   return (
     <main className="min-h-screen bg-slate-100 pb-10">
@@ -66,6 +76,17 @@ export default async function ProjectHome({
       </header>
 
       <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
+        {progress && (progress.inspections.total > 0) && (
+          <Link
+            href={`/projects/${params.projectId}/programme`}
+            className="mb-4 flex items-center gap-4 rounded-xl bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+          >
+            <span className="text-sm font-semibold text-navy">{dict.nav.programme}</span>
+            <ProgressPill label={dict.programme.inspectionsDone} done={progress.inspections.done} total={progress.inspections.total} pct={ipct} />
+            <ProgressPill label={dict.programme.elementsDone} done={progress.elements.done} total={progress.elements.total} pct={epct} />
+            <span className="ml-auto text-xs text-navy underline">{dict.nav.programme} →</span>
+          </Link>
+        )}
         <Dashboard
           projectId={params.projectId}
           data={data}
@@ -73,5 +94,30 @@ export default async function ProjectHome({
         />
       </div>
     </main>
+  );
+}
+
+function ProgressPill({
+  label,
+  done,
+  total,
+  pct,
+}: {
+  label: string;
+  done: number;
+  total: number;
+  pct: number;
+}) {
+  return (
+    <span className="flex min-w-0 flex-col">
+      <span className="text-[10px] uppercase tracking-wide text-slate-400">{label}</span>
+      <span className="flex items-center gap-2">
+        <span className="text-sm font-bold text-navy">{done}/{total}</span>
+        <span className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-200">
+          <span className="block h-full rounded-full bg-status-pass" style={{ width: `${pct}%` }} />
+        </span>
+        <span className="text-xs font-semibold text-status-pass">{pct}%</span>
+      </span>
+    </span>
   );
 }
