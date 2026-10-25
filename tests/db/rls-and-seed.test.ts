@@ -78,7 +78,7 @@ describe.skipIf(!enabled)("database seed + RLS (needs SUPABASE_SERVICE_ROLE_KEY)
     expect(await count("checklist_families")).toBe(23);
     expect(await count("milestones")).toBe(21);
     expect(await count("inspections")).toBe(78);
-    expect(await count("checklist_items")).toBe(422);
+    expect(await count("checklist_items")).toBe(407);
 
     const { data: milestones } = await admin
       .from("milestones")

@@ -3,11 +3,14 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useDict } from "@/lib/i18n/LanguageProvider";
-import { saveContractorTracking, saveCmTracking, saveElement } from "./actions";
+import { saveContractorTracking, saveCmTracking, saveElementContractor, saveElementCm } from "./actions";
 import type { ProgrammeData, ProgrammeRow } from "@/lib/data/programme";
 import type { Role } from "@/domain/types";
 
-type ElemEdit = { cResult: string; cRemarks: string; mResult: string; mRemarks: string };
+type ElemEdit = {
+  cResult: string; cRemarks: string; mResult: string; mRemarks: string;
+  planned: string; actual: string; completion: string; cmCheck: string;
+};
 
 type Editable = {
   planned: string;
@@ -72,6 +75,10 @@ export function ProgrammeTable({
               cRemarks: el.contractorRemarks ?? "",
               mResult: el.cmResult ?? "",
               mRemarks: el.cmRemarks ?? "",
+              planned: el.plannedDate ?? "",
+              actual: el.actualDate ?? "",
+              completion: el.completionDate ?? "",
+              cmCheck: el.cmCheckDate ?? "",
             };
     return m;
   });
@@ -93,13 +100,13 @@ export function ProgrammeTable({
   function saveElemC(id: string) {
     const e = elemState[id];
     startTransition(async () => {
-      await saveElement(projectId, id, "contractor", e.cResult || null, e.cRemarks);
+      await saveElementContractor(projectId, id, e.cResult || null, e.cRemarks, e.planned, e.actual, e.completion);
     });
   }
   function saveElemM(id: string) {
     const e = elemState[id];
     startTransition(async () => {
-      await saveElement(projectId, id, "cm", e.mResult || null, e.mRemarks);
+      await saveElementCm(projectId, id, e.mResult || null, e.mRemarks, e.cmCheck);
     });
   }
 
@@ -309,36 +316,51 @@ export function ProgrammeTable({
                                       {el.qty > 1 ? ` ×${el.qty}` : ""}
                                     </span>
                                   </td>
-                                  <td className="px-2 py-1 text-center align-top text-[10px] text-slate-400">{el.category}</td>
                                   <td className={`px-1 py-1 text-center align-top ${CONF}`}>
-                                    <select className={`${dateCls} w-[88px]`} disabled={!canC} value={ee.cResult}
+                                    <input type="date" className={`${dateCls} w-[104px]`} disabled={!canC} value={ee.planned}
+                                      onChange={(ev) => setElem(el.elementId, { planned: ev.target.value })}
+                                      onBlur={() => canC && saveElemC(el.elementId)} />
+                                  </td>
+                                  <td className={`px-1 py-1 text-center align-top ${CONF}`}>
+                                    <input type="date" className={`${dateCls} w-[104px]`} disabled={!canC} value={ee.completion}
+                                      onChange={(ev) => setElem(el.elementId, { completion: ev.target.value })}
+                                      onBlur={() => canC && saveElemC(el.elementId)} />
+                                  </td>
+                                  <td className={`px-1 py-1 text-center align-top ${CONF}`}>
+                                    <select className={`${dateCls} w-[84px]`} disabled={!canC} value={ee.cResult}
                                       onChange={(ev) => setElem(el.elementId, { cResult: ev.target.value })}
                                       onBlur={() => canC && saveElemC(el.elementId)}>
                                       <option value=""></option>
                                       {RESULT_OPTS.map((o) => <option key={o.v} value={o.v}>{o.label}</option>)}
                                     </select>
                                   </td>
-                                  <td className={`px-1 py-1 align-top ${CONF}`} colSpan={2}>
-                                    <input type="text" className={`${dateCls} w-full text-left`} disabled={!canC} value={ee.cRemarks}
+                                  <td className={`px-1 py-1 align-top ${CONF}`}>
+                                    <input type="text" className={`${dateCls} w-[130px] text-left`} disabled={!canC} value={ee.cRemarks}
                                       onChange={(ev) => setElem(el.elementId, { cRemarks: ev.target.value })}
                                       onBlur={() => canC && saveElemC(el.elementId)}
-                                      placeholder={`${dict.programme.contractor} ${dict.programme.remark.toLowerCase()}`} />
+                                      placeholder={dict.programme.remark} />
                                   </td>
                                   <td className={`px-1 py-1 text-center align-top ${CMF}`}>
-                                    <select className={`${dateCls} w-[88px]`} disabled={!canM} value={ee.mResult}
+                                    <select className={`${dateCls} w-[84px]`} disabled={!canM} value={ee.mResult}
                                       onChange={(ev) => setElem(el.elementId, { mResult: ev.target.value })}
                                       onBlur={() => canM && saveElemM(el.elementId)}>
                                       <option value=""></option>
                                       {RESULT_OPTS.map((o) => <option key={o.v} value={o.v}>{o.label}</option>)}
                                     </select>
                                   </td>
-                                  <td className={`px-1 py-1 align-top ${CMF}`} colSpan={2}>
-                                    <input type="text" className={`${dateCls} w-full text-left`} disabled={!canM} value={ee.mRemarks}
+                                  <td className={`px-1 py-1 align-top ${CMF}`}>
+                                    <input type="text" className={`${dateCls} w-[130px] text-left`} disabled={!canM} value={ee.mRemarks}
                                       onChange={(ev) => setElem(el.elementId, { mRemarks: ev.target.value })}
                                       onBlur={() => canM && saveElemM(el.elementId)}
-                                      placeholder={`${dict.programme.cm} ${dict.programme.remark.toLowerCase()}`} />
+                                      placeholder={dict.programme.remark} />
                                   </td>
-                                  <td className="px-2 py-1 align-top"></td>
+                                  <td className="px-1 py-1 align-top"></td>
+                                  <td className="px-2 py-1 text-center align-top">
+                                    <Link href={`/projects/${projectId}/elements/${el.elementId}`}
+                                      className="text-[10px] font-semibold text-navy underline">
+                                      {dict.programme.open} →
+                                    </Link>
+                                  </td>
                                 </tr>
                               );
                             })}

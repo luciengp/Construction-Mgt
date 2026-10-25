@@ -14,6 +14,7 @@ export function PhotoUploader({
   hidden,
   startSeq,
   onUploaded,
+  elementId,
 }: {
   projectId: string;
   inspectionCode: string;
@@ -22,6 +23,8 @@ export function PhotoUploader({
   hidden: boolean;
   startSeq: number;
   onUploaded: () => void;
+  /** When set, the photo is tagged to this element and the ref uses it. */
+  elementId?: string;
 }) {
   const supabase = createClient();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +41,9 @@ export function PhotoUploader({
     for (const file of Array.from(files)) {
       seqRef.current += 1;
       const seq = String(seqRef.current).padStart(3, "0");
-      const ref = `P-${milestoneCode}-${itpNumber}-${seq}`;
+      const ref = elementId
+        ? `P-${elementId}-${seq}`
+        : `P-${milestoneCode}-${itpNumber}-${seq}`;
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
       const path = `${projectId}/${familyCode}/${milestoneCode}/${ref}-${safeName}`;
 
@@ -57,6 +62,7 @@ export function PhotoUploader({
         ref,
         storage_path: path,
         hidden,
+        element_id: elementId ?? null,
       });
       if (ins.error) {
         setError(ins.error.message);

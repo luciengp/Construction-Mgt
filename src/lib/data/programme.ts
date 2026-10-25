@@ -13,6 +13,10 @@ export interface ProgrammeElement {
   contractorRemarks: string | null;
   cmResult: string | null;
   cmRemarks: string | null;
+  plannedDate: string | null;
+  actualDate: string | null;
+  completionDate: string | null;
+  cmCheckDate: string | null;
 }
 
 export interface ProgrammeRow {
@@ -188,7 +192,7 @@ export async function getProgramme(
       supabase
         .from("elements")
         .select(
-          "inspection_code, element_id, category, element_type, label, qty, contractor_result, contractor_remarks, cm_result, cm_remarks, sort_order"
+          "inspection_code, element_id, category, element_type, label, qty, contractor_result, contractor_remarks, cm_result, cm_remarks, planned_date, actual_date, completion_date, cm_check_date, sort_order"
         )
         .eq("project_id", projectId)
         .order("sort_order"),
@@ -209,6 +213,10 @@ export async function getProgramme(
       contractorRemarks: el.contractor_remarks,
       cmResult: el.cm_result,
       cmRemarks: el.cm_remarks,
+      plannedDate: el.planned_date,
+      actualDate: el.actual_date,
+      completionDate: el.completion_date,
+      cmCheckDate: el.cm_check_date,
     };
     if (!elemByCode.has(el.inspection_code)) elemByCode.set(el.inspection_code, []);
     elemByCode.get(el.inspection_code)!.push(e);
@@ -298,4 +306,97 @@ export async function getProgramme(
   });
 
   return { projectName: projectRes.data.name, phases: phaseViews };
+}
+
+export interface ElementPhoto {
+  id: string;
+  ref: string;
+  url: string | null;
+  createdAt: string;
+}
+export interface ElementDetail {
+  projectId: string;
+  elementId: string;
+  category: string;
+  elementType: string | null;
+  label: string | null;
+  qty: number;
+  inspectionCode: string;
+  inspectionName: string;
+  milestoneCode: string;
+  familyCode: string;
+  contractorResult: string | null;
+  contractorRemarks: string | null;
+  cmResult: string | null;
+  cmRemarks: string | null;
+  plannedDate: string | null;
+  actualDate: string | null;
+  completionDate: string | null;
+  cmCheckDate: string | null;
+  photos: ElementPhoto[];
+}
+
+export async function getElement(
+  projectId: string,
+  elementId: string
+): Promise<ElementDetail | null> {
+  const supabase = createClient();
+  const lang = getLang();
+  const { data: el } = await supabase
+    .from("elements")
+    .select(
+      "element_id, inspection_code, category, element_type, label, qty, contractor_result, contractor_remarks, cm_result, cm_remarks, planned_date, actual_date, completion_date, cm_check_date"
+    )
+    .eq("project_id", projectId)
+    .eq("element_id", elementId)
+    .maybeSingle();
+  if (!el) return null;
+
+  const { data: insp } = await supabase
+    .from("inspections")
+    .select("name, name_th, milestone_code, family_code")
+    .eq("project_id", projectId)
+    .eq("code", el.inspection_code)
+    .maybeSingle();
+
+  const { data: photoRows } = await supabase
+    .from("photos")
+    .select("id, ref, storage_path, created_at")
+    .eq("project_id", projectId)
+    .eq("element_id", elementId)
+    .order("created_at", { ascending: true });
+
+  const signed = await Promise.all(
+    (photoRows ?? []).map((p) =>
+      supabase.storage.from("photos").createSignedUrl(p.storage_path, 3600)
+    )
+  );
+  const photos: ElementPhoto[] = (photoRows ?? []).map((p, i) => ({
+    id: p.id,
+    ref: p.ref,
+    url: signed[i].data?.signedUrl ?? null,
+    createdAt: p.created_at,
+  }));
+
+  return {
+    projectId,
+    elementId: el.element_id,
+    category: el.category,
+    elementType: el.element_type,
+    label: el.label,
+    qty: el.qty ?? 1,
+    inspectionCode: el.inspection_code,
+    inspectionName: insp ? localize(insp.name, insp.name_th, lang) : el.inspection_code,
+    milestoneCode: insp?.milestone_code ?? "",
+    familyCode: insp?.family_code ?? "",
+    contractorResult: el.contractor_result,
+    contractorRemarks: el.contractor_remarks,
+    cmResult: el.cm_result,
+    cmRemarks: el.cm_remarks,
+    plannedDate: el.planned_date,
+    actualDate: el.actual_date,
+    completionDate: el.completion_date,
+    cmCheckDate: el.cm_check_date,
+    photos,
+  };
 }

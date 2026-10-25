@@ -20,12 +20,12 @@ describe("cms_domain_seed.json integrity", () => {
     expect(seed.inspections).toHaveLength(78);
   });
 
-  it("has 422 checklist items in total", () => {
+  it("has 407 checklist items in total", () => {
     const total = seed.inspections.reduce(
       (sum, i) => sum + i.checklist.length,
       0
     );
-    expect(total).toBe(422);
+    expect(total).toBe(407);
   });
 
   it("milestone values excluding RET sum to the contract value (7,456,732 THB)", () => {

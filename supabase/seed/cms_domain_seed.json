@@ -465,8 +465,7 @@
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Delivery ticket grade correct; slump tested and within tolerance",
         "PART B — Minimum one cube set taken, labelled and correctly cured",
-        "PART B — Fully compacted by poker; no segregation; curing started immediately",
-        "PART B — 28-day cube result at or above the specified grade (close this item when received)"
+        "PART B — Fully compacted by poker; no segregation; curing started immediately"
       ]
     },
     {
@@ -489,8 +488,7 @@
         "PART A — Formwork plumb, tied and propped for the design pour pressure",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Placed in controlled lifts; no cold joints; fully compacted at the wall base",
-        "PART B — Slump tested; cube set taken; cured wet for the specified period",
-        "PART B — 28-day cube result at or above grade (close this item when received)"
+        "PART B — Slump tested; cube set taken; cured wet for the specified period"
       ]
     },
     {
@@ -604,8 +602,7 @@
         "PART A — Formwork and propping designed for the load, on a firm base, plumb and braced",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Correct grade, slump tested, cube set taken",
-        "PART B — Fully compacted; no honeycombing at bases after striking",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — Fully compacted; no honeycombing at bases after striking"
       ]
     },
     {
@@ -627,8 +624,7 @@
         "PART A — All conduits, sleeves, drainage penetrations and holding-down bolts fixed",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Correct grade; slump tested; cube set taken",
-        "PART B — Surface level and flatness within tolerance; curing started immediately",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — Surface level and flatness within tolerance; curing started immediately"
       ]
     },
     {
@@ -718,8 +714,7 @@
         "PART A — Formwork rigid, plumb, grout-tight and braced",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Correct grade; slump tested; cube set taken; no segregation",
-        "PART B — No honeycombing at column bases after striking",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — No honeycombing at column bases after striking"
       ]
     },
     {
@@ -742,8 +737,7 @@
         "PART A — Openings trimmed; all cast-in conduits, sleeves and penetrations fixed",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
         "PART B — Continuous pour; correct grade; slump tested; cube set taken",
-        "PART B — Finished to level and flatness tolerance; cured wet",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — Finished to level and flatness tolerance; cured wet"
       ]
     },
     {
@@ -807,8 +801,7 @@
         "PART A — Main bars, links, laps and cover correct; columns plumb",
         "PART A — Starter bars for the roof level correctly projected",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
-        "PART B — Correct grade; slump tested; cube set taken; fully compacted",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — Correct grade; slump tested; cube set taken; fully compacted"
       ]
     },
     {
@@ -830,8 +823,7 @@
         "PART A — Top and bottom steel correct; cover maintained; openings trimmed",
         "PART A — All cast-in MEP items fixed before pour",
         "PART A — WRITTEN RELEASE ISSUED before concrete is ordered",
-        "PART B — Correct grade; slump tested; cube set taken; finished and cured",
-        "PART B — 28-day cube result at or above grade"
+        "PART B — Correct grade; slump tested; cube set taken; finished and cured"
       ]
     },
     {
@@ -852,8 +844,7 @@
         "Overall building verticality surveyed and within tolerance",
         "Floor levels surveyed at every level",
         "Room dimensions checked against the architectural plans",
-        "Deviations recorded and accepted IN WRITING before architectural works begin",
-        "This is the last chance to correct geometry cheaply"
+        "Deviations recorded and accepted IN WRITING before architectural works begin"
       ]
     },
     {
@@ -1007,8 +998,7 @@
         "Masonry material matches the approved sample; units sound and stored dry",
         "EVERY room set out and its internal dimensions checked against the plan BEFORE building",
         "Diagonals checked for square in every room",
-        "Door and window opening positions marked",
-        "This is the cheapest error to fix now and the most expensive later"
+        "Door and window opening positions marked"
       ]
     },
     {
@@ -1405,8 +1395,7 @@
         "Earth electrode installed with an accessible inspection pit",
         "Measured earth resistance within the specified limit — certificate on file",
         "Main bonding to incoming water pipework",
-        "Supplementary bonding to the pool, its reinforcement and all metalwork",
-        "Life-safety critical — do not release on assurance alone"
+        "Supplementary bonding to the pool, its reinforcement and all metalwork"
       ]
     },
     {
@@ -1451,8 +1440,7 @@
         "Every water and drainage item inspected, tested and photographed",
         "Every AC pipework item inspected, tested and photographed",
         "All test certificates on file",
-        "SINGLE COMBINED WRITTEN RELEASE issued — no wall, ceiling or slab is closed without it",
-        "Covering without this release is an automatic NCR at the Contractor's cost"
+        "SINGLE COMBINED WRITTEN RELEASE issued — no wall, ceiling or slab is closed without it"
       ]
     },
     {
@@ -1563,8 +1551,7 @@
         "Polarity correct on every circuit",
         "Earth loop impedance within limits",
         "RCD trip times within limits",
-        "Signed electrical safety certificate from a licensed electrician (Cl.10.2d)",
-        "A failed result blocks GATE G3.3 outright"
+        "Signed electrical safety certificate from a licensed electrician (Cl.10.2d)"
       ]
     },
     {
@@ -1652,8 +1639,7 @@
       "checklist": [
         "Continuous fall to a legal discharge point on every run",
         "Trap fitted where required",
-        "Water poured into EVERY drain pan discharges fully with no backup or leak",
-        "No unit skipped — this is the commonest cause of ceiling damage in a finished villa"
+        "Water poured into EVERY drain pan discharges fully with no backup or leak"
       ]
     },
     {
@@ -1873,7 +1859,6 @@
       "responsible": "CM",
       "checklist": [
         "Every snag verified closed with an AFTER photograph",
-        "Nothing closed on the Contractor's word alone",
         "Any item not closed is formally carried forward with a written agreed date",
         "ZERO open Category A snags — GATE G5.2 requires this"
       ]
