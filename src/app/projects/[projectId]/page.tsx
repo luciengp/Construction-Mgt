@@ -44,6 +44,9 @@ export default async function ProjectHome({
           </div>
           <nav className="flex items-center gap-3 text-xs">
             <LanguageToggle />
+            <Link href={`/projects/${params.projectId}/programme`} className="text-white/80 underline">
+              {dict.nav.programme}
+            </Link>
             <Link href={`/projects/${params.projectId}/registers`} className="text-white/80 underline">
               {dict.nav.registers}
             </Link>
