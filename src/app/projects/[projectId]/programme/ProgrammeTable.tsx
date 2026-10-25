@@ -16,7 +16,6 @@ type Editable = {
   planned: string;
   actual: string;
   completion: string;
-  cmCheck: string;
   result: string;
   remarks: string;
 };
@@ -58,7 +57,6 @@ export function ProgrammeTable({
             planned: r.plannedDate ?? "",
             actual: r.actualDate ?? "",
             completion: r.completionDate ?? "",
-            cmCheck: r.cmCheckDate ?? "",
             result: r.result ?? "",
             remarks: r.remarks ?? "",
           };
@@ -113,7 +111,7 @@ export function ProgrammeTable({
   function saveC(code: string) {
     const s = state[code];
     startTransition(async () => {
-      await saveContractorTracking(projectId, code, s.planned, s.actual, s.completion);
+      await saveContractorTracking(projectId, code, s.planned, s.completion);
       setSavedCode(code);
       setTimeout(() => setSavedCode((c) => (c === code ? null : c)), 1500);
     });
@@ -121,7 +119,7 @@ export function ProgrammeTable({
   function saveM(code: string) {
     const s = state[code];
     startTransition(async () => {
-      await saveCmTracking(projectId, code, s.cmCheck, s.result || null, s.remarks);
+      await saveCmTracking(projectId, code, s.actual, s.result || null, s.remarks);
       setSavedCode(code);
       setTimeout(() => setSavedCode((c) => (c === code ? null : c)), 1500);
     });
@@ -174,7 +172,7 @@ export function ProgrammeTable({
             <tr className="text-[11px] uppercase tracking-wide text-white">
               <th className="bg-navy px-3 py-2 text-left">{dict.programme.inspection}</th>
               <th className="bg-navy px-2 py-2">{dict.programme.type}</th>
-              <th className="bg-[#E8A33D] px-2 py-2" colSpan={3}>{dict.programme.contractorCols}</th>
+              <th className="bg-[#E8A33D] px-2 py-2" colSpan={2}>{dict.programme.contractorCols}</th>
               <th className="bg-[#2E75B6] px-2 py-2" colSpan={3}>{dict.programme.cmCols}</th>
               <th className="bg-navy px-2 py-2">{dict.programme.appSignoff}</th>
             </tr>
@@ -182,9 +180,8 @@ export function ProgrammeTable({
               <th className="bg-slate-50 px-3 py-1 text-left"></th>
               <th className="bg-slate-50 px-2 py-1"></th>
               <th className="bg-[#FFF9E6] px-2 py-1">{dict.programme.plannedInsp}</th>
-              <th className="bg-[#FFF9E6] px-2 py-1">{dict.programme.actualInsp}</th>
-              <th className="bg-[#FFF9E6] px-2 py-1">{dict.programme.completion}</th>
-              <th className="bg-[#E8F1FB] px-2 py-1">{dict.programme.cmCheckDate}</th>
+              <th className="bg-[#FFF9E6] px-2 py-1">{dict.programme.plannedCompletion}</th>
+              <th className="bg-[#E8F1FB] px-2 py-1">{dict.programme.actualInsp}</th>
               <th className="bg-[#E8F1FB] px-2 py-1">{dict.programme.result}</th>
               <th className="bg-[#E8F1FB] px-2 py-1">{dict.programme.remarks}</th>
               <th className="bg-slate-50 px-2 py-1"></th>
@@ -199,7 +196,7 @@ export function ProgrammeTable({
               return (
                 <PhaseGroup key={p.code}>
                   <tr>
-                    <td colSpan={9} className="bg-navy px-3 py-1.5 text-left text-xs font-semibold text-white">
+                    <td colSpan={8} className="bg-navy px-3 py-1.5 text-left text-xs font-semibold text-white">
                       {p.code} · {p.name}
                       {p.plannedStart && (
                         <span className="font-normal text-white/70">
@@ -211,7 +208,7 @@ export function ProgrammeTable({
                   {p.activities.map((a) => (
                     <PhaseGroup key={a.title}>
                       <tr>
-                        <td colSpan={9} className="bg-[#DDE6F2] px-3 py-1 text-left text-xs font-semibold text-navy">
+                        <td colSpan={8} className="bg-[#DDE6F2] px-3 py-1 text-left text-xs font-semibold text-navy">
                           {a.title}
                         </td>
                       </tr>
@@ -256,15 +253,10 @@ export function ProgrammeTable({
                                 </div>
                               )}
                             </td>
-                            {/* contractor */}
+                            {/* contractor — planned dates */}
                             <td className={`px-1 py-1.5 text-center align-top ${CONF}`}>
                               <input type="date" className={dateCls} disabled={!canC} value={e.planned}
                                 onChange={(ev) => set(r.code, { planned: ev.target.value })}
-                                onBlur={() => canC && saveC(r.code)} />
-                            </td>
-                            <td className={`px-1 py-1.5 text-center align-top ${CONF}`}>
-                              <input type="date" className={dateCls} disabled={!canC} value={e.actual}
-                                onChange={(ev) => set(r.code, { actual: ev.target.value })}
                                 onBlur={() => canC && saveC(r.code)} />
                             </td>
                             <td className={`px-1 py-1.5 text-center align-top ${CONF}`}>
@@ -272,10 +264,10 @@ export function ProgrammeTable({
                                 onChange={(ev) => set(r.code, { completion: ev.target.value })}
                                 onBlur={() => canC && saveC(r.code)} />
                             </td>
-                            {/* CM */}
+                            {/* CM — actual inspection date, result, remarks */}
                             <td className={`px-1 py-1.5 text-center align-top ${CMF}`}>
-                              <input type="date" className={dateCls} disabled={!canM} value={e.cmCheck}
-                                onChange={(ev) => set(r.code, { cmCheck: ev.target.value })}
+                              <input type="date" className={dateCls} disabled={!canM} value={e.actual}
+                                onChange={(ev) => set(r.code, { actual: ev.target.value })}
                                 onBlur={() => canM && saveM(r.code)} />
                             </td>
                             <td className={`px-1 py-1.5 text-center align-top ${CMF}`}>
@@ -354,7 +346,6 @@ export function ProgrammeTable({
                                       onBlur={() => canM && saveElemM(el.elementId)}
                                       placeholder={dict.programme.remark} />
                                   </td>
-                                  <td className="px-1 py-1 align-top"></td>
                                   <td className="px-2 py-1 text-center align-top">
                                     <Link href={`/projects/${projectId}/elements/${el.elementId}`}
                                       className="text-[10px] font-semibold text-navy underline">

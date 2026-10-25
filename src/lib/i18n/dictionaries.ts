@@ -141,12 +141,13 @@ const en = {
   programme: {
     title: "Programme & Inspection Tracker",
     intro:
-      "The contractor's phases and activities with the inspection schedule. Contractor fills planned / actual / completion dates; the CM fills the check date, result and remarks.",
+      "The contractor's phases and activities with the inspection schedule. The contractor fills the planned inspection and planned completion dates; the CM fills the actual inspection date, result and remarks.",
     contractorCols: "Contractor to complete",
     cmCols: "CM to complete",
     inspection: "Inspection",
     type: "Type",
     plannedInsp: "Planned insp.",
+    plannedCompletion: "Planned completion",
     actualInsp: "Actual insp.",
     completion: "Completion",
     cmCheckDate: "CM check date",
@@ -317,12 +318,13 @@ const th: Dict = {
   programme: {
     title: "แผนงานและตารางการตรวจ",
     intro:
-      "เฟสและกิจกรรมของผู้รับเหมาพร้อมกำหนดการตรวจ ผู้รับเหมากรอกวันที่วางแผน/จริง/แล้วเสร็จ ส่วน CM กรอกวันที่ตรวจ ผลการตรวจ และหมายเหตุ",
+      "เฟสและกิจกรรมของผู้รับเหมาพร้อมกำหนดการตรวจ ผู้รับเหมากรอกวันตรวจที่วางแผนและวันแล้วเสร็จที่วางแผน ส่วน CM กรอกวันตรวจจริง ผลการตรวจ และหมายเหตุ",
     contractorCols: "ผู้รับเหมากรอก",
     cmCols: "CM กรอก",
     inspection: "การตรวจ",
     type: "ประเภท",
     plannedInsp: "วันตรวจที่วางแผน",
+    plannedCompletion: "วันแล้วเสร็จที่วางแผน",
     actualInsp: "วันตรวจจริง",
     completion: "วันแล้วเสร็จ",
     cmCheckDate: "วันที่ CM ตรวจ",

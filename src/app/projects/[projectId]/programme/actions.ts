@@ -31,12 +31,11 @@ const clean = (v: string | null | undefined): string | null => {
   return s === "" ? null : s;
 };
 
-// Contractor columns: planned / actual / completion inspection dates.
+// Contractor columns: planned inspection date and planned completion date.
 export async function saveContractorTracking(
   projectId: string,
   code: string,
   plannedDate: string | null,
-  actualDate: string | null,
   completionDate: string | null
 ): Promise<TrackingResult> {
   const guard = await requireRole(projectId, ["contractor", "owner"]);
@@ -47,7 +46,6 @@ export async function saveContractorTracking(
       project_id: projectId,
       inspection_code: code,
       planned_date: clean(plannedDate),
-      actual_date: clean(actualDate),
       completion_date: clean(completionDate),
       updated_by: guard.userId,
       updated_at: new Date().toISOString(),
@@ -125,11 +123,11 @@ export async function saveElementCm(
   return { ok: true, error: null };
 }
 
-// CM columns: check date, result, remarks.
+// CM columns: actual inspection date, result, remarks.
 export async function saveCmTracking(
   projectId: string,
   code: string,
-  cmCheckDate: string | null,
+  actualDate: string | null,
   result: string | null,
   remarks: string | null
 ): Promise<TrackingResult> {
@@ -144,7 +142,7 @@ export async function saveCmTracking(
     {
       project_id: projectId,
       inspection_code: code,
-      cm_check_date: clean(cmCheckDate),
+      actual_date: clean(actualDate),
       result: r,
       remarks: clean(remarks),
       updated_by: guard.userId,

@@ -44,24 +44,24 @@ export async function GET(
   // ── Sheet 1: Programme ──────────────────────────────────────────────
   const ws = wb.addWorksheet("Programme");
   ws.columns = [
-    { width: 46 }, { width: 12 }, { width: 14 }, { width: 14 },
-    { width: 14 }, { width: 14 }, { width: 18 }, { width: 30 },
+    { width: 46 }, { width: 12 }, { width: 14 }, { width: 16 },
+    { width: 14 }, { width: 18 }, { width: 30 },
   ];
   headerRow(ws, [
     "Inspection", "Type",
-    "Planned insp.", "Actual insp.", "Completion",
-    "CM check date", "Result", "Remarks",
+    "Planned insp.", "Planned completion",
+    "Actual insp.", "Result", "Remarks",
   ]);
   for (const p of data.phases) {
     const ph = ws.addRow([
       `${p.code} · ${p.name}${p.plannedStart ? `   (${p.plannedStart} → ${p.plannedEnd})` : ""}`,
     ]);
-    ws.mergeCells(ph.number, 1, ph.number, 8);
+    ws.mergeCells(ph.number, 1, ph.number, 7);
     ph.getCell(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
     ph.getCell(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: NAVY } };
     for (const a of p.activities) {
       const ar = ws.addRow([a.title]);
-      ws.mergeCells(ar.number, 1, ar.number, 8);
+      ws.mergeCells(ar.number, 1, ar.number, 7);
       ar.getCell(1).font = { bold: true, color: { argb: "FF1F3864" } };
       ar.getCell(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: BLUE } };
       for (const r of a.rows) {
@@ -69,14 +69,13 @@ export async function GET(
           `${r.code} · ${r.name}`,
           r.pointType,
           r.plannedDate ?? "",
-          r.actualDate ?? "",
           r.completionDate ?? "",
-          r.cmCheckDate ?? "",
+          r.actualDate ?? "",
           r.result ?? "",
           r.remarks ?? "",
         ]);
-        [3, 4, 5].forEach((i) => (row.getCell(i).fill = { type: "pattern", pattern: "solid", fgColor: { argb: CONF } }));
-        [6, 7, 8].forEach((i) => (row.getCell(i).fill = { type: "pattern", pattern: "solid", fgColor: { argb: CMF } }));
+        [3, 4].forEach((i) => (row.getCell(i).fill = { type: "pattern", pattern: "solid", fgColor: { argb: CONF } }));
+        [5, 6, 7].forEach((i) => (row.getCell(i).fill = { type: "pattern", pattern: "solid", fgColor: { argb: CMF } }));
       }
     }
   }
